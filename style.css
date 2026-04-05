@@ -94,6 +94,7 @@ tr:last-child td{border-bottom:none}tbody tr:hover td{background:#f8fbff}
 .offer-total{background:var(--pl);border-radius:10px;padding:12px 16px;font-size:15px;font-weight:800;color:var(--pd);margin-top:10px;}
 @media(max-width:768px){
 table{font-size:11px;}
-th,td{padding:8px 6px;}
+th,td{padding:8px 4px;}
 .sts{grid-template-columns:1fr 1fr;}
+.tc{overflow-x:auto;}
 }
