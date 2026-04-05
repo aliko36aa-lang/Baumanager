@@ -35,7 +35,7 @@ async function pgProjDetail(id){ld();const[{data:p},{data:bt},{data:mat},{data:s
 
 async function upFotos(pid){const files=document.getElementById('fi').files;const prev=document.getElementById('fp');for(const f of files){const r=new FileReader();r.onload=e=>{const i=document.createElement('img');i.src=e.target.result;i.className='pt-img';prev.appendChild(i);};r.readAsDataURL(f);await sb.storage.from('fotos').upload(`${pid}/${Date.now()}_${f.name}`,f).catch(()=>{});}}
 async function delBt(id,pid){if(!confirm('Eintrag löschen?'))return;await sb.from('bautagebuch').delete().eq('id',id);pgProjDetail(pid);}
-async function delMat(id,pid){if(!confirm('Material löschen?'))return;await sb.from('material').delete().eq('id',id);pgProjDetail(pid);}
+mat.map(m=>`<tr><td><b>${m.name||'–'}</b></td><td>${(proj||[]).find(p=>p.id===m.projekt_id)?.name||m.projekt||'–'}</td><td>${m.menge||'–'}</td><td>${m.preis?'€'+parseFloat(m.preis).toFixed(2):'–'}</td><td><button onclick="delMatD('${m.id}')" style="background:none;border:none;cursor:pointer;color:var(--red);font-size:16px">🗑️</button></td></tr>`
 async function delStd(id,pid){if(!confirm('Stunden löschen?'))return;await sb.from('stunden').delete().eq('id',id);pgProjDetail(pid);}
 async function delAng(id,pid){if(!confirm('Angebot löschen?'))return;await sb.from('angebote').delete().eq('id',id);pgProjDetail(pid);}
 
