@@ -2,7 +2,7 @@ const SU="https://mqgnuvsgrdsjuxaogpnd.supabase.co";
 const SK="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1xZ251dnNncmRzanV4YW9ncG5kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyMjM5NDIsImV4cCI6MjA4OTc5OTk0Mn0.8C0EaWIitlhWtU_CkZ9RfnsJK8gEs5Lj_srrQTkJwe0";
 const sb=window.supabase.createClient(SU,SK);
 let me=null;
-let settings={firma:'',adresse:'',telefon:'',email:'',mwst:19,zahlungsziel:14,iban:'',bank:''};
+let settings={firma:'',adresse:'',telefon:'',email:'',mwst:19,zahlungsziel:14,iban:'',bank:'',ustid:'',steuernr:''};
 
 async function dL(){const e=document.getElementById('le').value.trim(),p=document.getElementById('lp').value;const er=document.getElementById('lerr');er.textContent='';if(!e||!p){er.textContent='Bitte alle Felder ausfüllen.';return;}const b=document.querySelector('.bl');b.textContent='…';b.disabled=true;const{data,error}=await sb.auth.signInWithPassword({email:e,password:p});b.textContent='Anmelden →';b.disabled=false;if(error){er.textContent='❌ '+(error.message.includes('Invalid')?'Falsche Zugangsdaten.':error.message);return;}sA(data.user);}
 async function dLo(){await sb.auth.signOut();location.reload();}
