@@ -69,4 +69,67 @@ function clearSig(id){const c=document.getElementById(id);c.getContext('2d').cle
 function previewBtFotos(){const files=document.getElementById('bt-fi').files;const prev=document.getElementById('bt-fp');prev.innerHTML='';for(const f of files){const r=new FileReader();r.onload=e=>{const i=document.createElement('img');i.src=e.target.result;i.className='pt-img';i.onclick=()=>window.open(e.target.result,'_blank');i.style.cursor='pointer';prev.appendChild(i);};r.readAsDataURL(f);}}
 async function saveBt(pid,wetter){const d=document.getElementById('f-desc').value.trim();if(!d){alert('Beschreibung fehlt!');return;}const sigBl=document.getElementById('sig-bl').toDataURL();const sigAg=document.getElementById('sig-ag').toDataURL();const{error}=await sb.from('bautagebuch').insert({projekt_id:pid,datum:new Date().toISOString().split('T')[0],beschreibung:document.getElementById('f-desc').value,wetter:wetter,gewerk:document.getElementById('f-gw').value,mitarbeiter:document.getElementById('f-mit').value,material_verwendet:document.getElementById('f-mat').value,lieferungen:document.getElementById('f-lief').value,maengel:document.getElementById('f-maeng').value,zeit_von:document.getElementById('f-zv').value,zeit_bis:document.getElementById('f-zb').value,unterschrift_bauleiter:sigBl,unterschrift_auftraggeber:sigAg,erstellt_von:me.email});if(error){alert('Fehler: '+error.message);return;}cM();pgProjDetail(pid);}
 function pgEinst(){sC(`<div class="ph"><div><div class="pt">⚙️ Einstellungen</div><div class="ps">Firma & App konfigurieren</div></div></div><div class="tc" style="margin-bottom:20px"><div class="th"><span class="th-t">🏢 Firmendaten</span></div><div style="padding:18px"><div class="fg"><label>FIRMENNAME</label><input id="s-firma" value="${settings.firma||''}" placeholder="Alem Facility GmbH"></div><div class="fg"><label>ADRESSE</label><input id="s-adr" value="${settings.adresse||''}" placeholder="Musterstr. 1, Berlin"></div><div class="fr"><div class="fg"><label>TELEFON</label><input id="s-tel" value="${settings.telefon||''}" placeholder="+49 ..."></div><div class="fg"><label>E-MAIL</label><input id="s-em" value="${settings.email||''}" placeholder="info@firma.de"></div></div></div></div><div class="tc" style="margin-bottom:20px"><div class="th"><span class="th-t">💶 Rechnungseinstellungen</span></div><div style="padding:18px"><div class="fr"><div class="fg"><label>MWST (%)</label><input id="s-mwst" type="number" value="${settings.mwst||19}" placeholder="19"></div><div class="fg"><label>ZAHLUNGSZIEL (TAGE)</label><input id="s-ziel" type="number" value="${settings.zahlungsziel||14}" placeholder="14"></div></div><div class="fr"><div class="fg"><label>UST-ID</label><input id="s-ustid" value="${settings.ustid||''}" placeholder="DE123456789"></div><div class="fg"><label>STEUERNUMMER</label><input id="s-steuernr" value="${settings.steuernr||''}" placeholder="123/456/78901"></div></div><div class="fg"><label>IBAN</label><input id="s-iban" value="${settings.iban||''}" placeholder="DE89 3704 0044 0532 0130 00"></div><div class="fg"><label>BANK</label><input id="s-bank" value="${settings.bank||''}" placeholder="Deutsche Bank"></div></div></div><div class="tc" style="margin-bottom:20px"><div class="th"><span class="th-t">👤 Konto</span></div><div style="padding:18px"><div class="fg"><label>E-MAIL</label><input value="${me?.email||''}" disabled style="background:#f0f4f8;color:var(--muted)"></div><div class="fg"><label>BENUTZER-ID</label><input value="${me?.id||''}" disabled style="background:#f0f4f8;color:var(--muted);font-size:11px;font-family:monospace"></div></div></div><button class="bp" style="width:100%;padding:14px;font-size:15px" onclick="saveSettings()">💾 Einstellungen speichern</button>`);}
+function exportBtPDF(bt,projektName,firmaName){
+const{jsPDF}=window.jspdf;
+const doc=new jsPDF();
+const blau=[26,86,219];
+const grau=[100,116,139];
+doc.setFillColor(...blau);
+doc.rect(0,0,210,35,'F');
+doc.setTextColor(255,255,255);
+doc.setFontSize(18);doc.setFont('helvetica','bold');
+doc.text('Bautagesprotokoll',14,15);
+doc.setFontSize(10);doc.setFont('helvetica','normal');
+doc.text(firmaName||'',14,23);
+doc.text(`Projekt: ${projektName||''}`,14,30);
+doc.setTextColor(0,0,0);
+let y=45;
+doc.setFillColor(240,244,248);
+doc.rect(14,y,182,22,'F');
+doc.setFontSize(10);doc.setFont('helvetica','bold');
+doc.setTextColor(...blau);
+doc.text('PROTOKOLL-INFORMATIONEN',16,y+7);
+doc.setFont('helvetica','normal');doc.setTextColor(0,0,0);
+doc.text(`Datum: ${bt.datum||'–'}`,16,y+14);
+doc.text(`Zeit: ${bt.zeit_von||'–'} – ${bt.zeit_bis||'–'} Uhr`,80,y+14);
+doc.text(`Wetter: ${bt.wetter||'–'}`,16,y+20);
+doc.text(`Erstellt von: ${bt.erstellt_von||'–'}`,80,y+20);
+y+=30;
+const sections=[
+{title:'👷 GEWERK / FIRMA',value:bt.gewerk},
+{title:'👥 ANWESENDE MITARBEITER',value:bt.mitarbeiter},
+{title:'🔨 DURCHGEFÜHRTE TÄTIGKEITEN',value:bt.beschreibung},
+{title:'🧱 VERWENDETES MATERIAL',value:bt.material_verwendet},
+{title:'🚛 LIEFERUNGEN',value:bt.lieferungen},
+{title:'⚠️ MÄNGEL / BESONDERHEITEN',value:bt.maengel},
+];
+sections.forEach(s=>{
+if(!s.value)return;
+if(y>250){doc.addPage();y=20;}
+doc.setFont('helvetica','bold');doc.setTextColor(...blau);doc.setFontSize(9);
+doc.text(s.title,14,y);y+=5;
+doc.setFont('helvetica','normal');doc.setTextColor(0,0,0);doc.setFontSize(10);
+const lines=doc.splitTextToSize(s.value,180);
+lines.forEach(l=>{if(y>270){doc.addPage();y=20;}doc.text(l,14,y);y+=6;});
+y+=4;
+});
+if(bt.unterschrift_bauleiter&&bt.unterschrift_bauleiter.length>100){
+if(y>220){doc.addPage();y=20;}
+doc.setFont('helvetica','bold');doc.setTextColor(...blau);doc.setFontSize(9);
+doc.text('✍️ UNTERSCHRIFT BAULEITER',14,y);y+=5;
+try{doc.addImage(bt.unterschrift_bauleiter,'PNG',14,y,80,25);}catch(e){}
+y+=30;
+}
+if(bt.unterschrift_auftraggeber&&bt.unterschrift_auftraggeber.length>100){
+if(y>220){doc.addPage();y=20;}
+doc.setFont('helvetica','bold');doc.setTextColor(...blau);doc.setFontSize(9);
+doc.text('✍️ UNTERSCHRIFT AUFTRAGGEBER',14,y);y+=5;
+try{doc.addImage(bt.unterschrift_auftraggeber,'PNG',14,y,80,25);}catch(e){}
+y+=30;
+}
+doc.setFontSize(8);doc.setTextColor(...grau);
+doc.text(`Erstellt mit Alem Facility PRO | ${new Date().toLocaleDateString('de-DE')}`,14,285);
+doc.save(`Bautagesprotokoll_${bt.datum||'heute'}.pdf`);
+}
+
 sb.auth.getSession().then(({data:{session}})=>{if(session)sA(session.user);});
