@@ -132,5 +132,10 @@ doc.setFontSize(8);doc.setTextColor(...grau);
 doc.text(`Erstellt mit Alem Facility PRO | ${new Date().toLocaleDateString('de-DE')}`,14,285);
 doc.save(`Bautagesprotokoll_${bt.datum||'heute'}.pdf`);
 }
+async function loadAndExportBt(btId,projektName){
+const{data}=await sb.from('bautagebuch').select('*').eq('id',btId).single();
+if(data)exportBtPDF(data,projektName,settings.firma||'');
+}
+
 
 sb.auth.getSession().then(({data:{session}})=>{if(session)sA(session.user);});
