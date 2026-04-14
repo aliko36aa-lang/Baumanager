@@ -351,9 +351,15 @@ body {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   margin-bottom: 10px;
+  -webkit-overflow-scrolling: touch;
 }
+.tc table {
+  min-width: 480px;
+}
+
 .th {
   display: flex;
   align-items: center;
