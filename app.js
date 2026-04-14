@@ -14,8 +14,8 @@ async function dL(){const e=document.getElementById('le').value.trim(),p=documen
 async function dLo(){await sb.auth.signOut();location.reload();}
 async function sA(u){me=u;document.getElementById('ls').style.display='none';document.getElementById('app').style.display='block';document.getElementById('tb').style.display='flex';document.getElementById('ue').textContent=u.email;document.getElementById('ua').textContent=u.email[0].toUpperCase();loadSettings();await loadMitarbeiter();go('dash');}
 async function loadMitarbeiter(){try{const{data}=await sb.from('mitarbeiter').select('*').order('name');if(data)_mitarbeiter=data;}catch(e){_mitarbeiter=[];}}
-const titles={dash:'Dashboard',kunden:'Kunden',proj:'Projekte',termine:'Termine',angebote:'Angebote',mit:'Mitarbeiter',std:'Stunden',mat:'Material',rech:'Rechnungen',einst:'Einstellungen'};
-function go(p){document.querySelectorAll('.ni').forEach(el=>el.classList.toggle('active',el.dataset.p===p));document.getElementById('tt').textContent=titles[p]||p;cSB();({dash:pgDash,kunden:pgKunden,proj:pgProj,termine:pgTermine,angebote:pgAngebote,mit:pgMit,std:pgStd,mat:pgMat,rech:pgRech,einst:pgEinst})[p]?.();}
+const titles={dash:'Dashboard',leads:'Akquise',kunden:'Kunden',proj:'Projekte',termine:'Termine',angebote:'Angebote',mit:'Mitarbeiter',std:'Stunden',mat:'Material',rech:'Rechnungen',einst:'Einstellungen'};
+function go(p){document.querySelectorAll('.ni').forEach(el=>el.classList.toggle('active',el.dataset.p===p));document.getElementById('tt').textContent=titles[p]||p;cSB();({dash:pgDash,leads:pgLeads,kunden:pgKunden,proj:pgProj,termine:pgTermine,angebote:pgAngebote,mit:pgMit,std:pgStd,mat:pgMat,rech:pgRech,einst:pgEinst})[p]?.();}
 function tSB(){document.getElementById('sb').classList.toggle('open');document.getElementById('ov').classList.toggle('show');}
 function cSB(){document.getElementById('sb').classList.remove('open');document.getElementById('ov').classList.remove('show');}
 function sC(h){document.getElementById('ct').innerHTML=h;}
@@ -94,5 +94,188 @@ async function saveAbnahme(pid){const arb=document.getElementById('f-arb').value
 function exportAbnahmePDF(a){const{jsPDF}=window.jspdf;const doc=new jsPDF();const blau=[37,99,235];const grau=[107,114,128];const L=20,R=190,W=170;doc.setFillColor(249,250,251);doc.rect(0,0,210,297,'F');doc.setFillColor(255,255,255);doc.roundedRect(L-5,12,W+10,38,3,3,'F');doc.setDrawColor(229,231,235);doc.roundedRect(L-5,12,W+10,38,3,3,'S');doc.setTextColor(...blau);doc.setFontSize(20);doc.setFont('helvetica','bold');doc.text('ABNAHMEPROTOKOLL',L,28);doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(...grau);doc.text(a.auftragnehmer||'',L,36);doc.text(new Date().toLocaleDateString('de-DE'),R,24,'right');doc.text('Ort: '+(a.ort||'-'),R,31,'right');let y=64;doc.setFillColor(255,255,255);doc.roundedRect(L-5,y-6,W+10,22,3,3,'F');doc.setDrawColor(229,231,235);doc.roundedRect(L-5,y-6,W+10,22,3,3,'S');doc.setFontSize(8);doc.setFont('helvetica','bold');doc.setTextColor(...grau);doc.text('AUFTRAGNEHMER',L,y);doc.text('AUFTRAGGEBER',L+90,y);doc.setFont('helvetica','normal');doc.setTextColor(17,24,39);doc.setFontSize(11);doc.text(a.auftragnehmer||'-',L,y+9);doc.text(a.auftraggeber||'-',L+90,y+9);y+=30;const sections=[{title:'ERLEDIGTE ARBEITEN',value:a.arbeiten_erledigt},{title:'MAENGEL',value:a.maengel||'Keine Maengel festgestellt'},{title:'BEMERKUNGEN',value:a.bemerkungen}];sections.forEach(s=>{if(!s.value)return;if(y>255){doc.addPage();y=20;}doc.setDrawColor(229,231,235);doc.line(L,y,R,y);y+=6;doc.setFont('helvetica','bold');doc.setTextColor(...blau);doc.setFontSize(8);doc.text(s.title,L,y);y+=6;doc.setFont('helvetica','normal');doc.setTextColor(17,24,39);doc.setFontSize(10);const lines=doc.splitTextToSize(s.value,W);lines.forEach(l=>{if(y>270){doc.addPage();y=20;}doc.text(l,L,y);y+=6;});y+=4;});if(a.maengel_frist){doc.setDrawColor(229,231,235);doc.line(L,y,R,y);y+=6;doc.setFont('helvetica','bold');doc.setTextColor(...blau);doc.setFontSize(8);doc.text('FRIST ZUR MANGELBESEITIGUNG',L,y);y+=6;doc.setFont('helvetica','normal');doc.setTextColor(17,24,39);doc.setFontSize(10);doc.text(fmtDatum(a.maengel_frist),L,y);y+=12;}if(y>190){doc.addPage();y=20;}doc.setDrawColor(229,231,235);doc.line(L,y,R,y);y+=8;doc.setFont('helvetica','bold');doc.setTextColor(...blau);doc.setFontSize(8);doc.text('UNTERSCHRIFTEN',L,y);y+=8;const hasBl=a.unterschrift_auftragnehmer&&a.unterschrift_auftragnehmer.length>100;const hasAg=a.unterschrift_auftraggeber&&a.unterschrift_auftraggeber.length>100;if(hasBl){try{doc.addImage(a.unterschrift_auftragnehmer,'PNG',L,y,75,25);}catch(e){}}if(hasAg){try{doc.addImage(a.unterschrift_auftraggeber,'PNG',L+90,y,75,25);}catch(e){}}doc.setFontSize(8);doc.setTextColor(...grau);doc.text('Auftragnehmer',L+20,y+30);doc.text('Auftraggeber',L+110,y+30);doc.setDrawColor(229,231,235);doc.line(L,278,R,278);doc.setFontSize(7);doc.setTextColor(...grau);doc.text('Alem Facility PRO · '+new Date().toLocaleDateString('de-DE'),L,283);doc.save('Abnahmeprotokoll_'+heute()+'.pdf');}
 function exportBtPDF(bt,projektName,firmaName){const{jsPDF}=window.jspdf;const doc=new jsPDF();const blau=[37,99,235];const grau=[107,114,128];const L=20,R=190,W=170;doc.setFillColor(249,250,251);doc.rect(0,0,210,297,'F');doc.setFillColor(255,255,255);doc.roundedRect(L-5,12,W+10,38,3,3,'F');doc.setDrawColor(229,231,235);doc.roundedRect(L-5,12,W+10,38,3,3,'S');doc.setTextColor(...blau);doc.setFontSize(20);doc.setFont('helvetica','bold');doc.text('BAUTAGESPROTOKOLL',L,28);doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(...grau);doc.text(firmaName||'',L,36);doc.text('Projekt: '+(projektName||''),R,24,'right');doc.text('Datum: '+fmtDatum(bt.datum),R,31,'right');doc.text('Zeit: '+(bt.zeit_von||'-')+' - '+(bt.zeit_bis||'-')+' Uhr',R,38,'right');let y=64;const sections=[{title:'GEWERK / FIRMA',value:bt.gewerk},{title:'ANWESENDE MITARBEITER',value:bt.mitarbeiter},{title:'DURCHGEFUEHRTE TAETIGKEITEN',value:bt.beschreibung},{title:'VERWENDETES MATERIAL',value:bt.material_verwendet},{title:'LIEFERUNGEN',value:bt.lieferungen},{title:'MAENGEL / BESONDERHEITEN',value:bt.maengel}];sections.forEach(s=>{if(!s.value)return;if(y>255){doc.addPage();y=20;}doc.setDrawColor(229,231,235);doc.line(L,y,R,y);y+=6;doc.setFont('helvetica','bold');doc.setTextColor(...blau);doc.setFontSize(8);doc.text(s.title,L,y);y+=6;doc.setFont('helvetica','normal');doc.setTextColor(17,24,39);doc.setFontSize(10);const lines=doc.splitTextToSize(s.value,W);lines.forEach(l=>{if(y>270){doc.addPage();y=20;}doc.text(l,L,y);y+=6;});y+=4;});const hasBl=bt.unterschrift_bauleiter&&bt.unterschrift_bauleiter.length>100;const hasAg=bt.unterschrift_auftraggeber&&bt.unterschrift_auftraggeber.length>100;if(hasBl||hasAg){if(y>190){doc.addPage();y=20;}doc.setDrawColor(229,231,235);doc.line(L,y,R,y);y+=8;doc.setFont('helvetica','bold');doc.setTextColor(...blau);doc.setFontSize(8);doc.text('UNTERSCHRIFTEN',L,y);y+=8;if(hasBl&&hasAg){try{doc.addImage(bt.unterschrift_bauleiter,'PNG',L,y,75,25);}catch(e){}try{doc.addImage(bt.unterschrift_auftraggeber,'PNG',L+90,y,75,25);}catch(e){}doc.setFontSize(8);doc.setTextColor(...grau);doc.text('Bauleiter',L+25,y+30);doc.text('Auftraggeber',L+110,y+30);}else if(hasBl){try{doc.addImage(bt.unterschrift_bauleiter,'PNG',L,y,75,25);}catch(e){}doc.setFontSize(8);doc.setTextColor(...grau);doc.text('Bauleiter',L+25,y+30);}else if(hasAg){try{doc.addImage(bt.unterschrift_auftraggeber,'PNG',L,y,75,25);}catch(e){}doc.setFontSize(8);doc.setTextColor(...grau);doc.text('Auftraggeber',L+25,y+30);}}doc.setDrawColor(229,231,235);doc.line(L,278,R,278);doc.setFontSize(7);doc.setTextColor(...grau);doc.text('Alem Facility PRO · Erstellt von: '+(bt.erstellt_von||'-'),L,283);doc.save('Bautagesprotokoll_'+fmtDatum(bt.datum||heute())+'.pdf');}
 function pgEinst(){sC(`<div class="ph"><div><div class="pt">Einstellungen</div><div class="ps">Firma & App konfigurieren</div></div></div><div class="tc" style="margin-bottom:12px"><div class="th"><span class="th-t">Firmendaten</span></div><div style="padding:16px"><div class="fg"><label>FIRMENNAME</label><input id="s-firma" value="${settings.firma||''}" placeholder="Alem Facility GmbH"></div><div class="fg"><label>ADRESSE</label><input id="s-adr" value="${settings.adresse||''}" placeholder="Musterstr. 1, Berlin"></div><div class="fr"><div class="fg"><label>TELEFON</label><input id="s-tel" value="${settings.telefon||''}" placeholder="+49 ..."></div><div class="fg"><label>E-MAIL</label><input id="s-em" value="${settings.email||''}" placeholder="info@firma.de"></div></div></div></div><div class="tc" style="margin-bottom:12px"><div class="th"><span class="th-t">Rechnungseinstellungen</span></div><div style="padding:16px"><div class="fr"><div class="fg"><label>MWST (%)</label><input id="s-mwst" type="number" value="${settings.mwst||19}"></div><div class="fg"><label>ZAHLUNGSZIEL (TAGE)</label><input id="s-ziel" type="number" value="${settings.zahlungsziel||14}"></div></div><div class="fr"><div class="fg"><label>UST-ID</label><input id="s-ustid" value="${settings.ustid||''}" placeholder="DE123456789"></div><div class="fg"><label>STEUERNUMMER</label><input id="s-steuernr" value="${settings.steuernr||''}" placeholder="123/456/78901"></div></div><div class="fg"><label>IBAN</label><input id="s-iban" value="${settings.iban||''}" placeholder="DE89 3704 0044 0532 0130 00"></div><div class="fg"><label>BANK</label><input id="s-bank" value="${settings.bank||''}" placeholder="Deutsche Bank"></div></div></div><div class="tc" style="margin-bottom:16px"><div class="th"><span class="th-t">Konto</span></div><div style="padding:16px"><div class="fg"><label>E-MAIL</label><input value="${me?.email||''}" disabled style="background:var(--bg);color:var(--text-ter)"></div><div class="fg"><label>BENUTZER-ID</label><input value="${me?.id||''}" disabled style="background:var(--bg);color:var(--text-ter);font-size:11px;font-family:monospace"></div></div></div><button class="bp" style="width:100%;padding:13px;font-size:14px" onclick="saveSettings()">Einstellungen speichern</button>`);}
-async function loadAndExportBt(btId,projektName){const{data}=await sb.from('bautagebuch').select('*').eq('id',btId).single();if(data)exportBtPDF(data,projektName,settings.firma||'');}
+async function loadAndExportBt(btId,projektName){const{data}=await sb.from('bautagebuch').select('*').eq('id',btId).single();if(data)exportBtPDF(data,projektName,// ─── AKQUISE & LEADS ────────────────────────────────────────────
+
+const BEZIRKE = ['Mitte','Charlottenburg','Wilmersdorf','Spandau','Steglitz','Zehlendorf','Tempelhof','Schöneberg','Kreuzberg','Friedrichshain','Lichtenberg','Marzahn','Hellersdorf','Treptow','Köpenick','Neukölln','Reinickendorf','Pankow','Prenzlauer Berg','Weißensee'];
+
+const LEAD_STATUS = {
+  'neu':            {label:'Neu',              cls:'bd-b'},
+  'kontaktiert':    {label:'Kontaktiert',      cls:'bd-o'},
+  'termin':         {label:'Termin vereinbart',cls:'bd-o'},
+  'vor_ort':        {label:'Vor-Ort Besuch',   cls:'bd-o'},
+  'angebot':        {label:'Angebot gesendet', cls:'bd-b'},
+  'gewonnen':       {label:'Gewonnen ✓',       cls:'bd-g'},
+  'verloren':       {label:'Verloren',         cls:'bd-r'},
+  'kein_interesse': {label:'Kein Interesse',   cls:'bd-gr'}
+};
+
+async function pgLeads(){
+  ld();
+  try {
+    const [{data:leads},{data:aufgaben}] = await Promise.all([
+      sb.from('leads').select('*').order('created_at',{ascending:false}),
+      sb.from('aufgaben').select('*').eq('status','offen').order('faellig')
+    ]);
+    const heute_leads=(leads||[]).filter(l=>l.naechste_aktion_datum===heute());
+    const gewonnen=(leads||[]).filter(l=>l.status==='gewonnen').length;
+    const inPipeline=(leads||[]).filter(l=>!['gewonnen','verloren','kein_interesse'].includes(l.status)).length;
+    const conversion=(leads||[]).length>0?Math.round((gewonnen/(leads||[]).length)*100):0;
+    sC(`
+      <div class="ph">
+        <div><div class="pt">Akquise</div><div class="ps">${(leads||[]).length} Leads gesamt</div></div>
+        <button class="bp" onclick="mLead()">+ Neuer Lead</button>
+      </div>
+      <div class="sts">
+        <div class="st" onclick="filterLeads('alle')">
+          <div class="si">🎯</div><div class="sv">${(leads||[]).length}</div><div class="sl">Gesamt</div>
+        </div>
+        <div class="st" onclick="filterLeads('aktiv')">
+          <div class="si">🔄</div><div class="sv">${inPipeline}</div><div class="sl">In Pipeline</div>
+        </div>
+        <div class="st" onclick="filterLeads('gewonnen')">
+          <div class="si">✅</div><div class="sv" style="color:var(--green)">${gewonnen}</div><div class="sl">Gewonnen</div>
+        </div>
+        <div class="st">
+          <div class="si">📊</div><div class="sv">${conversion}%</div><div class="sl">Conversion</div>
+        </div>
+      </div>
+      ${heute_leads.length?`
+        <div class="sh">⚡ Heute fällig (${heute_leads.length})</div>
+        <div class="tc" style="margin-bottom:16px">
+          ${heute_leads.map(l=>`
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border-l);cursor:pointer" onclick="pgLeadDetail('${l.id}')">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0"></div>
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:700">${l.firma}</div>
+                <div style="font-size:12px;color:var(--text-sec)">${l.naechste_aktion||'Aktion fällig'}</div>
+              </div>
+              <span class="bd ${LEAD_STATUS[l.status]?.cls||'bd-b'}">${LEAD_STATUS[l.status]?.label||l.status}</span>
+            </div>
+          `).join('')}
+        </div>
+      `:''}
+      <div style="display:flex;gap:8px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px">
+        <button onclick="filterLeads('alle')" style="padding:6px 14px;background:var(--surface);border:1.5px solid var(--border);border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit;color:var(--text-sec)">Alle (${(leads||[]).length})</button>
+        ${Object.entries(LEAD_STATUS).map(([k,v])=>`
+          <button onclick="filterLeads('${k}')" style="padding:6px 14px;background:var(--surface);border:1.5px solid var(--border);border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit;color:var(--text-sec)">${v.label} (${(leads||[]).filter(l=>l.status===k).length})</button>
+        `).join('')}
+      </div>
+      <div id="leads-liste">
+        ${renderLeadsListe(leads||[])}
+      </div>
+    `);
+  } catch(e){
+    sC(`<div class="em"><div class="em-t">Fehler: ${e.message}</div></div>`);
+  }
+}
+
+function renderLeadsListe(leads){
+  if(!leads.length) return '<div class="em"><div class="em-i">🎯</div><div class="em-t">Noch keine Leads</div><div class="em-s">Füge deinen ersten potentiellen Kunden hinzu</div></div>';
+  return `<div class="gr">${leads.map(l=>`
+    <div class="ca" onclick="pgLeadDetail('${l.id}')">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+        <div>
+          <div class="ca-t">${l.firma}</div>
+          <div class="ca-s">${l.ansprechpartner||''} ${l.telefon?'· '+l.telefon:''}</div>
+        </div>
+        <span class="bd ${LEAD_STATUS[l.status]?.cls||'bd-b'}">${LEAD_STATUS[l.status]?.label||l.status}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
+        <span style="font-size:11px;color:var(--text-ter)">📍 ${l.bezirk||'-'}</span>
+        ${l.naechste_aktion_datum?`<span style="font-size:11px;color:${l.naechste_aktion_datum<heute()?'var(--red)':'var(--text-ter)'}">⏰ ${fmtDatum(l.naechste_aktion_datum)}</span>`:''}
+        ${l.zustaendig?`<span style="font-size:11px;color:var(--text-ter)">👤 ${l.zustaendig}</span>`:''}
+      </div>
+    </div>
+  `).join('')}</div>`;
+}
+
+async function filterLeads(filter){
+  const{data:leads}=await sb.from('leads').select('*').order('created_at',{ascending:false});
+  let filtered=leads||[];
+  if(filter==='aktiv') filtered=filtered.filter(l=>!['gewonnen','verloren','kein_interesse'].includes(l.status));
+  else if(filter==='gewonnen') filtered=filtered.filter(l=>l.status==='gewonnen');
+  else if(filter!=='alle') filtered=filtered.filter(l=>l.status===filter);
+  document.getElementById('leads-liste').innerHTML=renderLeadsListe(filtered);
+}
+
+function mLead(l={}){
+  const mitOpts=[{name:'Ich'},{name:'Mitarbeiter'},..._mitarbeiter].map(m=>`<option value="${m.name}"${l.zustaendig===m.name?' selected':''}>${m.name}</option>`).join('');
+  oM(`
+    ${modalHeader(l.id?'Lead bearbeiten':'Neuer Lead')}
+    <div style="background:var(--yellow-bg);border:1px solid var(--yellow);border-radius:10px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:var(--yellow);font-weight:600">
+      ⚖️ Nur B2B – Firmenkunden. Privatpersonen nicht eintragen (UWG).
+    </div>
+    <div class="fg"><label>FIRMENNAME *</label><input id="f-firma" value="${l.firma||''}" placeholder="Müller Immobilien GmbH"></div>
+    <div class="fr">
+      <div class="fg"><label>ANSPRECHPARTNER</label><input id="f-ap" value="${l.ansprechpartner||''}" placeholder="Hr. Müller"></div>
+      <div class="fg"><label>TELEFON</label><input id="f-tel" value="${l.telefon||''}" placeholder="+49 30 ..."></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label>E-MAIL</label><input id="f-em" value="${l.email||''}" placeholder="info@firma.de"></div>
+      <div class="fg"><label>BEZIRK</label><select id="f-bez">${BEZIRKE.map(b=>`<option value="${b}"${(l.bezirk||'Mitte')===b?' selected':''}>${b}</option>`).join('')}</select></div>
+    </div>
+    <div class="fg"><label>ADRESSE</label><input id="f-adr" value="${l.adresse||''}" placeholder="Musterstr. 1, Berlin"></div>
+    <div class="fr">
+      <div class="fg"><label>STATUS</label><select id="f-st">${Object.entries(LEAD_STATUS).map(([k,v])=>`<option value="${k}"${(l.status||'neu')===k?' selected':''}>${v.label}</option>`).join('')}</select></div>
+      <div class="fg"><label>ZUSTÄNDIG</label><select id="f-zu">${mitOpts}</select></div>
+    </div>
+    <div class="fg"><label>QUELLE</label><select id="f-qu">
+      <option value="Kaltakquise"${l.quelle==='Kaltakquise'?' selected':''}>Kaltakquise</option>
+      <option value="Empfehlung"${l.quelle==='Empfehlung'?' selected':''}>Empfehlung</option>
+      <option value="Google"${l.quelle==='Google'?' selected':''}>Google</option>
+      <option value="Messe"${l.quelle==='Messe'?' selected':''}>Messe</option>
+      <option value="Sonstiges"${l.quelle==='Sonstiges'?' selected':''}>Sonstiges</option>
+    </select></div>
+    <div class="fr">
+      <div class="fg"><label>NÄCHSTE AKTION</label><input id="f-na" value="${l.naechste_aktion||''}" placeholder="Anrufen / Termin / Angebot"></div>
+      <div class="fg"><label>FÄLLIG AM</label><input id="f-nad" type="date" value="${l.naechste_aktion_datum||''}"></div>
+    </div>
+    <div class="fg"><label>NOTIZ</label><textarea id="f-not" rows="3" placeholder="Gesprächsnotizen, Interesse, Besonderheiten...">${l.notiz||''}</textarea></div>
+    <div class="fg" style="background:var(--bg);border-radius:10px;padding:12px">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer">
+        <input type="checkbox" id="f-einw" ${l.einwilligung?'checked':''} style="width:18px;height:18px">
+        <span style="font-size:12px;font-weight:600;color:var(--text-sec)">Firma hat Kontaktaufnahme zugestimmt (DSGVO)</span>
+      </label>
+    </div>
+    <div class="ma">
+      ${l.id?`<button class="bc" style="color:var(--red);border-color:var(--red)" onclick="delLead('${l.id}')">Löschen</button>`:'<button class="bc" onclick="cM()">Abbrechen</button>'}
+      <button class="bs" onclick="saveLead('${l.id||''}')">Speichern</button>
+    </div>
+  `);
+}
+
+async function saveLead(id){
+  const firma=document.getElementById('f-firma').value.trim();
+  if(!firma){alert('Firmenname fehlt!');return;}
+  const einw=document.getElementById('f-einw').checked;
+  const o={
+    firma,
+    ansprechpartner:document.getElementById('f-ap').value,
+    telefon:document.getElementById('f-tel').value,
+    email:document.getElementById('f-em').value,
+    adresse:document.getElementById('f-adr').value,
+    bezirk:document.getElementById('f-bez').value,
+    status:document.getElementById('f-st').value,
+    zustaendig:document.getElementById('f-zu').value,
+    quelle:document.getElementById('f-qu').value,
+    naechste_aktion:document.getElementById('f-na').value,
+    naechste_aktion_datum:document.getElementById('f-nad').value||null,
+    notiz:document.getElementById('f-not').value,
+    einwilligung:einw,
+    einwilligung_datum:einw?heute():null,
+    user_id:me.id
+  };
+  const{error}=id?await sb.from('leads').update(o).eq('id',id):await sb.from('leads').insert(o);
+  if(error){alert('Fehler: '+error.message);return;}
+  cM();pgLeads();
+}
+
+async function delLead(id){
+  if(!confirm('Lead wirklich löschen?'))return;
+  await sb.from('leads').delete().eq('id',id);
+  cM();pgLeads();
+}
+
+
 sb.auth.getSession().then(({data:{session}})=>{if(session)sA(session.user);});
+
