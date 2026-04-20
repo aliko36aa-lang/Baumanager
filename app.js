@@ -50,18 +50,276 @@ const GEWERK_LEISTUNGEN={
 'Außenanlagen':[
 {name:'Rasenmähen',einheit:'m²',preis:0.8},{name:'Heckenschneiden',einheit:'lfm',preis:4},{name:'Herbstlaub entfernen',einheit:'Std',preis:28},{name:'Pflasterarbeiten',einheit:'m²',preis:45},{name:'Beete pflegen',einheit:'Std',preis:28},{name:'Bäume schneiden',einheit:'Std',preis:55},{name:'Unkraut entfernen',einheit:'m²',preis:3},{name:'Bewässerungsanlage',einheit:'Std',preis:65}]};
 async function schnellAngebot(step=1,data={}){
-if(step===1){const{data:ku}=await sb.from('kunden').select('id,name');oM(`${modalHeader('⚡ Schnellangebot')}<div style="font-size:12px;font-weight:700;color:var(--text-ter);margin-bottom:12px;letter-spacing:0.5px">SCHRITT 1 VON 4 · KUNDE</div><div class="fg"><label>KUNDE WÄHLEN</label><select id="sa-ku"><option value="">— Wählen —</option>${(ku||[]).map(k=>`<option value="${k.id}" data-n="${k.name}">${k.name}</option>`).join('')}</select></div><div style="text-align:center;margin:8px 0;font-size:12px;color:var(--text-ter)">— oder —</div><div class="fg"><label>NEUER KUNDE</label><input id="sa-ku-neu" placeholder="z.B. Müller GmbH"></div><div class="ma"><button class="bc" onclick="cM()">Abbrechen</button><button class="bs" onclick="saStep2()">Weiter →</button></div>`);
-}else if(step===2){const gewerke=Object.keys(GEWERK_LEISTUNGEN);oM(`${modalHeader('⚡ Schnellangebot')}<div style="font-size:12px;font-weight:700;color:var(--text-ter);margin-bottom:12px;letter-spacing:0.5px">SCHRITT 2 VON 4 · GEWERK</div><div style="background:var(--p-light);border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:13px;font-weight:600;color:var(--p)">Kunde: ${data.kundeName}</div><div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px">${gewerke.map(g=>`<button type="button" onclick="saWaehleGewerk('${g}')" style="padding:10px 16px;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;color:var(--text-sec)">${g}</button>`).join('')}</div><div class="ma"><button class="bc" onclick="schnellAngebot(1,window.saData)">← Zurück</button></div>`);window.saData=data;
-}else if(step===3){const leistungen=GEWERK_LEISTUNGEN[data.gewerk]||[];oM(`${modalHeader('⚡ Schnellangebot')}<div style="font-size:12px;font-weight:700;color:var(--text-ter);margin-bottom:12px;letter-spacing:0.5px">SCHRITT 3 VON 4 · LEISTUNGEN</div><div style="background:var(--p-light);border-radius:10px;padding:10px 14px;margin-bottom:14px"><div style="font-size:13px;font-weight:700;color:var(--p)">${data.gewerk}</div><div style="font-size:12px;color:var(--text-sec)">Kunde: ${data.kundeName}</div></div><div style="font-size:11px;font-weight:700;color:var(--text-ter);margin-bottom:8px">LEISTUNGEN WÄHLEN & MENGE EINGEBEN</div><div id="sa-leistungen" style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">${leistungen.map((l,i)=>`<div style="background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:12px;transition:all 0.15s" id="sal-${i}"><div style="display:flex;align-items:center;gap:10px;margin-bottom:0" onclick="saToggleLeistung(${i})"><div id="sal-cb-${i}" style="width:20px;height:20px;border-radius:6px;border:2px solid var(--border);background:transparent;flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer"></div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--text)">${l.name}</div><div style="font-size:11px;color:var(--text-ter)">${l.preis.toFixed(2).replace('.',',')} € / ${l.einheit}</div></div></div><div id="sal-inp-${i}" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border-l)"><div style="display:flex;align-items:center;gap:8px"><input type="number" step="0.5" placeholder="Menge" id="sal-menge-${i}" value="" oninput="saUpdateTotal()" style="flex:1;padding:8px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-weight:700"><span style="font-size:13px;font-weight:600;color:var(--text-sec);white-space:nowrap">${l.einheit}</span><span style="font-size:13px;font-weight:700;color:var(--p);white-space:nowrap" id="sal-sub-${i}">0,00 €</span></div></div></div>`).join('')}</div><div style="background:linear-gradient(135deg,var(--p),#1e40af);border-radius:12px;padding:14px;color:#fff;text-align:center;margin-bottom:16px"><div style="font-size:11px;opacity:0.7;margin-bottom:4px">GESAMTPREIS</div><div style="font-size:28px;font-weight:900" id="sa-total">0,00 €</div></div><div class="ma"><button class="bc" onclick="schnellAngebot(2,window.saData)">← Zurück</button><button class="bs" onclick="saStep4()">Weiter →</button></div>`);window.saData={...data,leistungenDefs:leistungen};
-}else if(step===4){const pos=window.saData.positionen||[];const gesamt=pos.reduce((s,p)=>s+p.gesamt,0);oM(`${modalHeader('⚡ Schnellangebot')}<div style="font-size:12px;font-weight:700;color:var(--text-ter);margin-bottom:12px;letter-spacing:0.5px">SCHRITT 4 VON 4 · BESTÄTIGEN</div><div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:16px"><div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:8px">${data.kundeName} · ${data.gewerk}</div>${pos.map(p=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border-l);font-size:12px"><span style="color:var(--text-sec)">${p.name} (${p.menge} ${p.einheit})</span><span style="font-weight:700;color:var(--text)">${fmtEur(p.gesamt)}</span></div>`).join('')}<div style="display:flex;justify-content:space-between;padding:10px 0;font-size:15px;font-weight:800"><span>Gesamt</span><span style="color:var(--p)">${fmtEur(gesamt)}</span></div></div><div class="fg"><label>ANGEBOTSNUMMER</label><input id="sa-nr" value="A-${new Date().getFullYear()}-${String(Math.floor(Math.random()*9000)+1000)}"></div><div class="fg"><label>GÜLTIG BIS</label><input id="sa-gueltig" type="date" value="${(()=>{const d=new Date();d.setDate(d.getDate()+30);return d.toISOString().split('T')[0];})()}"></div><div class="ma"><button class="bc" onclick="schnellAngebot(3,window.saData)">← Zurück</button><button class="bs" style="background:var(--green)" onclick="saErstellen()">✅ PDF erstellen & speichern</button></div>`);window.saData=data;}}
+if(step===1){
+  const{data:ku}=await sb.from('kunden').select('id,name');
+  oM(`${modalHeader('⚡ Schnellangebot')}
+<div style="font-size:12px;font-weight:700;color:var(--text-ter);margin-bottom:12px;letter-spacing:0.5px">SCHRITT 1 VON 4 · KUNDE</div>
+<div class="fg"><label>KUNDE WÄHLEN</label><select id="sa-ku"><option value="">— Wählen —</option>${(ku||[]).map(k=>`<option value="${k.id}" data-n="${k.name}">${k.name}</option>`).join('')}</select></div>
+<div style="text-align:center;margin:8px 0;font-size:12px;color:var(--text-ter)">— oder —</div>
+<div class="fg"><label>NEUER KUNDE</label><input id="sa-ku-neu" placeholder="z.B. Müller GmbH"></div>
+<div class="ma"><button class="bc" onclick="cM()">Abbrechen</button><button class="bs" onclick="saStep2()">Weiter →</button></div>`);
+
+}else if(step===2){
+  const gewerke=Object.keys(GEWERK_LEISTUNGEN);
+  const sel=window.saData.gewerkeSel||{};
+  oM(`${modalHeader('⚡ Schnellangebot')}
+<div style="font-size:12px;font-weight:700;color:var(--text-ter);margin-bottom:8px;letter-spacing:0.5px">SCHRITT 2 VON 4 · GEWERKE WÄHLEN</div>
+<div style="background:var(--p-light);border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:13px;font-weight:600;color:var(--p)">Kunde: ${data.kundeName}</div>
+<div style="font-size:11px;color:var(--text-ter);margin-bottom:10px">Mehrere Gewerke möglich</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px" id="sa-gewerk-wrap">
+${gewerke.map(g=>{const aktiv=!!sel[g];return`<button type="button" id="sg-${g.replace(/[^a-z]/gi,'')}" onclick="saToggleGewerk('${g}')" style="padding:10px 16px;background:${aktiv?'var(--p)':'var(--surface)'};border:1.5px solid ${aktiv?'var(--p)':'var(--border)'};border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;color:${aktiv?'#fff':'var(--text-sec)'}">${aktiv?'✓ ':''} ${g}</button>`;}).join('')}
+</div>
+<div class="ma"><button class="bc" onclick="schnellAngebot(1,window.saData)">← Zurück</button><button class="bs" onclick="saStep3()">Weiter →</button></div>`);
+  window.saData={...data,gewerkeSel:sel};
+
+}else if(step===3){
+  const sel=window.saData.gewerkeSel||{};
+  const gewerkeAktiv=Object.keys(sel).filter(g=>sel[g]);
+  if(!gewerkeAktiv.length){alert('Bitte mindestens ein Gewerk wählen!');schnellAngebot(2,window.saData);return;}
+  let html=`${modalHeader('⚡ Schnellangebot')}
+<div style="font-size:12px;font-weight:700;color:var(--text-ter);margin-bottom:12px;letter-spacing:0.5px">SCHRITT 3 VON 4 · LEISTUNGEN & MENGEN</div>`;
+  gewerkeAktiv.forEach(gName=>{
+    const leistungen=GEWERK_LEISTUNGEN[gName]||[];
+    const gKey=gName.replace(/[^a-z]/gi,'');
+    html+=`<div style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;margin-bottom:12px;overflow:hidden">
+<div style="background:var(--p-light);padding:10px 14px;font-size:13px;font-weight:700;color:var(--p)">${gName}</div>
+<div style="padding:10px;display:flex;flex-direction:column;gap:6px">
+${leistungen.map((l,i)=>`<div style="background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:10px" id="scl-${gKey}-${i}">
+<div style="display:flex;align-items:center;gap:8px" onclick="saToggleLeistung('${gKey}',${i})">
+<div id="scb-${gKey}-${i}" style="width:20px;height:20px;border-radius:5px;border:2px solid var(--border);background:transparent;flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer"></div>
+<div style="flex:1"><div style="font-size:12px;font-weight:600;color:var(--text)">${l.name}</div><div style="font-size:11px;color:var(--text-ter)">${l.preis.toFixed(2).replace('.',',')} € / ${l.einheit}</div></div>
+</div>
+<div id="sm-${gKey}-${i}" style="display:none;margin-top:8px;display:none">
+<div style="display:flex;align-items:center;gap:6px">
+<input type="number" step="0.5" placeholder="Menge" id="smv-${gKey}-${i}" oninput="saUpdateTotal()" style="flex:1;padding:7px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-weight:700">
+<span style="font-size:12px;color:var(--text-sec)">${l.einheit}</span>
+<span style="font-size:12px;font-weight:700;color:var(--p)" id="ssub-${gKey}-${i}">0,00 €</span>
+</div></div></div>`).join('')}
+</div></div>`;
+  });
+  html+=`<div style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;margin-bottom:12px;overflow:hidden">
+<div style="background:var(--p-light);padding:10px 14px;font-size:13px;font-weight:700;color:var(--p)">✏️ Freie Positionen</div>
+<div style="padding:10px"><div id="sa-frei-wrap"></div>
+<button type="button" onclick="saAddFreiPos()" style="width:100%;padding:8px;background:var(--bg);border:1.5px dashed var(--border);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;color:var(--text-sec);margin-top:6px">+ Position hinzufügen</button></div></div>
+<div style="background:linear-gradient(135deg,var(--p),#1e40af);border-radius:12px;padding:14px;color:#fff;text-align:center;margin-bottom:16px">
+<div style="font-size:11px;opacity:0.7;margin-bottom:4px">GESAMTPREIS</div>
+<div style="font-size:28px;font-weight:900" id="sa-total">0,00 €</div></div>
+<div class="ma"><button class="bc" onclick="schnellAngebot(2,window.saData)">← Zurück</button><button class="bs" onclick="saKonfirmieren()">Weiter →</button></div>`;
+  oM(html);
+  window.saData={...data,gewerkeAktiv,leistungenDefs:{}};
+  gewerkeAktiv.forEach(g=>window.saData.leistungenDefs[g]=GEWERK_LEISTUNGEN[g]||[]);
+  window.saData.freiPositionen=[];
+
+}else if(step===4){
+  const pos=window.saData.allePositionen||[];
+  const gesamt=pos.reduce((s,p)=>s+p.gesamt,0);
+  let posHtml='';
+  let aktGewerk='';
+  pos.forEach(p=>{
+    if(p.gewerk!==aktGewerk){
+      if(aktGewerk)posHtml+=`</div>`;
+      posHtml+=`<div style="font-size:11px;font-weight:700;color:var(--p);margin:10px 0 4px">${p.gewerk||'Freie Position'}</div><div>`;
+      aktGewerk=p.gewerk;
+    }
+    posHtml+=`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border-l);font-size:12px"><span style="color:var(--text-sec)">${p.name}${p.menge?' ('+p.menge+' '+p.einheit+')':''}</span><span style="font-weight:700">${fmtEur(p.gesamt)}</span></div>`;
+  });
+  if(aktGewerk)posHtml+=`</div>`;
+  oM(`${modalHeader('⚡ Schnellangebot')}
+<div style="font-size:12px;font-weight:700;color:var(--text-ter);margin-bottom:12px;letter-spacing:0.5px">SCHRITT 4 VON 4 · BESTÄTIGEN</div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:16px;max-height:300px;overflow-y:auto">
+<div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:8px">${data.kundeName}</div>
+${posHtml}
+<div style="display:flex;justify-content:space-between;padding:10px 0;font-size:15px;font-weight:800"><span>Gesamt</span><span style="color:var(--p)">${fmtEur(gesamt)}</span></div></div>
+<div class="fg"><label>ANGEBOTSNUMMER</label><input id="sa-nr" value="A-${new Date().getFullYear()}-${String(Math.floor(Math.random()*9000)+1000)}"></div>
+<div class="fg"><label>GÜLTIG BIS</label><input id="sa-gueltig" type="date" value="${(()=>{const d=new Date();d.setDate(d.getDate()+30);return d.toISOString().split('T')[0];})()}"></div>
+<div class="ma"><button class="bc" onclick="schnellAngebot(3,window.saData)">← Zurück</button><button class="bs" style="background:var(--green)" onclick="saErstellen()">✅ PDF erstellen & speichern</button></div>`);
+  window.saData=data;
+}}
+
 window.saData={};
-async function saStep2(){const s=document.getElementById('sa-ku');const neu=document.getElementById('sa-ku-neu').value.trim();let kundeId=s.value,kundeName=neu||s.options[s.selectedIndex]?.dataset?.n||'';if(!kundeId&&neu){const{data:k}=await sb.from('kunden').insert({name:neu,user_id:me.id}).select().single();kundeId=k?.id;kundeName=neu;}if(!kundeName){alert('Bitte Kunde wählen oder eingeben!');return;}window.saData={kundeId,kundeName};schnellAngebot(2,window.saData);}
-function saWaehleGewerk(name){window.saData={...window.saData,gewerk:name};schnellAngebot(3,window.saData);}
-function saToggleLeistung(i){const cb=document.getElementById(`sal-cb-${i}`);const inp=document.getElementById(`sal-inp-${i}`);const box=document.getElementById(`sal-${i}`);const aktiv=cb.dataset.aktiv==='1';cb.dataset.aktiv=aktiv?'0':'1';cb.style.background=aktiv?'transparent':'var(--p)';cb.style.borderColor=aktiv?'var(--border)':'var(--p)';cb.innerHTML=aktiv?'':'<span style="color:#fff;font-size:12px">✓</span>';inp.style.display=aktiv?'none':'block';box.style.borderColor=aktiv?'var(--border)':'var(--p)';if(!aktiv)document.getElementById(`sal-menge-${i}`).focus();saUpdateTotal();}
-function saUpdateTotal(){const leistungen=window.saData.leistungenDefs||[];let total=0;leistungen.forEach((l,i)=>{const cb=document.getElementById(`sal-cb-${i}`);if(cb?.dataset?.aktiv==='1'){const menge=parseFloat(document.getElementById(`sal-menge-${i}`)?.value)||0;const sub=menge*l.preis;total+=sub;const subEl=document.getElementById(`sal-sub-${i}`);if(subEl)subEl.textContent=fmtEur(sub);}});const el=document.getElementById('sa-total');if(el)el.textContent=fmtEur(total);}
-function saStep4(){const leistungen=window.saData.leistungenDefs||[];const positionen=[];leistungen.forEach((l,i)=>{const cb=document.getElementById(`sal-cb-${i}`);if(cb?.dataset?.aktiv==='1'){const menge=parseFloat(document.getElementById(`sal-menge-${i}`)?.value)||0;if(menge>0)positionen.push({name:l.name,menge,einheit:l.einheit,einzelpreis:l.preis,gesamt:menge*l.preis});}});if(!positionen.length){alert('Bitte mindestens eine Leistung mit Menge auswählen!');return;}window.saData={...window.saData,positionen};schnellAngebot(4,window.saData);}
-async function saErstellen(){const d=window.saData;const nr=document.getElementById('sa-nr').value;const gueltig=document.getElementById('sa-gueltig').value;const gesamt=d.positionen.reduce((s,p)=>s+p.gesamt,0);const pos=d.positionen.map(p=>({name:`${p.name} (${p.menge} ${p.einheit})`,preis:p.gesamt}));const{error}=await sb.from('angebote').insert({nummer:nr,titel:d.gewerk+' – '+d.kundeName,kunde:d.kundeName,datum:heute(),positionen:JSON.stringify(pos),gesamt,status:'offen',user_id:me.id});if(error){alert('Fehler: '+error.message);return;}cM();saExportPDF(nr,d,gesamt,gueltig);}
-function saExportPDF(nr,d,gesamt,gueltig){const{jsPDF}=window.jspdf;const doc=new jsPDF();const blau=[37,99,235];const grau=[107,114,128];const L=20,R=190,W=170;doc.setFillColor(249,250,251);doc.rect(0,0,210,297,'F');doc.setFillColor(255,255,255);doc.roundedRect(L-5,12,W+10,42,3,3,'F');doc.setDrawColor(229,231,235);doc.roundedRect(L-5,12,W+10,42,3,3,'S');doc.setTextColor(...blau);doc.setFontSize(22);doc.setFont('helvetica','bold');doc.text('ANGEBOT',L,28);doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(...grau);doc.text(nr,L,36);doc.text('Datum: '+fmtDatum(heute()),L,43);doc.text(settings.firma||'Alem Facility & Ausbau Service',R,22,'right');doc.text(settings.adresse||'Siemensstr. 30, 12247 Berlin',R,29,'right');if(settings.telefon)doc.text(settings.telefon,R,36,'right');if(settings.email)doc.text(settings.email,R,43,'right');let y=66;doc.setFillColor(239,246,255);doc.roundedRect(L-5,y-6,W+10,20,3,3,'F');doc.setFontSize(8);doc.setFont('helvetica','bold');doc.setTextColor(...grau);doc.text('AUFTRAGGEBER',L,y);doc.setFont('helvetica','normal');doc.setTextColor(17,24,39);doc.setFontSize(13);doc.text(d.kundeName,L,y+10);y+=28;doc.setFontSize(12);doc.setFont('helvetica','bold');doc.setTextColor(17,24,39);doc.text(d.gewerk,L,y);y+=10;doc.setDrawColor(229,231,235);doc.line(L,y,R,y);y+=6;doc.setFontSize(8);doc.setFont('helvetica','bold');doc.setTextColor(...grau);doc.text('LEISTUNG',L,y);doc.text('MENGE',L+85,y);doc.text('EP (€)',L+120,y);doc.text('GESAMT',R,y,'right');y+=2;doc.setDrawColor(37,99,235);doc.line(L,y,R,y);y+=6;let alternating=false;d.positionen.forEach(p=>{if(y>260){doc.addPage();doc.setFillColor(249,250,251);doc.rect(0,0,210,297,'F');y=20;}if(alternating){doc.setFillColor(248,250,252);doc.rect(L-5,y-4,W+10,10,'F');}alternating=!alternating;doc.setFont('helvetica','normal');doc.setTextColor(17,24,39);doc.setFontSize(9);doc.text(p.name,L,y);doc.text(String(p.menge)+' '+p.einheit,L+85,y);doc.text(fmtEur(p.einzelpreis),L+120,y);doc.text(fmtEur(p.gesamt),R,y,'right');y+=10;});doc.setDrawColor(229,231,235);doc.line(L,y,R,y);y+=8;doc.setFont('helvetica','bold');doc.setTextColor(17,24,39);doc.setFontSize(13);doc.text('Gesamtbetrag',L,y);doc.text(fmtEur(gesamt),R,y,'right');y+=6;doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(...grau);const mwst=settings.mwst||19;const netto=gesamt/(1+(mwst/100));doc.text('zzgl. '+mwst+'% MwSt: '+fmtEur(gesamt-netto),L,y);y+=16;if(gueltig){doc.setFillColor(254,252,232);doc.roundedRect(L-5,y-6,W+10,14,3,3,'F');doc.setFontSize(9);doc.setFont('helvetica','bold');doc.setTextColor(180,83,9);doc.text('Angebot gültig bis: '+fmtDatum(gueltig),L,y+2);}y+=20;if(settings.iban){doc.setFillColor(239,246,255);doc.roundedRect(L-5,y-6,W+10,28,3,3,'F');doc.setFontSize(8);doc.setFont('helvetica','bold');doc.setTextColor(...blau);doc.text('BANKVERBINDUNG',L,y);y+=6;doc.setFont('helvetica','normal');doc.setTextColor(17,24,39);doc.setFontSize(9);doc.text('IBAN: '+settings.iban,L,y);if(settings.bank){y+=5;doc.text('Bank: '+settings.bank,L,y);}y+=5;doc.text('Zahlungsziel: '+(settings.zahlungsziel||14)+' Tage nach Rechnungseingang',L,y);}doc.setDrawColor(229,231,235);doc.line(L,278,R,278);doc.setFontSize(7);doc.setTextColor(...grau);doc.text(settings.firma||'Alem Facility & Ausbau Service',L,283);if(settings.ustid)doc.text('USt-ID: '+settings.ustid,R,283,'right');doc.save('Angebot_'+nr+'_'+d.kundeName+'.pdf');alert('✅ PDF gespeichert! Direkt per WhatsApp oder E-Mail teilen.');}
+
+async function saStep2(){
+  const s=document.getElementById('sa-ku');
+  const neu=document.getElementById('sa-ku-neu').value.trim();
+  let kundeId=s.value,kundeName=neu||s.options[s.selectedIndex]?.dataset?.n||'';
+  if(!kundeId&&neu){const{data:k}=await sb.from('kunden').insert({name:neu,user_id:me.id}).select().single();kundeId=k?.id;kundeName=neu;}
+  if(!kundeName){alert('Bitte Kunde wählen oder eingeben!');return;}
+  window.saData={kundeId,kundeName,gewerkeSel:{}};
+  schnellAngebot(2,window.saData);
+}
+
+function saToggleGewerk(name){
+  const sel=window.saData.gewerkeSel||{};
+  sel[name]=!sel[name];
+  window.saData.gewerkeSel=sel;
+  const btn=document.getElementById('sg-'+name.replace(/[^a-z]/gi,''));
+  if(!btn)return;
+  const aktiv=sel[name];
+  btn.style.background=aktiv?'var(--p)':'var(--surface)';
+  btn.style.borderColor=aktiv?'var(--p)':'var(--border)';
+  btn.style.color=aktiv?'#fff':'var(--text-sec)';
+  btn.textContent=(aktiv?'✓ ':'')+name;
+}
+
+function saStep3(){
+  const sel=window.saData.gewerkeSel||{};
+  if(!Object.values(sel).some(v=>v)){alert('Bitte mindestens ein Gewerk wählen!');return;}
+  schnellAngebot(3,window.saData);
+}
+
+function saToggleLeistung(gKey,i){
+  const cb=document.getElementById(`scb-${gKey}-${i}`);
+  const inp=document.getElementById(`sm-${gKey}-${i}`);
+  const box=document.getElementById(`scl-${gKey}-${i}`);
+  const aktiv=cb.dataset.aktiv==='1';
+  cb.dataset.aktiv=aktiv?'0':'1';
+  cb.style.background=aktiv?'transparent':'var(--p)';
+  cb.style.borderColor=aktiv?'var(--border)':'var(--p)';
+  cb.innerHTML=aktiv?'':'<span style="color:#fff;font-size:12px">✓</span>';
+  inp.style.display=aktiv?'none':'block';
+  box.style.borderColor=aktiv?'var(--border)':'var(--p)';
+  if(!aktiv)document.getElementById(`smv-${gKey}-${i}`)?.focus();
+  saUpdateTotal();
+}
+
+function saUpdateTotal(){
+  let total=0;
+  const defs=window.saData.leistungenDefs||{};
+  Object.keys(defs).forEach(gName=>{
+    const gKey=gName.replace(/[^a-z]/gi,'');
+    (defs[gName]||[]).forEach((l,i)=>{
+      const cb=document.getElementById(`scb-${gKey}-${i}`);
+      if(cb?.dataset?.aktiv==='1'){
+        const menge=parseFloat(document.getElementById(`smv-${gKey}-${i}`)?.value)||0;
+        const sub=menge*l.preis;
+        total+=sub;
+        const subEl=document.getElementById(`ssub-${gKey}-${i}`);
+        if(subEl)subEl.textContent=fmtEur(sub);
+      }
+    });
+  });
+  (window.saData.freiPositionen||[]).forEach(fp=>{
+    total+=parseFloat(fp.preis)||0;
+  });
+  const el=document.getElementById('sa-total');
+  if(el)el.textContent=fmtEur(total);
+}
+
+let _freiId=0;
+function saAddFreiPos(){
+  const id=++_freiId;
+  window.saData.freiPositionen=window.saData.freiPositionen||[];
+  window.saData.freiPositionen.push({id,name:'',preis:0,einheit:'pauschal'});
+  const wrap=document.getElementById('sa-frei-wrap');
+  if(!wrap)return;
+  const div=document.createElement('div');
+  div.id=`sfp-${id}`;
+  div.style.cssText='display:flex;gap:6px;align-items:center;margin-bottom:6px;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px';
+  div.innerHTML=`<input placeholder="Beschreibung" style="flex:2;padding:6px;border:1px solid var(--border);border-radius:6px;font-size:12px" oninput="saUpdateFreiPos(${id},'name',this.value)">
+<input type="number" placeholder="Preis €" style="flex:1;padding:6px;border:1px solid var(--border);border-radius:6px;font-size:12px" oninput="saUpdateFreiPos(${id},'preis',this.value);saUpdateTotal()">
+<button onclick="saRemoveFreiPos(${id})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:16px;padding:0 4px">🗑️</button>`;
+  wrap.appendChild(div);
+}
+
+function saUpdateFreiPos(id,field,val){
+  const fp=window.saData.freiPositionen?.find(p=>p.id===id);
+  if(fp)fp[field]=field==='preis'?parseFloat(val)||0:val;
+}
+
+function saRemoveFreiPos(id){
+  window.saData.freiPositionen=(window.saData.freiPositionen||[]).filter(p=>p.id!==id);
+  document.getElementById(`sfp-${id}`)?.remove();
+  saUpdateTotal();
+}
+
+function saKonfirmieren(){
+  const defs=window.saData.leistungenDefs||{};
+  const allePositionen=[];
+  Object.keys(defs).forEach(gName=>{
+    const gKey=gName.replace(/[^a-z]/gi,'');
+    (defs[gName]||[]).forEach((l,i)=>{
+      const cb=document.getElementById(`scb-${gKey}-${i}`);
+      if(cb?.dataset?.aktiv==='1'){
+        const menge=parseFloat(document.getElementById(`smv-${gKey}-${i}`)?.value)||0;
+        if(menge>0)allePositionen.push({gewerk:gName,name:l.name,menge,einheit:l.einheit,einzelpreis:l.preis,gesamt:menge*l.preis});
+      }
+    });
+  });
+  (window.saData.freiPositionen||[]).forEach(fp=>{
+    if(fp.name&&fp.preis>0)allePositionen.push({gewerk:'Freie Positionen',name:fp.name,menge:null,einheit:fp.einheit,einzelpreis:fp.preis,gesamt:fp.preis});
+  });
+  if(!allePositionen.length){alert('Bitte mindestens eine Leistung mit Menge auswählen!');return;}
+  window.saData={...window.saData,allePositionen};
+  schnellAngebot(4,window.saData);
+}
+
+async function saErstellen(){
+  const d=window.saData;
+  const nr=document.getElementById('sa-nr').value;
+  const gueltig=document.getElementById('sa-gueltig').value;
+  const gesamt=d.allePositionen.reduce((s,p)=>s+p.gesamt,0);
+  const pos=d.allePositionen.map(p=>({name:`[${p.gewerk}] ${p.name}${p.menge?' ('+p.menge+' '+p.einheit+')':''}`,preis:p.gesamt}));
+  const titel=d.gewerkeAktiv?.join(', ')||'Angebot';
+  const{error}=await sb.from('angebote').insert({nummer:nr,titel:titel+' – '+d.kundeName,kunde:d.kundeName,datum:heute(),positionen:JSON.stringify(pos),gesamt,status:'offen',user_id:me.id});
+  if(error){alert('Fehler: '+error.message);return;}
+  cM();
+  saExportPDF(nr,d,gesamt,gueltig);
+}
+
+function saExportPDF(nr,d,gesamt,gueltig){
+  const{jsPDF}=window.jspdf;
+  const doc=new jsPDF();
+  const blau=[37,99,235];const grau=[107,114,128];const L=20,R=190,W=170;
+  doc.setFillColor(249,250,251);doc.rect(0,0,210,297,'F');
+  doc.setFillColor(255,255,255);doc.roundedRect(L-5,12,W+10,42,3,3,'F');
+  doc.setDrawColor(229,231,235);doc.roundedRect(L-5,12,W+10,42,3,3,'S');
+  doc.setTextColor(...blau);doc.setFontSize(22);doc.setFont('helvetica','bold');doc.text('ANGEBOT',L,28);
+  doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(...grau);
+  doc.text(nr,L,36);doc.text('Datum: '+fmtDatum(heute()),L,43);
+  doc.text(settings.firma||'Alem Facility & Ausbau Service',R,22,'right');
+  doc.text(settings.adresse||'Siemensstr. 30, 12247 Berlin',R,29,'right');
+  if(settings.telefon)doc.text(settings.telefon,R,36,'right');
+  if(settings.email)doc.text(settings.email,R,43,'right');
+  let y=66;
+  doc.setFillColor(239,246,255);doc.roundedRect(L-5,y-6,W+10,20,3,3,'F');
+  doc.setFontSize(8);doc.setFont('helvetica','bold');doc.setTextColor(...grau);doc.text('AUFTRAGGEBER',L,y);
+  doc.setFont('helvetica','normal');doc.setTextColor(17,24,39);doc.setFontSize(13);doc.text(d.kundeName,L,y+10);
+  y+=28;
+  // Positionen gruppiert nach Gewerk
+  let aktGewerk='';
+  d.allePositionen.forEach(p=>{
+    if(y>260){doc.addPage();doc.setFillColor(249,250,251);doc.rect(0,0,210,297,'F');y=20;}
+    if(p.gewerk!==aktGewerk){
+      aktGewerk=p.gewerk;
+      doc.setFontSize(10);doc.setFont('helvetica','bold');doc.setTextColor(...blau);
+      doc.text(aktGewerk,L,y);y+=4;
+      doc.setDrawColor(...blau);doc.line(L,y,R,y);y+=6;
+      doc.setFontSize(8);doc.setFont('helvetica','bold');doc.setTextColor(...grau);
+      doc.text('LEISTUNG',L,y);doc.text('MENGE',L+90,y);doc.text('EP (€)',L+125,y);doc.text('GESAMT',R,y,'right');
+      y+=5;
+    }
+    doc.setFont('helvetica','normal');doc.setTextColor(17,24,39);doc.setFontSize(9);
+    doc.text(p.name,L,y);
+    if(p.menge){doc.text(String(p.menge)+' '+p.einheit,L+90,y);doc.text(fmtEur(p.einzelpreis),L+125,y);}
+    doc.text(fmtEur(p.gesamt),R,y,'right');
+    y+=8;
+  });
+  doc.setDrawColor(229,231,235);doc.line(L,y,R,y);y+=8;
+  doc.setFont('helvetica','bold');doc.setTextColor(17,24,39);doc.setFontSize(13);
+  doc.text('Gesamtbetrag',L,y);doc.text(fmtEur(gesamt),R,y,'right');
+  y+=6;doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(...grau);
+  const mwst=settings.mwst||19;const netto=gesamt/(1+(mwst/100));
+  doc.text('zzgl. '+mwst+'% MwSt: '+fmtEur(gesamt-netto),L,y);
+  y+=16;
+  if(gueltig){doc.setFillColor(254,252,232);doc.roundedRect(L-5,y-6,W+10,14,3,3,'F');doc.setFontSize(9);doc.setFont('helvetica','bold');doc.setTextColor(180,83,9);doc.text('Angebot gültig bis: '+fmtDatum(gueltig),L,y+2);}
+  y+=20;
+  if(settings.iban){doc.setFillColor(239,246,255);doc.roundedRect(L-5,y-6,W+10,28,3,3,'F');doc.setFontSize(8);doc.setFont('helvetica','bold');doc.setTextColor(...blau);doc.text('BANKVERBINDUNG',L,y);y+=6;doc.setFont('helvetica','normal');doc.setTextColor(17,24,39);doc.setFontSize(9);doc.text('IBAN: '+settings.iban,L,y);if(settings.bank){y+=5;doc.text('Bank: '+settings.bank,L,y);}y+=5;doc.text('Zahlungsziel: '+(settings.zahlungsziel||14)+' Tage nach Rechnungseingang',L,y);}
+  doc.setDrawColor(229,231,235);doc.line(L,278,R,278);doc.setFontSize(7);doc.setTextColor(...grau);
+  doc.text(settings.firma||'Alem Facility & Ausbau Service',L,283);
+  if(settings.ustid)doc.text('USt-ID: '+settings.ustid,R,283,'right');
+  doc.save('Angebot_'+nr+'_'+d.kundeName+'.pdf');
+  alert('✅ PDF gespeichert! Direkt per WhatsApp oder E-Mail teilen.');
+}
 async function pgDash(){ld();try{const[r1,r2,r3,r4]=await Promise.all([sb.from('projekte').select('*'),sb.from('kunden').select('*'),sb.from('termine').select('*'),sb.from('rechnungen').select('betrag,status')]);const proj=r1.data||[],ku=r2.data||[],t=r3.data||[],r=r4.data||[];const offen=r.filter(x=>x.status==='offen').reduce((s,x)=>s+(parseFloat(x.betrag)||0),0);const bezahlt=r.filter(x=>x.status==='bezahlt').reduce((s,x)=>s+(parseFloat(x.betrag)||0),0);const hT=t.filter(x=>x.datum===heute());const wochentage=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];const monate=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];const now=new Date();const datumStr=`${wochentage[now.getDay()]}, ${now.getDate()}. ${monate[now.getMonth()]} ${now.getFullYear()}`;sC(`<div style="margin-bottom:24px"><div style="font-size:12px;font-weight:500;color:var(--text-ter);margin-bottom:4px">${datumStr}</div><div style="font-size:24px;font-weight:800;color:var(--text);letter-spacing:-0.5px">Guten Tag</div></div><div class="sts"><div class="st" onclick="go('rech')" style="cursor:pointer"><div class="si">💶</div><div class="sv">${fmtEur(offen)}</div><div class="sl">Ausstehend</div></div><div class="st" onclick="go('rech')" style="cursor:pointer"><div class="si">✅</div><div class="sv" style="color:var(--green)">${fmtEur(bezahlt)}</div><div class="sl">Bezahlt</div></div><div class="st" onclick="go('proj')" style="cursor:pointer"><div class="si">🏗️</div><div class="sv">${proj.filter(p=>p.status==='Aktiv'||!p.status).length}</div><div class="sl">Aktive Projekte</div></div><div class="st" onclick="go('termine')" style="cursor:pointer"><div class="si">📅</div><div class="sv">${hT.length}</div><div class="sl">Heute Termine</div></div></div><div class="section-hdr"><span class="section-hdr-title">Schnellzugriff</span></div><div style="margin-bottom:16px"><button class="bp" style="width:100%;padding:16px;font-size:15px;border-radius:14px;background:linear-gradient(135deg,var(--p),#1e40af)" onclick="schnellAngebot(1)">⚡ Schnellangebot erstellen</button></div><div class="quick-actions"><button class="quick-btn" onclick="go('leads')"><div class="quick-btn-icon">🎯</div><div class="quick-btn-label">Akquise</div></button><button class="quick-btn" onclick="go('rech')"><div class="quick-btn-icon">💶</div><div class="quick-btn-label">Rechnung erstellen</div></button><button class="quick-btn" onclick="go('angebote')"><div class="quick-btn-icon">📄</div><div class="quick-btn-label">Angebot erstellen</div></button></div>${hT.length?`<div class="section-hdr"><span class="section-hdr-title">Heute</span></div><div class="tc" style="margin-bottom:16px">${hT.map(t=>`<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border-l)"><div style="width:6px;height:6px;border-radius:50%;background:var(--p);flex-shrink:0"></div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text)">${t.titel||'-'}</div></div><div style="font-size:12px;color:var(--text-ter)">${t.uhrzeit||''}</div></div>`).join('')}</div>`:''}<div class="section-hdr"><span class="section-hdr-title">Aktive Projekte</span><button class="section-hdr-link" onclick="go('proj')">Alle anzeigen</button></div>${!proj.length?'<div class="em"><div class="em-t">Noch keine Projekte</div></div>':`<div class="gr">${proj.filter(p=>p.status==='Aktiv'||!p.status).slice(0,4).map(p=>`<div class="ca" onclick="pgProjDetail('${p.id}')"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="ca-t">${p.name||'-'}</div><div class="ca-s">${p.adresse||p.kunde||'-'}</div></div><span class="bd bd-b">${p.status||'Aktiv'}</span></div></div>`).join('')}</div>`}`);}catch(e){sC(`<div class="em"><div class="em-t">Fehler: ${e.message}</div></div>`);}}
 async function pgKunden(){ld();try{const{data}=await sb.from('kunden').select('*').order('created_at',{ascending:false});sC(`<div class="ph"><div><div class="pt">Kunden</div><div class="ps">${(data||[]).length} Einträge</div></div><button class="bp" onclick="mKunde()">+ Neuer Kunde</button></div>${!(data&&data.length)?'<div class="em"><div class="em-t">Noch keine Kunden</div></div>':`<div class="gr">${data.map(k=>`<div class="ca" onclick='pgKundeDetail(${JSON.stringify(k).replace(/'/g,"&#39;")})' ><div style="display:flex;align-items:center;gap:12px"><div style="width:36px;height:36px;background:var(--p-light);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--p);flex-shrink:0">${(k.name||'?')[0].toUpperCase()}</div><div style="flex:1;min-width:0"><div class="ca-t">${k.name||'-'}</div><div class="ca-s">${k.telefon||k.email||'-'}</div></div></div></div>`).join('')}</div>`}`);}catch(e){sC(`<div class="em"><div class="em-t">${e.message}</div></div>`);}}
 function pgKundeDetail(k){sC(`<button class="bk" onclick="pgKunden()">← Zurück</button><div class="ph"><div><div class="pt">${k.name}</div><div class="ps">${k.telefon||k.email||''}</div></div><button class="bp" onclick='mKunde(${JSON.stringify(k).replace(/'/g,"&#39;")})' style="background:var(--bg);color:var(--text);border:1px solid var(--border)">Bearbeiten</button></div>${k.telefon?`<a href="tel:${k.telefon}" style="display:flex;align-items:center;gap:10px;background:var(--green-bg);border:1px solid var(--green);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;text-decoration:none"><span style="font-size:20px">📞</span><div><div style="font-size:13px;font-weight:700;color:var(--green)">Jetzt anrufen</div><div style="font-size:12px;color:var(--text-sec)">${k.telefon}</div></div></a>`:''} ${k.email?`<a href="mailto:${k.email}" style="display:flex;align-items:center;gap:10px;background:var(--p-light);border:1px solid var(--p);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;text-decoration:none"><span style="font-size:20px">✉️</span><div><div style="font-size:13px;font-weight:700;color:var(--p)">E-Mail senden</div><div style="font-size:12px;color:var(--text-sec)">${k.email}</div></div></a>`:''} ${k.adresse?`<div class="map-wrap"><iframe src="https://maps.google.com/maps?q=${encodeURIComponent(k.adresse)}&output=embed&z=15" allowfullscreen></iframe></div>`:''} ${k.notiz?`<div class="tc"><div class="th"><span class="th-t">📝 Notizen</span></div><div style="padding:14px;font-size:13px;color:var(--text-sec)">${k.notiz}</div></div>`:''}`)}
