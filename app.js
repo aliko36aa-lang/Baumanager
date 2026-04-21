@@ -426,7 +426,8 @@ async function pgLeadDetail(id){
         <div class="pt">${l.firma}</div>
         <div class="ps">${l.bezirk||''} ${l.ansprechpartner?'· '+l.ansprechpartner:''}</div>
       </div>
-      <button class="bp" style="padding:6px 12px;font-size:12px" onclick="mLeadEdit('${l.id}')">Bearbeiten</button>
+      <!-- Korrektur: Wir nutzen direkt 'id' statt 'l.id' -->
+      <button class="bp" style="padding:6px 12px;font-size:12px" onclick="mLeadEdit('${id}')">Bearbeiten</button>
     </div>
     <div class="info-grid">
       <div class="info-box">
