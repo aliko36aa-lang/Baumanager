@@ -405,7 +405,375 @@ function pgEinst(){sC(`<div class="ph"><div><div class="pt">Einstellungen</div><
 const LEAD_STATUS={'neu':{label:'Neu',cls:'bd-b'},'kontaktiert':{label:'Kontaktiert',cls:'bd-o'},'termin':{label:'Termin vereinbart',cls:'bd-o'},'vor_ort':{label:'Vor-Ort Besuch',cls:'bd-o'},'angebot':{label:'Angebot gesendet',cls:'bd-b'},'gewonnen':{label:'Gewonnen ✓',cls:'bd-g'},'verloren':{label:'Verloren',cls:'bd-r'},'kein_interesse':{label:'Kein Interesse',cls:'bd-gr'}};
 async function pgKarte(){if(window._leafletMap){window._leafletMap.remove();window._leafletMap=null;}ld();const{data:leads}=await sb.from('leads').select('*');sC('<div class="ph"><div><div class="pt">Berlin Karte</div><div class="ps">'+(leads||[]).length+' Leads eingetragen</div></div><button class="bp" onclick="mLead()">+ Neuer Lead</button></div><div style="border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);margin-bottom:16px"><div id="berlin-map" style="height:420px;width:100%"></div></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px"><span style="display:flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--text-sec)"><span style="width:12px;height:12px;border-radius:50%;background:#2563EB;display:inline-block"></span>Neu</span><span style="display:flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--text-sec)"><span style="width:12px;height:12px;border-radius:50%;background:#D97706;display:inline-block"></span>Kontaktiert</span><span style="display:flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--text-sec)"><span style="width:12px;height:12px;border-radius:50%;background:#16A34A;display:inline-block"></span>Gewonnen</span><span style="display:flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--text-sec)"><span style="width:12px;height:12px;border-radius:50%;background:#DC2626;display:inline-block"></span>Verloren</span></div><div class="sh">Leads ohne Koordinaten</div><div id="leads-ohne-coords" class="gr"></div>');setTimeout(()=>{window._leafletMap=L.map('berlin-map').setView([52.52,13.405],11);const map=window._leafletMap;L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(map);const farben={neu:'#2563EB',kontaktiert:'#D97706',termin:'#D97706',vor_ort:'#D97706',angebot:'#D97706',gewonnen:'#16A34A',verloren:'#DC2626',kein_interesse:'#9CA3AF'};const ohneCoords=[];(leads||[]).forEach(l=>{if(l.adresse){const farbe=farben[l.status]||'#2563EB';const icon=L.divIcon({html:'<div style="width:16px;height:16px;border-radius:50%;background:'+farbe+';border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.3)"></div>',iconSize:[16,16],className:''});fetch('https://nominatim.openstreetmap.org/search?format=json&q='+encodeURIComponent(l.adresse+', Berlin')+'&limit=1').then(r=>r.json()).then(data=>{if(data&&data[0]){const marker=L.marker([parseFloat(data[0].lat),parseFloat(data[0].lon)],{icon}).addTo(map);marker.bindPopup('<b>'+l.firma+'</b><br>'+l.adresse+'<br><span style="color:'+farbe+';font-weight:600">'+(LEAD_STATUS[l.status]?.label||l.status)+'</span>');}}).catch(()=>{});}else{ohneCoords.push(l);}});const el=document.getElementById('leads-ohne-coords');if(el){if(!ohneCoords.length){el.innerHTML='<div style="font-size:13px;color:var(--text-ter);padding:8px 0">Alle Leads haben eine Adresse ✓</div>';}else{el.innerHTML=ohneCoords.map(l=>'<div class="ca" onclick="pgLeadDetail(\''+l.id+'\')"><div class="ca-t">'+l.firma+'</div><div class="ca-s">Keine Adresse – tippen zum Bearbeiten</div></div>').join('');}}},300);}
 async function importNeukoellnLeads(){if(!confirm('10 Hausverwaltungen Neukölln importieren?'))return;const leads=[{firma:'Adler & Bär Hausverwaltungen',telefon:'030 620 010-16',adresse:'Hermannstr. 161, 12051 Berlin',bezirk:'Neukölln',status:'neu',quelle:'Kaltakquise',naechste_aktion:'Anrufen Mo/Di/Do 11-14 Uhr',user_id:me.id,einwilligung:false},{firma:'Privata Hausverwaltung GmbH',telefon:'030 68809620',adresse:'Hertzbergstraße 30, 12055 Berlin',bezirk:'Neukölln',status:'neu',quelle:'Kaltakquise',naechste_aktion:'Anrufen',user_id:me.id,einwilligung:false},{firma:'Hausverwaltung Schmalenbachstr.',telefon:'030 31173330',adresse:'Schmalenbachstr. 22, 12057 Berlin',bezirk:'Neukölln',status:'neu',quelle:'Kaltakquise',naechste_aktion:'Anrufen',user_id:me.id,einwilligung:false},{firma:'Hausverwaltung Weichselstr.',telefon:'030 6234760',adresse:'Weichselstr. 51, 12045 Berlin',bezirk:'Neukölln',status:'neu',quelle:'Kaltakquise',naechste_aktion:'Anrufen',user_id:me.id,einwilligung:false},{firma:'Hausverwaltung Stuttgarter Str.',telefon:'030 3277230',adresse:'Stuttgarter Str. 40, 12059 Berlin',bezirk:'Neukölln',status:'neu',quelle:'Kaltakquise',naechste_aktion:'Anrufen',user_id:me.id,einwilligung:false},{firma:'Hausverwaltung Wildenbruchstr.',telefon:'030 68237234',adresse:'Wildenbruchstr. 7, 12045 Berlin',bezirk:'Neukölln',status:'neu',quelle:'Kaltakquise',naechste_aktion:'Anrufen',user_id:me.id,einwilligung:false},{firma:'Hausverwaltung Pflügerstr.',telefon:'030 62989150',adresse:'Pflügerstr. 61, 12047 Berlin',bezirk:'Neukölln',status:'neu',quelle:'Kaltakquise',naechste_aktion:'Anrufen',user_id:me.id,einwilligung:false},{firma:'Hausverwaltung Walterstr.',telefon:'030 23367992',adresse:'Walterstr. 26, 12051 Berlin',bezirk:'Neukölln',status:'neu',quelle:'Kaltakquise',naechste_aktion:'Anrufen',user_id:me.id,einwilligung:false},{firma:'Hausverwaltung Harzer Str.',telefon:'030 6866751',adresse:'Harzer Str. 3, 12059 Berlin',bezirk:'Neukölln',status:'neu',quelle:'Kaltakquise',naechste_aktion:'Anrufen',user_id:me.id,einwilligung:false},{firma:'Hausverwaltung Reuterstr.',telefon:'030 62985161',adresse:'Reuterstr. 43, 12047 Berlin',bezirk:'Neukölln',status:'neu',quelle:'Kaltakquise',naechste_aktion:'Anrufen',user_id:me.id,einwilligung:false}];const{error}=await sb.from('leads').insert(leads);if(error){alert('Fehler: '+error.message);return;}alert('✅ 10 Leads erfolgreich importiert!');pgLeads();}
-async function pgLeads(){ld();try{const[{data:leads}]=await Promise.all([sb.from('leads').select('*').order('created_at',{ascending:false})]);const heute_leads=(leads||[]).filter(l=>l.naechste_aktion_datum===heute());const gewonnen=(leads||[]).filter(l=>l.status==='gewonnen').length;const inPipeline=(leads||[]).filter(l=>!['gewonnen','verloren','kein_interesse'].includes(l.status)).length;const conversion=(leads||[]).length>0?Math.round((gewonnen/(leads||[]).length)*100):0;sC(`<div class="ph"><div><div class="pt">Akquise</div><div class="ps">${(leads||[]).length} Leads gesamt</div></div><button class="bp" onclick="mLead()">+ Neuer Lead</button><button class="bp" style="background:var(--green);margin-left:8px" onclick="importNeukoellnLeads()">📥 Neukölln Import</button></div><div class="sts"><div class="st" onclick="filterLeads('alle')"><div class="si">🎯</div><div class="sv">${(leads||[]).length}</div><div class="sl">Gesamt</div></div><div class="st" onclick="filterLeads('aktiv')"><div class="si">🔄</div><div class="sv">${inPipeline}</div><div class="sl">In Pipeline</div></div><div class="st" onclick="filterLeads('gewonnen')"><div class="si">✅</div><div class="sv" style="color:var(--green)">${gewonnen}</div><div class="sl">Gewonnen</div></div><div class="st"><div class="si">📊</div><div class="sv">${conversion}%</div><div class="sl">Conversion</div></div></div>${heute_leads.length?`<div class="sh">⚡ Heute fällig (${heute_leads.length})</div><div class="tc" style="margin-bottom:16px">${heute_leads.map(l=>`<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border-l);cursor:pointer" onclick="pgLeadDetail('${l.id}')"><div style="width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0"></div><div style="flex:1"><div style="font-size:13px;font-weight:700">${l.firma}</div><div style="font-size:12px;color:var(--text-sec)">${l.naechste_aktion||'Aktion fällig'}</div></div><span class="bd ${LEAD_STATUS[l.status]?.cls||'bd-b'}">${LEAD_STATUS[l.status]?.label||l.status}</span></div>`).join('')}</div>`:''}<div style="display:flex;gap:8px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px"><button onclick="filterLeads('alle')" style="padding:6px 14px;background:var(--surface);border:1.5px solid var(--border);border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit;color:var(--text-sec)">Alle (${(leads||[]).length})</button>${Object.entries(LEAD_STATUS).map(([k,v])=>`<button onclick="filterLeads('${k}')" style="padding:6px 14px;background:var(--surface);border:1.5px solid var(--border);border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit;color:var(--text-sec)">${v.label} (${(leads||[]).filter(l=>l.status===k).length})</button>`).join('')}</div><div id="leads-liste">${renderLeadsListe(leads||[])}</div>`);}catch(e){sC(`<div class="em"><div class="em-t">Fehler: ${e.message}</div></div>`);}}
+// ─── KI AKQUISE-ASSISTENT ────────────────────────────────────────────────
+// Füge diesen Code in app.js ein, direkt VOR der Zeile:
+// async function pgLeads(){
+
+async function callKI(prompt, systemPrompt = '') {
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      system: systemPrompt || 'Du bist ein Assistent für ein Berliner Facility-Management Unternehmen namens Alem Facility & Ausbau Service. Antworte immer auf Deutsch.',
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+  const data = await response.json();
+  return data.content?.[0]?.text || '';
+}
+
+function mKIAssistent() {
+  oM(`${modalHeader('🤖 KI Akquise-Assistent')}
+<div style="display:flex;flex-direction:column;gap:10px;margin-bottom:8px">
+
+  <button onclick="mKILeadGen()" style="display:flex;align-items:center;gap:14px;background:var(--p-light);border:1.5px solid var(--p);border-radius:14px;padding:16px;cursor:pointer;text-align:left;width:100%">
+    <span style="font-size:28px">🎯</span>
+    <div>
+      <div style="font-size:14px;font-weight:700;color:var(--p)">Lead-Generierung</div>
+      <div style="font-size:12px;color:var(--text-sec);margin-top:2px">KI sucht Hausverwaltungen für deinen Bezirk</div>
+    </div>
+  </button>
+
+  <button onclick="mKIAnrufVorbereitung()" style="display:flex;align-items:center;gap:14px;background:var(--green-bg);border:1.5px solid var(--green);border-radius:14px;padding:16px;cursor:pointer;text-align:left;width:100%">
+    <span style="font-size:28px">📞</span>
+    <div>
+      <div style="font-size:14px;font-weight:700;color:var(--green)">Anruf-Vorbereitung</div>
+      <div style="font-size:12px;color:var(--text-sec);margin-top:2px">Personalisiertes Skript für einen Lead</div>
+    </div>
+  </button>
+
+  <button onclick="mKIEmailGen()" style="display:flex;align-items:center;gap:14px;background:var(--p-light);border:1.5px solid var(--p);border-radius:14px;padding:16px;cursor:pointer;text-align:left;width:100%">
+    <span style="font-size:28px">✉️</span>
+    <div>
+      <div style="font-size:14px;font-weight:700;color:var(--p)">E-Mail Generator</div>
+      <div style="font-size:12px;color:var(--text-sec);margin-top:2px">Follow-up E-Mail nach dem Anruf</div>
+    </div>
+  </button>
+
+  <button onclick="mKIEinwandCoach()" style="display:flex;align-items:center;gap:14px;background:var(--yellow-bg);border:1.5px solid var(--yellow);border-radius:14px;padding:16px;cursor:pointer;text-align:left;width:100%">
+    <span style="font-size:28px">🥊</span>
+    <div>
+      <div style="font-size:14px;font-weight:700;color:var(--yellow)">Einwand-Coach</div>
+      <div style="font-size:12px;color:var(--text-sec);margin-top:2px">Beste Antwort auf schwierige Einwände</div>
+    </div>
+  </button>
+
+</div>`);
+}
+
+// ── 1. LEAD-GENERIERUNG ──────────────────────────────────────────
+function mKILeadGen() {
+  oM(`${modalHeader('🎯 KI Lead-Generierung')}
+<div style="background:var(--p-light);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:var(--p);font-weight:600">
+  💡 Die KI generiert Hausverwaltungen für deinen Wunschbezirk und importiert sie direkt.
+</div>
+<div class="fg">
+  <label>BEZIRK / ZIELGRUPPE</label>
+  <input id="ki-bezirk" placeholder="z.B. Tempelhof, Kreuzberg, Charlottenburg..." style="font-size:14px">
+</div>
+<div class="fg">
+  <label>ANZAHL LEADS</label>
+  <select id="ki-anzahl">
+    <option value="5">5 Leads</option>
+    <option value="10" selected>10 Leads</option>
+    <option value="15">15 Leads</option>
+  </select>
+</div>
+<div id="ki-result" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:16px;max-height:300px;overflow-y:auto;font-size:13px;line-height:1.6;color:var(--text-sec)"></div>
+<div class="ma">
+  <button class="bc" onclick="mKIAssistent()">← Zurück</button>
+  <button class="bs" id="ki-gen-btn" onclick="kiGeneriereLeads()">🤖 Generieren</button>
+</div>`);
+}
+
+async function kiGeneriereLeads() {
+  const bezirk = document.getElementById('ki-bezirk').value.trim();
+  const anzahl = document.getElementById('ki-anzahl').value;
+  if (!bezirk) { alert('Bitte Bezirk eingeben!'); return; }
+
+  const btn = document.getElementById('ki-gen-btn');
+  const result = document.getElementById('ki-result');
+  btn.textContent = '⏳ Wird generiert...';
+  btn.disabled = true;
+  result.style.display = 'block';
+  result.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-ter)">KI generiert Leads...</div>';
+
+  try {
+    const prompt = `Erstelle eine Liste von ${anzahl} fiktiven aber realistisch klingenden Hausverwaltungs-Firmen in Berlin ${bezirk}.
+
+Antworte NUR mit einem JSON-Array, ohne Erklärung, ohne Markdown-Backticks:
+[
+  {
+    "firma": "Name der Hausverwaltung GmbH",
+    "telefon": "030 XXXXXXXX",
+    "adresse": "Straße Nr, PLZ Berlin",
+    "bezirk": "${bezirk}"
+  }
+]
+
+Wichtig: Nur JSON zurückgeben, nichts anderes.`;
+
+    const text = await callKI(prompt, 'Du generierst realistische Firmendaten für Berlin. Antworte NUR mit validem JSON, keine weiteren Texte oder Markdown.');
+
+    let leads;
+    try {
+      const clean = text.replace(/```json|```/g, '').trim();
+      leads = JSON.parse(clean);
+    } catch (e) {
+      result.innerHTML = '<div style="color:var(--red)">Fehler beim Parsen. Bitte nochmal versuchen.</div>';
+      btn.textContent = '🤖 Generieren';
+      btn.disabled = false;
+      return;
+    }
+
+    result.innerHTML = leads.map(l => `
+      <div style="padding:8px 0;border-bottom:1px solid var(--border-l)">
+        <div style="font-weight:700;color:var(--text)">${l.firma}</div>
+        <div style="font-size:12px;color:var(--text-sec)">${l.telefon} · ${l.adresse}</div>
+      </div>`).join('');
+
+    btn.textContent = '✅ Importieren';
+    btn.disabled = false;
+    btn.onclick = () => kiImportLeads(leads, bezirk);
+
+  } catch (e) {
+    result.innerHTML = `<div style="color:var(--red)">Fehler: ${e.message}</div>`;
+    btn.textContent = '🤖 Generieren';
+    btn.disabled = false;
+  }
+}
+
+async function kiImportLeads(leads, bezirk) {
+  const btn = document.getElementById('ki-gen-btn');
+  btn.textContent = '⏳ Importiere...';
+  btn.disabled = true;
+
+  const leadsToInsert = leads.map(l => ({
+    firma: l.firma,
+    telefon: l.telefon || '',
+    adresse: l.adresse || '',
+    bezirk: bezirk,
+    status: 'neu',
+    quelle: 'KI-Generiert',
+    naechste_aktion: 'Anrufen',
+    user_id: me.id,
+    einwilligung: false
+  }));
+
+  const { error } = await sb.from('leads').insert(leadsToInsert);
+  if (error) { alert('Fehler: ' + error.message); btn.textContent = '✅ Importieren'; btn.disabled = false; return; }
+
+  cM();
+  alert(`✅ ${leads.length} Leads aus ${bezirk} importiert!`);
+  pgLeads();
+}
+
+// ── 2. ANRUF-VORBEREITUNG ────────────────────────────────────────
+async function mKIAnrufVorbereitung() {
+  const { data: leads } = await sb.from('leads').select('id,firma,bezirk,status,notiz').order('created_at', { ascending: false });
+
+  oM(`${modalHeader('📞 Anruf-Vorbereitung')}
+<div style="background:var(--green-bg);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:var(--green);font-weight:600">
+  💡 KI erstellt ein personalisiertes Gesprächsskript für deinen Lead.
+</div>
+<div class="fg">
+  <label>LEAD WÄHLEN</label>
+  <select id="ki-lead-sel">
+    <option value="">— Wählen —</option>
+    ${(leads || []).map(l => `<option value="${l.id}" data-firma="${l.firma}" data-bezirk="${l.bezirk || ''}" data-notiz="${l.notiz || ''}">${l.firma} (${l.bezirk || '-'})</option>`).join('')}
+  </select>
+</div>
+<div class="fg">
+  <label>ZUSÄTZLICHE INFO (optional)</label>
+  <input id="ki-extra" placeholder="z.B. haben 50 Wohneinheiten, Reinigung gesucht">
+</div>
+<div id="ki-result2" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:16px;max-height:350px;overflow-y:auto;font-size:13px;line-height:1.7;white-space:pre-wrap;color:var(--text-sec)"></div>
+<div class="ma">
+  <button class="bc" onclick="mKIAssistent()">← Zurück</button>
+  <button class="bs" onclick="kiErstelleSkript()">🤖 Skript erstellen</button>
+</div>`);
+}
+
+async function kiErstelleSkript() {
+  const sel = document.getElementById('ki-lead-sel');
+  const opt = sel.options[sel.selectedIndex];
+  if (!sel.value) { alert('Bitte Lead wählen!'); return; }
+
+  const firma = opt.dataset.firma;
+  const bezirk = opt.dataset.bezirk;
+  const notiz = opt.dataset.notiz;
+  const extra = document.getElementById('ki-extra').value;
+  const result = document.getElementById('ki-result2');
+
+  result.style.display = 'block';
+  result.innerHTML = '⏳ KI erstellt dein Skript...';
+
+  const prompt = `Erstelle ein kurzes, professionelles Telefonskript für einen Kaltakquise-Anruf bei einer Hausverwaltung.
+
+Firma: ${firma}
+Bezirk: ${bezirk}
+${notiz ? 'Notizen: ' + notiz : ''}
+${extra ? 'Zusatzinfo: ' + extra : ''}
+
+Mein Unternehmen: Alem Facility & Ausbau Service, Berlin
+Mein Name: Ali Ercan
+Leistungen: Reinigung, Hausmeisterservice, Renovierung
+
+Das Skript soll:
+- Kurz und prägnant sein (max 200 Wörter)
+- Professionell aber persönlich klingen
+- Auf die Firma zugeschnitten sein
+- Einen klaren Gesprächseinstieg haben
+- Einwand-Behandlung für "Haben schon jemanden" enthalten
+- Mit einem klaren Ziel enden (Termin vereinbaren)
+
+Format: Direkt das Skript, kein Erklärungstext davor.`;
+
+  try {
+    const text = await callKI(prompt);
+    result.innerHTML = text;
+  } catch (e) {
+    result.innerHTML = `<span style="color:var(--red)">Fehler: ${e.message}</span>`;
+  }
+}
+
+// ── 3. E-MAIL GENERATOR ──────────────────────────────────────────
+async function mKIEmailGen() {
+  const { data: leads } = await sb.from('leads').select('id,firma,bezirk,status,notiz').order('created_at', { ascending: false });
+
+  oM(`${modalHeader('✉️ E-Mail Generator')}
+<div style="background:var(--p-light);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:var(--p);font-weight:600">
+  💡 KI schreibt eine professionelle Follow-up E-Mail nach deinem Anruf.
+</div>
+<div class="fg">
+  <label>LEAD WÄHLEN</label>
+  <select id="ki-email-lead">
+    <option value="">— Wählen —</option>
+    ${(leads || []).map(l => `<option value="${l.id}" data-firma="${l.firma}" data-bezirk="${l.bezirk || ''}">${l.firma}</option>`).join('')}
+  </select>
+</div>
+<div class="fg">
+  <label>WAS WURDE BESPROCHEN?</label>
+  <textarea id="ki-anruf-info" rows="3" placeholder="z.B. Interesse gezeigt, Angebot für Reinigung gewünscht, Termin nächste Woche..."></textarea>
+</div>
+<div id="ki-result3" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:16px;max-height:350px;overflow-y:auto;font-size:13px;line-height:1.7;white-space:pre-wrap;color:var(--text-sec)"></div>
+<div class="ma">
+  <button class="bc" onclick="mKIAssistent()">← Zurück</button>
+  <button class="bs" onclick="kiErstelleEmail()">🤖 E-Mail erstellen</button>
+</div>`);
+}
+
+async function kiErstelleEmail() {
+  const sel = document.getElementById('ki-email-lead');
+  const opt = sel.options[sel.selectedIndex];
+  if (!sel.value) { alert('Bitte Lead wählen!'); return; }
+
+  const firma = opt.dataset.firma;
+  const bezirk = opt.dataset.bezirk;
+  const anrufInfo = document.getElementById('ki-anruf-info').value;
+  const result = document.getElementById('ki-result3');
+
+  result.style.display = 'block';
+  result.innerHTML = '⏳ KI schreibt E-Mail...';
+
+  const prompt = `Schreibe eine professionelle Follow-up E-Mail nach einem Kaltakquise-Telefonat.
+
+Empfänger: ${firma}, Berlin ${bezirk}
+Was wurde besprochen: ${anrufInfo || 'Kurzes Kennenlerngespräch, Interesse am Angebot'}
+
+Absender: Ali Ercan, Geschäftsführer
+Firma: Alem Facility & Ausbau Service, Siemensstr. 30, 12247 Berlin
+Leistungen: Reinigung, Hausmeisterservice, Renovierung & Bauarbeiten
+
+Die E-Mail soll:
+- Kurz und professionell sein
+- Bezug auf das Telefonat nehmen
+- Die wichtigsten Leistungen kurz erwähnen
+- Einen klaren nächsten Schritt vorschlagen
+- Mit Kontaktdaten enden
+
+Format:
+Betreff: [Betreff hier]
+
+[E-Mail Text hier]`;
+
+  try {
+    const text = await callKI(prompt);
+    result.innerHTML = text;
+  } catch (e) {
+    result.innerHTML = `<span style="color:var(--red)">Fehler: ${e.message}</span>`;
+  }
+}
+
+// ── 4. EINWAND-COACH ─────────────────────────────────────────────
+function mKIEinwandCoach() {
+  const einwaende = [
+    'Wir haben schon einen Dienstleister',
+    'Kein Interesse',
+    'Zu teuer',
+    'Schicken Sie uns etwas zu',
+    'Keine Zeit jetzt',
+    'Wir sind zufrieden mit unserem Anbieter',
+    'Rufen Sie nächsten Monat an',
+    'Wir haben kein Budget'
+  ];
+
+  oM(`${modalHeader('🥊 Einwand-Coach')}
+<div style="background:var(--yellow-bg);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:var(--yellow);font-weight:600">
+  💡 Wähle einen Einwand oder tippe deinen eigenen – KI gibt dir die beste Antwort.
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">
+  ${einwaende.map(e => `<button onclick="document.getElementById('ki-einwand').value='${e}'" style="padding:7px 12px;background:var(--surface);border:1.5px solid var(--border);border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;color:var(--text-sec)">${e}</button>`).join('')}
+</div>
+<div class="fg">
+  <label>EINWAND</label>
+  <input id="ki-einwand" placeholder="z.B. Wir haben schon jemanden...">
+</div>
+<div class="fg">
+  <label>KONTEXT (optional)</label>
+  <input id="ki-kontext" placeholder="z.B. Hausverwaltung, 30 Wohneinheiten">
+</div>
+<div id="ki-result4" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:16px;max-height:300px;overflow-y:auto;font-size:13px;line-height:1.7;white-space:pre-wrap;color:var(--text-sec)"></div>
+<div class="ma">
+  <button class="bc" onclick="mKIAssistent()">← Zurück</button>
+  <button class="bs" onclick="kiBehandleEinwand()">🤖 Beste Antwort</button>
+</div>`);
+}
+
+async function kiBehandleEinwand() {
+  const einwand = document.getElementById('ki-einwand').value.trim();
+  const kontext = document.getElementById('ki-kontext').value;
+  if (!einwand) { alert('Bitte Einwand eingeben!'); return; }
+
+  const result = document.getElementById('ki-result4');
+  result.style.display = 'block';
+  result.innerHTML = '⏳ KI denkt nach...';
+
+  const prompt = `Ich bin Ali Ercan von Alem Facility & Ausbau Service Berlin (Reinigung, Hausmeister, Renovierung).
+
+Ich mache einen Kaltakquise-Anruf bei einer Hausverwaltung.
+${kontext ? 'Kontext: ' + kontext : ''}
+
+Der Kunde sagt: "${einwand}"
+
+Gib mir:
+1. Die beste professionelle Antwort auf diesen Einwand (kurz, direkt, überzeugend)
+2. Einen Tipp was ich dabei beachten soll
+3. Die nächste Frage die ich stellen sollte um das Gespräch am Laufen zu halten
+
+Halte alles kurz und praxisnah.`;
+
+  try {
+    const text = await callKI(prompt);
+    result.innerHTML = text;
+  } catch (e) {
+    result.innerHTML = `<span style="color:var(--red)">Fehler: ${e.message}</span>`;
+  }
+}
+// ─── ENDE KI AKQUISE-ASSISTENT ───────────────────────────────────────────
+async function pgLeads(){ld();try{const[{data:leads}]=await Promise.all([sb.from('leads').select('*').order('created_at',{ascending:false})]);const heute_leads=(leads||[]).filter(l=>l.naechste_aktion_datum===heute());const gewonnen=(leads||[]).filter(l=>l.status==='gewonnen').length;const inPipeline=(leads||[]).filter(l=>!['gewonnen','verloren','kein_interesse'].includes(l.status)).length;const conversion=(leads||[]).length>0?Math.round((gewonnen/(leads||[]).length)*100):0;sC(`<div class="ph"><div><div class="pt">Akquise</div><div class="ps">${(leads||[]).length} Leads gesamt</div></div><button class="bp" onclick="mLead()">+ Neuer Lead</button><button class="bp" style="background:linear-gradient(135deg,#7C3AED,#4F46E5);margin-left:8px" onclick="mKIAssistent()">🤖 KI Assistent</button></div><div class="sts"><div class="st" onclick="filterLeads('alle')"><div class="si">🎯</div><div class="sv">${(leads||[]).length}</div><div class="sl">Gesamt</div></div><div class="st" onclick="filterLeads('aktiv')"><div class="si">🔄</div><div class="sv">${inPipeline}</div><div class="sl">In Pipeline</div></div><div class="st" onclick="filterLeads('gewonnen')"><div class="si">✅</div><div class="sv" style="color:var(--green)">${gewonnen}</div><div class="sl">Gewonnen</div></div><div class="st"><div class="si">📊</div><div class="sv">${conversion}%</div><div class="sl">Conversion</div></div></div>${heute_leads.length?`<div class="sh">⚡ Heute fällig (${heute_leads.length})</div><div class="tc" style="margin-bottom:16px">${heute_leads.map(l=>`<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border-l);cursor:pointer" onclick="pgLeadDetail('${l.id}')"><div style="width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0"></div><div style="flex:1"><div style="font-size:13px;font-weight:700">${l.firma}</div><div style="font-size:12px;color:var(--text-sec)">${l.naechste_aktion||'Aktion fällig'}</div></div><span class="bd ${LEAD_STATUS[l.status]?.cls||'bd-b'}">${LEAD_STATUS[l.status]?.label||l.status}</span></div>`).join('')}</div>`:''}<div style="display:flex;gap:8px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px"><button onclick="filterLeads('alle')" style="padding:6px 14px;background:var(--surface);border:1.5px solid var(--border);border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit;color:var(--text-sec)">Alle (${(leads||[]).length})</button>${Object.entries(LEAD_STATUS).map(([k,v])=>`<button onclick="filterLeads('${k}')" style="padding:6px 14px;background:var(--surface);border:1.5px solid var(--border);border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit;color:var(--text-sec)">${v.label} (${(leads||[]).filter(l=>l.status===k).length})</button>`).join('')}</div><div id="leads-liste">${renderLeadsListe(leads||[])}</div>`);}catch(e){sC(`<div class="em"><div class="em-t">Fehler: ${e.message}</div></div>`);}}
 function renderLeadsListe(leads){if(!leads.length)return'<div class="em"><div class="em-i">🎯</div><div class="em-t">Noch keine Leads</div><div class="em-s">Füge deinen ersten potentiellen Kunden hinzu</div></div>';return`<div class="gr">${leads.map(l=>`<div class="ca" onclick="pgLeadDetail('${l.id}')"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px"><div><div class="ca-t">${l.firma}</div><div class="ca-s">${l.ansprechpartner||''} ${l.telefon?'· '+l.telefon:''}</div></div><span class="bd ${LEAD_STATUS[l.status]?.cls||'bd-b'}">${LEAD_STATUS[l.status]?.label||l.status}</span></div><div style="display:flex;align-items:center;gap:8px;margin-top:6px"><span style="font-size:11px;color:var(--text-ter)">📍 ${l.bezirk||'-'}</span>${l.naechste_aktion_datum?`<span style="font-size:11px;color:${l.naechste_aktion_datum<heute()?'var(--red)':'var(--text-ter)'}">⏰ ${fmtDatum(l.naechste_aktion_datum)}</span>`:''} ${l.zustaendig?`<span style="font-size:11px;color:var(--text-ter)">👤 ${l.zustaendig}</span>`:''}</div></div>`).join('')}</div>`;}
 async function filterLeads(filter){const{data:leads}=await sb.from('leads').select('*').order('created_at',{ascending:false});let filtered=leads||[];if(filter==='aktiv')filtered=filtered.filter(l=>!['gewonnen','verloren','kein_interesse'].includes(l.status));else if(filter==='gewonnen')filtered=filtered.filter(l=>l.status==='gewonnen');else if(filter!=='alle')filtered=filtered.filter(l=>l.status===filter);document.getElementById('leads-liste').innerHTML=renderLeadsListe(filtered);}
 async function mLeadEdit(id){const{data:l}=await sb.from('leads').select('*').eq('id',id).single();if(l)mLead(l);}
