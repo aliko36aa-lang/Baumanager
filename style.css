@@ -788,17 +788,18 @@ canvas {
   background: var(--surface);
   border-top: 1px solid var(--border);
   z-index: 100;
+  align-items: stretch;
   padding-bottom: env(safe-area-inset-bottom, 0px);
-  box-shadow: 0 -1px 0 var(--border), 0 -4px 16px rgba(0,0,0,0.06);
+  box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
 }
 .tab-item {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  gap: 3px;
-  padding: 8px 4px 10px;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 4px 12px;
   background: none;
   border: none;
   cursor: pointer;
@@ -812,19 +813,17 @@ canvas {
 }
 .tab-item.active { color: var(--p); }
 .tab-item span { line-height: 1; white-space: nowrap; }
-.tab-center-item { position: relative; padding-top: 0; }
+.tab-center-item { }
 .tab-center-btn {
-  width: 46px;
-  height: 46px;
+  width: 42px;
+  height: 42px;
   background: var(--p);
-  border-radius: 50%;
+  border-radius: 13px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  margin-bottom: 3px;
-  margin-top: -14px;
-  box-shadow: 0 4px 14px rgba(37,99,235,0.45);
+  box-shadow: 0 3px 10px rgba(37,99,235,0.4);
   flex-shrink: 0;
 }
 .tab-center-item span { color: var(--text-sec) !important; }
