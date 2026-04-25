@@ -300,6 +300,8 @@ body {
   padding: 14px 16px;
   margin-bottom: 8px;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transition: border-color 0.12s, box-shadow 0.12s;
 }
 .ca:hover { border-color: #CBD5E1; box-shadow: var(--shadow); }
