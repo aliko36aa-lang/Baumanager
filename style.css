@@ -339,7 +339,7 @@ body {
   transition: border-color 0.12s;
 }
 .st:hover { border-color: #CBD5E1; }
-.si { font-size: 18px; margin-bottom: 8px; }
+.si { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--p); margin-bottom: 8px; }
 .sv {
   font-family: 'DM Mono', monospace;
   font-size: 20px; font-weight: 500;
@@ -615,7 +615,7 @@ canvas {
   width: 34px; height: 34px;
   background: var(--p-light); border-radius: 9px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 16px;
+  color: var(--p);
 }
 .quick-btn-label {
   font-size: 11px; font-weight: 600; color: var(--text-sec);
