@@ -698,6 +698,18 @@ canvas {
 }
 .anf-filter-btn.active { background: var(--p); border-color: var(--p); color: #fff; }
 
+/* ─── UTILITIES ─────────────────────────────────────────────────── */
+.op60 { opacity: 0.55; }
+.prio-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; display: inline-block; }
+
+/* ─── OBJEKTE ───────────────────────────────────────────────────── */
+.obj-type-badge {
+  display: inline-flex; align-items: center;
+  padding: 2px 8px; border-radius: 6px;
+  font-size: 11px; font-weight: 600;
+  background: var(--p-light); color: var(--p);
+}
+
 /* ─── DARK MODE ─────────────────────────────────────────────────── */
 body.dark {
   --bg:        #0A0F1E;
