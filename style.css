@@ -726,13 +726,52 @@ canvas {
 .op60 { opacity: 0.55; }
 .prio-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; display: inline-block; }
 
-/* ─── OBJEKTE ───────────────────────────────────────────────────── */
-.obj-type-badge {
-  display: inline-flex; align-items: center;
-  padding: 2px 8px; border-radius: 6px;
-  font-size: 11px; font-weight: 600;
-  background: var(--p-light); color: var(--p);
+/* ─── WIDGET TOGGLE ─────────────────────────────────────────────── */
+.widget-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 0; border-bottom: 1px solid var(--border-l);
 }
+.widget-row:last-child { border-bottom: none; }
+.widget-toggle {
+  width: 44px; height: 24px; flex-shrink: 0;
+  background: var(--border); border: none; border-radius: 12px;
+  cursor: pointer; position: relative; transition: background 0.2s;
+}
+.widget-toggle.on { background: var(--p); }
+.widget-toggle::after {
+  content: ''; width: 18px; height: 18px; border-radius: 50%;
+  background: #fff; position: absolute; top: 3px; left: 3px;
+  transition: left 0.18s; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.widget-toggle.on::after { left: 23px; }
+
+/* ─── KANBAN ─────────────────────────────────────────────────────── */
+.kanban-board {
+  display: flex; gap: 10px;
+  overflow-x: auto; padding-bottom: 12px;
+  margin: 0 -16px; padding-left: 16px; padding-right: 16px;
+}
+.kanban-col {
+  flex-shrink: 0; width: 220px;
+  background: var(--surface2);
+  border-radius: var(--radius);
+  padding: 10px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.kanban-col-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 2px 2px 8px; border-bottom: 1px solid var(--border-l);
+}
+.kanban-col-title { font-size: 12px; font-weight: 700; color: var(--text-sec); text-transform: uppercase; letter-spacing: 0.4px; }
+.kanban-col-count { font-size: 11px; font-weight: 700; color: var(--text-ter); background: var(--border); border-radius: 8px; padding: 1px 6px; }
+.kanban-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 12px;
+  cursor: pointer; transition: box-shadow 0.12s, border-color 0.12s;
+}
+.kanban-card:hover { border-color: var(--p); box-shadow: 0 2px 8px rgba(30,58,138,0.1); }
+.kanban-card-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.kanban-card-sub { font-size: 11px; color: var(--text-ter); line-height: 1.4; }
 
 /* ─── DARK MODE ─────────────────────────────────────────────────── */
 body.dark {
