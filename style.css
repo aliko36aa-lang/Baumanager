@@ -669,6 +669,35 @@ canvas {
 }
 .tab-center-item span { color: var(--text-sec) !important; }
 
+/* ─── KPI DASHBOARD ─────────────────────────────────────────────── */
+.kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 4px;
+  box-shadow: var(--shadow);
+}
+.kpi-card.kpi-alert { border-color: var(--red); background: var(--red-bg); }
+.kpi-val { font-size: 26px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; line-height: 1; }
+.kpi-val-sm { font-size: 18px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; line-height: 1; }
+.kpi-card.kpi-alert .kpi-val,
+.kpi-card.kpi-alert .kpi-val-sm { color: var(--red); }
+.kpi-label { font-size: 11px; font-weight: 700; color: var(--text-ter); text-transform: uppercase; letter-spacing: 0.4px; }
+.kpi-sub { font-size: 11px; color: var(--text-sec); margin-top: 2px; }
+.anf-filter-btn {
+  padding: 6px 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 12px; font-weight: 600;
+  color: var(--text-sec);
+  cursor: pointer; white-space: nowrap;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+.anf-filter-btn.active { background: var(--p); border-color: var(--p); color: #fff; }
+
 /* ─── DARK MODE ─────────────────────────────────────────────────── */
 body.dark {
   --bg:        #0A0F1E;
