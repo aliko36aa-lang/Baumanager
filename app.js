@@ -494,7 +494,8 @@ async function saveObjekt(id){const name=document.getElementById('f-on').value.t
 async function delObjekt(id){if(!confirm('Objekt löschen?'))return;await sb.from('objekte').delete().eq('id',id);cM();pgObjekte();}
 function mAufgabeForObjekt(objId,objName){mAufgabe();setTimeout(()=>{const t=document.getElementById('f-t');if(t)t.placeholder=`Aufgabe für: ${objName}`;},50);}
 // ─── BENUTZER & ROLLEN ──────────────────────────────────────────
-const ROLLEN_SQL=`-- Benutzer-Rollen-Tabelle (kann mehrfach ausgeführt werden)
+const ROLLEN_SQL=`-- Kaputte Policy entfernen und neu anlegen:
+drop policy if exists "admin_all" on user_roles;
 create table if not exists user_roles (
   id uuid default gen_random_uuid() primary key,
   user_id uuid references auth.users(id) unique,
@@ -509,9 +510,9 @@ do $$ begin
       using (auth.uid()=user_id) with check (auth.uid()=user_id);
   end if;
 end $$;
--- Als Admin eintragen (wird übersprungen falls bereits vorhanden):
+-- UUID aus Authentication > Users kopieren und einsetzen:
 insert into user_roles (user_id, email, rolle)
-  values (auth.uid(), current_setting('request.jwt.claims', true)::json->>'email', 'admin')
+  values ('<DEINE-USER-UUID>', '<deine@email.de>', 'admin')
   on conflict (user_id) do nothing;`;
 const ANF_SQL=`create table anfragen (
   id uuid default gen_random_uuid() primary key,
