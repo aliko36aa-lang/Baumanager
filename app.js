@@ -467,7 +467,7 @@ async function pgKarte(){if(window._leafletMap){window._leafletMap.remove();wind
 async function importNeukoellnLeads(){if(!confirm('10 Hausverwaltungen Neukölln importieren?'))return;const leads=[{firma:'Adler & Bär Hausverwaltungen',telefon:'030 620 010-16',adresse:'Hermannstr. 161, 12051 Berlin',bezirk:'Neukölln',status:'neu',quelle:'Kaltakquise',naechste_aktion:'Anrufen Mo/Di/Do 11-14 Uhr',user_id:me.id,einwilligung:false},{firma:'Privata Hausverwaltung GmbH',telefon:'030 68809620',adresse:'Hertzbergstraße 30, 12055 Berlin',bezirk:'Neukölln',status:'neu',quelle:'Kaltakquise',naechste_aktion:'Anrufen',user_id:me.id,einwilligung:false},{firma:'Hausverwaltung Schmalenbachstr.',telefon:'030 31173330',adresse:'Schmalenbachstr. 22, 12057 Berlin',bezirk:'Neukölln',status:'neu',quelle:'Kaltakquise',naechste_aktion:'Anrufen',user_id:me.id,einwilligung:false},{firma:'Hausverwaltung Weichselstr.',telefon:'030 6234760',adresse:'Weichselstr. 51, 12045 Berlin',bezirk:'Neukölln',status:'neu',quelle:'Kaltakquise',naechste_aktion:'Anrufen',user_id:me.id,einwilligung:false},{firma:'Hausverwaltung Stuttgarter Str.',telefon:'030 3277230',adresse:'Stuttgarter Str. 40, 12059 Berlin',bezirk:'Neukölln',status:'neu',quelle:'Kaltakquise',naechste_aktion:'Anrufen',user_id:me.id,einwilligung:false},{firma:'Hausverwaltung Wildenbruchstr.',telefon:'030 68237234',adresse:'Wildenbruchstr. 7, 12045 Berlin',bezirk:'Neukölln',status:'neu',quelle:'Kaltakquise',naechste_aktion:'Anrufen',user_id:me.id,einwilligung:false},{firma:'Hausverwaltung Pflügerstr.',telefon:'030 62989150',adresse:'Pflügerstr. 61, 12047 Berlin',bezirk:'Neukölln',status:'neu',quelle:'Kaltakquise',naechste_aktion:'Anrufen',user_id:me.id,einwilligung:false},{firma:'Hausverwaltung Walterstr.',telefon:'030 23367992',adresse:'Walterstr. 26, 12051 Berlin',bezirk:'Neukölln',status:'neu',quelle:'Kaltakquise',naechste_aktion:'Anrufen',user_id:me.id,einwilligung:false},{firma:'Hausverwaltung Harzer Str.',telefon:'030 6866751',adresse:'Harzer Str. 3, 12059 Berlin',bezirk:'Neukölln',status:'neu',quelle:'Kaltakquise',naechste_aktion:'Anrufen',user_id:me.id,einwilligung:false},{firma:'Hausverwaltung Reuterstr.',telefon:'030 62985161',adresse:'Reuterstr. 43, 12047 Berlin',bezirk:'Neukölln',status:'neu',quelle:'Kaltakquise',naechste_aktion:'Anrufen',user_id:me.id,einwilligung:false}];const{error}=await sb.from('leads').insert(leads);if(error){alert('Fehler: '+error.message);return;}alert('✅ 10 Leads erfolgreich importiert!');pgLeads();}
 // ─── OBJEKTE ────────────────────────────────────────────────────
 const OBJ_TYPEN=['Wohngebäude','Bürogebäude','Gewerbe','Industrieanlage','Sonstiges'];
-const OBJ_SQL=`create table objekte (
+const OBJ_SQL=`create table if not exists objekte (
   id uuid default gen_random_uuid() primary key,
   name text not null,
   adresse text,
@@ -479,8 +479,12 @@ const OBJ_SQL=`create table objekte (
   created_at timestamptz default now()
 );
 alter table objekte enable row level security;
-create policy "own" on objekte for all
-  using (auth.uid()=user_id) with check (auth.uid()=user_id);`;
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename='objekte' and policyname='objekte_own') then
+    create policy "objekte_own" on objekte for all
+      using (auth.uid()=user_id) with check (auth.uid()=user_id);
+  end if;
+end $$;`;
 let _objState={obj:[],kunden:[]};
 async function pgObjekte(){ld();try{const[{data:obj,error},{data:kunden}]=await Promise.all([sb.from('objekte').select('*').order('created_at',{ascending:false}),sb.from('kunden').select('id,name')]);if(error)throw new Error('Tabelle "objekte" fehlt. SQL-Setup unten.');_objState={obj:obj||[],kunden:kunden||[]};const aktiv=(obj||[]).filter(o=>o.status==='Aktiv').length;sC(`<div class="ph"><div><div class="pt">Objekte</div><div class="ps">${(obj||[]).length} gesamt · ${aktiv} aktiv</div></div><button class="bp" onclick="mObjekt()">+ Neues Objekt</button></div><div class="gr">${!(obj&&obj.length)?'<div class="em"><div class="em-t">Noch keine Objekte</div><div class="em-s">Objekte sind Gebäude / Liegenschaften, die du dauerhaft betreust</div></div>':obj.map(o=>`<div class="ca" onclick="pgObjektDetail('${o.id}')"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px"><div style="flex:1;min-width:0"><div class="ca-t">${o.name}</div><div class="ca-s">${o.adresse||'—'}</div></div><span class="bd ${o.status==='Aktiv'?'bd-b':'bd-gr'}">${o.status||'Aktiv'}</span></div><div style="display:flex;gap:8px;align-items:center"><span class="obj-type-badge">${o.typ||'Sonstiges'}</span>${(_objState.kunden.find(k=>k.id===o.kunden_id)||{}).name?`<span style="font-size:11px;color:var(--text-ter)">${_objState.kunden.find(k=>k.id===o.kunden_id).name}</span>`:''}</div></div>`).join('')}</div>`);}catch(e){sC(sqlErrHtml(e.message,'objekte'));}}
 async function pgObjektDetail(id){ld();try{const[{data:o},{data:auf}]=await Promise.all([sb.from('objekte').select('*').eq('id',id).single(),sb.from('aufgaben').select('*').eq('objekt_id',id).order('faellig',{ascending:true})]);if(!o){sC('<div class="em"><div class="em-t">Objekt nicht gefunden</div></div>');return;}const k=_objState.kunden.find(c=>c.id===o.kunden_id);const offAuf=(auf||[]).filter(a=>a.status==='offen');sC(`<div class="ph"><div><button class="bp" style="background:var(--bg);color:var(--text);border:1px solid var(--border);margin-bottom:8px" onclick="pgObjekte()">← Zurück</button><div class="pt">${o.name}</div><div class="ps">${o.adresse||'—'}</div></div><button class="bp" onclick="mObjektEdit('${o.id}')">Bearbeiten</button></div><div class="info-grid" style="margin-bottom:16px"><div class="info-box"><div class="info-label">Typ</div><div class="info-val">${o.typ||'—'}</div></div><div class="info-box"><div class="info-label">Status</div><div class="info-val">${o.status||'Aktiv'}</div></div><div class="info-box"><div class="info-label">Kunde</div><div class="info-val">${k?k.name:'—'}</div></div><div class="info-box"><div class="info-label">Adresse</div><div class="info-val">${o.adresse||'—'}</div></div></div>${o.beschreibung?`<div style="background:var(--bg);border-radius:10px;padding:14px;margin-bottom:16px;font-size:13px;color:var(--text-sec);line-height:1.6">${o.beschreibung}</div>`:''}<div class="section-hdr"><span class="section-hdr-title">Aufgaben (${offAuf.length} offen)</span><button class="section-hdr-link" onclick="mAufgabeForObjekt('${o.id}','${o.name.replace(/'/g,"\\'")}')" style="color:var(--p);font-weight:700">+ Aufgabe</button></div>${!offAuf.length?'<div class="em"><div class="em-t">Keine offenen Aufgaben</div></div>':`<div class="gr">${offAuf.map(a=>`<div class="ca" onclick="mAufgabeById('${a.id}')"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div style="flex:1"><div class="ca-t">${a.titel}</div><div class="ca-s">${a.zustaendig||'—'}${a.faellig?' · '+fmtDatum(a.faellig):''}</div></div><button onclick="event.stopPropagation();erledigeAufgabe('${a.id}')" style="padding:5px 10px;background:var(--green);color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;flex-shrink:0">Erledigt</button></div></div>`).join('')}</div>`}`);}catch(e){sC(`<div class="em"><div class="em-t">Fehler: ${e.message}</div></div>`);}}
@@ -490,20 +494,25 @@ async function saveObjekt(id){const name=document.getElementById('f-on').value.t
 async function delObjekt(id){if(!confirm('Objekt löschen?'))return;await sb.from('objekte').delete().eq('id',id);cM();pgObjekte();}
 function mAufgabeForObjekt(objId,objName){mAufgabe();setTimeout(()=>{const t=document.getElementById('f-t');if(t)t.placeholder=`Aufgabe für: ${objName}`;},50);}
 // ─── BENUTZER & ROLLEN ──────────────────────────────────────────
-const ROLLEN_SQL=`-- Benutzer-Rollen-Tabelle
-create table user_roles (
+const ROLLEN_SQL=`-- Benutzer-Rollen-Tabelle (kann mehrfach ausgeführt werden)
+create table if not exists user_roles (
   id uuid default gen_random_uuid() primary key,
   user_id uuid references auth.users(id) unique,
   email text,
-  rolle text default 'mitarbeiter', -- admin | mitarbeiter
+  rolle text default 'mitarbeiter',
   created_at timestamptz default now()
 );
 alter table user_roles enable row level security;
-create policy "admin_all" on user_roles for all
-  using (auth.uid() in (select user_id from user_roles where rolle='admin'));
--- Den ersten Benutzer als Admin eintragen:
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename='user_roles' and policyname='user_roles_own') then
+    create policy "user_roles_own" on user_roles for all
+      using (auth.uid()=user_id) with check (auth.uid()=user_id);
+  end if;
+end $$;
+-- Als Admin eintragen (wird übersprungen falls bereits vorhanden):
 insert into user_roles (user_id, email, rolle)
-  values (auth.uid(), current_setting('request.jwt.claims', true)::json->>'email', 'admin');`;
+  values (auth.uid(), current_setting('request.jwt.claims', true)::json->>'email', 'admin')
+  on conflict (user_id) do nothing;`;
 const ANF_SQL=`create table anfragen (
   id uuid default gen_random_uuid() primary key,
   name text, kontakt text, adresse text,
@@ -513,8 +522,12 @@ const ANF_SQL=`create table anfragen (
   created_at timestamptz default now()
 );
 alter table anfragen enable row level security;
-create policy "own" on anfragen for all
-  using (auth.uid()=user_id) with check (auth.uid()=user_id);`;
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename='anfragen' and policyname='anfragen_own') then
+    create policy "anfragen_own" on anfragen for all
+      using (auth.uid()=user_id) with check (auth.uid()=user_id);
+  end if;
+end $$;`;
 const _sqls={objekte:OBJ_SQL,rollen:ROLLEN_SQL,anfragen:ANF_SQL};
 function sqlErrHtml(msg,key){return`<div class="em"><div class="em-t">${msg}</div><div class="em-s" style="margin-top:8px;font-size:12px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span>Im <strong>Supabase SQL-Editor</strong> einmalig ausführen:</span><button onclick="copySql('${key}',this)" style="padding:4px 14px;background:var(--p);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0">SQL kopieren</button></div><code style="background:var(--bg);padding:8px;border-radius:6px;display:block;font-size:11px;white-space:pre-wrap;word-break:break-all">${_sqls[key]||''}</code></div></div>`;}
 function copySql(key,btn){const t=_sqls[key];if(!t)return;navigator.clipboard.writeText(t).then(()=>{btn.textContent='✓ Kopiert!';setTimeout(()=>{btn.textContent='SQL kopieren';},2000);}).catch(()=>prompt('SQL:',t));}
