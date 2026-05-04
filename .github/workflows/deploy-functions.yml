@@ -13,11 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: supabase/setup-cli@v1
-        with:
-          version: latest
-
       - name: Deploy invite-user function
-        run: supabase functions deploy invite-user --project-ref ${{ secrets.SUPABASE_PROJECT_REF }}
-        env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          curl -s -w "\nHTTP_STATUS:%{http_code}" \
+            -X POST "https://api.supabase.com/v1/projects/${{ secrets.SUPABASE_PROJECT_REF }}/functions" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ACCESS_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"slug\":\"invite-user\",\"name\":\"invite-user\",\"body\":$(cat supabase/functions/invite-user/index.ts | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))'),\"verify_jwt\":true}"
