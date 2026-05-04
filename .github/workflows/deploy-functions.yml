@@ -25,8 +25,8 @@ jobs:
           with open('supabase/functions/invite-user/index.ts') as f:
               body = f.read()
 
-          ref = os.environ['SUPABASE_PROJECT_REF']
-          token = os.environ['SUPABASE_ACCESS_TOKEN']
+          ref = os.environ['SUPABASE_PROJECT_REF'].strip()
+          token = os.environ['SUPABASE_ACCESS_TOKEN'].strip()
 
           if not ref or not token:
               print('ERROR: Secrets not set!')
