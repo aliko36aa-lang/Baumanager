@@ -22,10 +22,25 @@
   <div class="login-box">
     <div class="login-logo">Alem Facility PRO</div>
     <div class="login-sub">Baustellen Management</div>
-    <input id="le" type="email" placeholder="E-Mail Adresse">
-    <input id="lp" type="password" placeholder="Passwort">
-    <button class="bl" onclick="dL()">Anmelden</button>
-    <div id="lerr"></div>
+
+    <!-- Anmelden -->
+    <div id="lf">
+      <input id="le" type="email" placeholder="E-Mail Adresse" autocomplete="email">
+      <input id="lp" type="password" placeholder="Passwort" autocomplete="current-password">
+      <button class="bl" onclick="dL()">Anmelden</button>
+      <div id="lerr"></div>
+      <p style="text-align:center;margin-top:16px;font-size:13px;color:#94a3b8">Noch kein Konto? <a href="#" onclick="tAM(event)" style="color:#3b82f6;font-weight:600;text-decoration:none">Registrieren</a></p>
+    </div>
+
+    <!-- Registrieren -->
+    <div id="rf" style="display:none">
+      <input id="re" type="email" placeholder="E-Mail Adresse" autocomplete="email">
+      <input id="rp1" type="password" placeholder="Passwort (min. 6 Zeichen)" autocomplete="new-password">
+      <input id="rp2" type="password" placeholder="Passwort bestätigen" autocomplete="new-password">
+      <button id="reg-btn" class="bl" onclick="dReg()">Konto erstellen</button>
+      <div id="rerr"></div>
+      <p style="text-align:center;margin-top:16px;font-size:13px;color:#94a3b8">Schon ein Konto? <a href="#" onclick="tAM(event)" style="color:#3b82f6;font-weight:600;text-decoration:none">Anmelden</a></p>
+    </div>
   </div>
 </div>
 
