@@ -4,1080 +4,481 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Alem Facility & Ausbau Service – Hausmeister & Reinigung Berlin</title>
-<meta name="description" content="Ihr zuverlässiger Facility-Service in Berlin: Hausmeisterservice, Reinigung, Winterdienst, Renovierung. Festpreise garantiert, 24h Reaktionszeit. Jetzt kostenloses Angebot anfragen!">
-<meta property="og:title" content="Alem Facility & Ausbau Service – Berlin">
-<meta property="og:description" content="Zuverlässiger Hausmeisterservice & Reinigung in Berlin. Festpreise, persönlicher Service, 24h Reaktionszeit.">
+<meta name="description" content="Ihr zuverlässiger Facility-Service in Berlin: Hausmeisterservice, Reinigung, Winterdienst, Renovierung. Festpreise garantiert, 24h Reaktionszeit.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
 /* ── RESET & VARIABLES ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --navy: #07142A;
-  --navy2: #0D2045;
-  --acc: #2563EB;
-  --acc2: #1D4ED8;
-  --gold: #C9A84C;
-  --light: #F4F7FC;
-  --white: #FFFFFF;
-  --muted: rgba(255,255,255,0.55);
-  --card: rgba(255,255,255,0.06);
-  --border: rgba(255,255,255,0.10);
-  --fs-hero: clamp(2.8rem, 6vw, 5.5rem);
-  --fs-h2: clamp(2rem, 4vw, 3.4rem);
-  --fs-h3: clamp(1.3rem, 2.5vw, 1.9rem);
-  --r: 16px;
-  --r2: 24px;
-  --shadow: 0 24px 64px rgba(7,20,42,0.45);
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#07142A;--navy2:#0D2045;--acc:#2563EB;--acc2:#1D4ED8;
+  --light:#F4F7FC;--white:#FFFFFF;--muted:rgba(255,255,255,.55);
+  --card:rgba(255,255,255,.06);--border:rgba(255,255,255,.10);
+  --fs-hero:clamp(2.8rem,6vw,5.6rem);--fs-h2:clamp(2rem,4vw,3.4rem);
+  --fs-h3:clamp(1.3rem,2.5vw,2rem);--r:16px;--r2:24px;
+  --shadow:0 32px 80px rgba(7,20,42,.6);
 }
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--navy);
-  color: var(--white);
-  overflow-x: hidden;
-  line-height: 1.6;
-}
-::selection { background: var(--acc); color: #fff; }
-img { display: block; max-width: 100%; }
-a { text-decoration: none; color: inherit; }
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden;line-height:1.6}
+::selection{background:var(--acc);color:#fff}
+img{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
 
 /* ── NAV ── */
-#nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-  padding: 0 5vw;
-  display: flex; align-items: center; justify-content: space-between;
-  height: 72px;
-  transition: background .4s, box-shadow .4s, backdrop-filter .4s;
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:0 5vw;display:flex;align-items:center;justify-content:space-between;
+  height:72px;transition:all .4s;
 }
-#nav.scrolled {
-  background: rgba(7,20,42,0.85);
-  backdrop-filter: blur(24px);
-  box-shadow: 0 1px 0 var(--border);
+#nav.scrolled{background:rgba(7,20,42,.88);backdrop-filter:blur(24px);box-shadow:0 1px 0 var(--border)}
+.nav-logo{
+  font-family:'DM Serif Display',serif;font-size:1.25rem;
+  color:var(--white);display:flex;align-items:center;gap:10px
 }
-.nav-logo {
-  font-family: 'DM Serif Display', serif;
-  font-size: 1.25rem;
-  letter-spacing: .01em;
-  color: var(--white);
-  display: flex; align-items: center; gap: 10px;
+.nav-logo span{color:var(--acc)}
+.nav-dot{width:8px;height:8px;background:var(--acc);border-radius:50%;animation:pdot 2s infinite}
+@keyframes pdot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.6}}
+.nav-links{display:flex;align-items:center;gap:2.5rem;list-style:none}
+.nav-links a{font-size:.9rem;font-weight:500;color:var(--muted);transition:color .25s;letter-spacing:.03em}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{background:var(--acc);color:#fff!important;padding:.5rem 1.25rem;border-radius:50px;font-weight:600!important;transition:background .25s,transform .2s!important}
+.nav-cta:hover{background:var(--acc2)!important;transform:translateY(-2px)}
+.nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none}
+.nav-burger span{display:block;width:24px;height:2px;background:var(--white);border-radius:2px;transition:all .3s}
+.mobile-nav{
+  display:none;position:fixed;top:72px;left:0;right:0;
+  background:rgba(7,20,42,.97);backdrop-filter:blur(24px);z-index:999;
+  padding:1.5rem 5vw 2rem;flex-direction:column;gap:1.25rem;
+  border-bottom:1px solid var(--border);
 }
-.nav-logo span { color: var(--acc); }
-.nav-logo-dot {
-  width: 8px; height: 8px;
-  background: var(--acc);
-  border-radius: 50%;
-  animation: pulse-dot 2s infinite;
-}
-@keyframes pulse-dot {
-  0%,100% { transform: scale(1); opacity:1; }
-  50% { transform: scale(1.5); opacity:.6; }
-}
-.nav-links {
-  display: flex; align-items: center; gap: 2.5rem;
-  list-style: none;
-}
-.nav-links a {
-  font-size: .9rem; font-weight: 500;
-  color: var(--muted);
-  transition: color .25s;
-  letter-spacing: .03em;
-}
-.nav-links a:hover { color: var(--white); }
-.nav-cta {
-  background: var(--acc);
-  color: #fff !important;
-  padding: .5rem 1.25rem;
-  border-radius: 50px;
-  font-weight: 600 !important;
-  transition: background .25s, transform .2s !important;
-}
-.nav-cta:hover { background: var(--acc2) !important; transform: translateY(-2px); }
-.nav-burger {
-  display: none;
-  flex-direction: column; gap: 5px;
-  cursor: pointer; padding: 4px;
-}
-.nav-burger span {
-  display: block; width: 24px; height: 2px;
-  background: var(--white);
-  border-radius: 2px;
-  transition: all .3s;
-}
-.mobile-nav {
-  display: none;
-  position: fixed; top: 72px; left: 0; right: 0;
-  background: rgba(7,20,42,0.97);
-  backdrop-filter: blur(24px);
-  z-index: 999;
-  padding: 1.5rem 5vw 2rem;
-  flex-direction: column; gap: 1.25rem;
-  border-bottom: 1px solid var(--border);
-}
-.mobile-nav.open { display: flex; }
-.mobile-nav a {
-  font-size: 1rem; font-weight: 500;
-  color: var(--muted);
-  transition: color .2s;
-  padding: .4rem 0;
-}
-.mobile-nav a:hover { color: #fff; }
-.mobile-nav .m-cta {
-  background: var(--acc);
-  color: #fff !important;
-  padding: .75rem 1.5rem;
-  border-radius: 50px;
-  text-align: center;
-  font-weight: 600;
-  margin-top: .5rem;
-}
+.mobile-nav.open{display:flex}
+.mobile-nav a{font-size:1rem;font-weight:500;color:var(--muted);transition:color .2s;padding:.4rem 0}
+.mobile-nav a:hover{color:#fff}
+.mobile-nav .m-cta{background:var(--acc);color:#fff!important;padding:.75rem 1.5rem;border-radius:50px;text-align:center;font-weight:600;margin-top:.5rem}
 
 /* ── HERO ── */
-#hero {
-  min-height: 100dvh;
-  display: flex; align-items: center; justify-content: center;
-  position: relative;
-  overflow: hidden;
-  padding: 80px 5vw 60px;
+#hero{
+  min-height:100dvh;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;padding:80px 5vw 60px;
 }
-.hero-bg {
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse 80% 60% at 50% 30%, #0D2045 0%, #07142A 100%);
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 30%,#0D2045 0%,#07142A 100%);
 }
-.hero-grid {
-  position: absolute; inset: 0;
+.hero-grid{
+  position:absolute;inset:0;
   background-image:
-    linear-gradient(rgba(37,99,235,.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(37,99,235,.07) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    linear-gradient(rgba(37,99,235,.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(37,99,235,.06) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%);
 }
-.hero-glow {
-  position: absolute;
-  width: 600px; height: 600px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(37,99,235,.18) 0%, transparent 70%);
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
+.hero-glow{
+  position:absolute;width:700px;height:700px;border-radius:50%;
+  background:radial-gradient(circle,rgba(37,99,235,.16) 0%,transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;
 }
-#stars { position: absolute; inset: 0; pointer-events: none; }
-.hero-content {
-  position: relative; z-index: 1;
-  text-align: center;
-  max-width: 880px;
+#stars{position:absolute;inset:0;pointer-events:none}
+.hero-content{position:relative;z-index:1;text-align:center;max-width:900px}
+.h-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(37,99,235,.15);border:1px solid rgba(37,99,235,.35);
+  border-radius:50px;padding:.4rem 1rem .4rem .6rem;
+  font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:#93C5FD;margin-bottom:2rem;opacity:0;transform:translateY(24px);
 }
-.h-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(37,99,235,.15);
-  border: 1px solid rgba(37,99,235,.35);
-  border-radius: 50px;
-  padding: .4rem 1rem .4rem .6rem;
-  font-size: .8rem; font-weight: 600;
-  letter-spacing: .08em; text-transform: uppercase;
-  color: #93C5FD;
-  margin-bottom: 2rem;
-  opacity: 0; transform: translateY(20px);
+.h-badge-dot{width:6px;height:6px;background:#60A5FA;border-radius:50%}
+.h-h1{
+  font-family:'DM Serif Display',serif;
+  font-size:var(--fs-hero);line-height:1.06;letter-spacing:-.02em;
+  margin-bottom:1.5rem;opacity:0;transform:translateY(36px);
+  overflow:hidden;
 }
-.h-badge-dot {
-  width: 6px; height: 6px;
-  background: #60A5FA;
-  border-radius: 50%;
+.h-h1 em{font-style:italic;color:var(--acc)}
+.h-sub{
+  font-size:clamp(1rem,2vw,1.2rem);color:var(--muted);font-weight:300;
+  max-width:560px;margin:0 auto 2.5rem;line-height:1.75;
+  opacity:0;transform:translateY(24px);
 }
-.h-h1 {
-  font-family: 'DM Serif Display', serif;
-  font-size: var(--fs-hero);
-  line-height: 1.08;
-  letter-spacing: -.02em;
-  margin-bottom: 1.5rem;
-  opacity: 0; transform: translateY(30px);
+.h-btns{
+  display:flex;align-items:center;justify-content:center;
+  gap:1rem;flex-wrap:wrap;margin-bottom:3.5rem;
+  opacity:0;transform:translateY(24px);
 }
-.h-h1 em { font-style: italic; color: var(--acc); }
-.h-sub {
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  color: var(--muted);
-  font-weight: 300;
-  max-width: 560px; margin: 0 auto 2.5rem;
-  line-height: 1.7;
-  opacity: 0; transform: translateY(20px);
+.btn-prim{
+  background:var(--acc);color:#fff;padding:.88rem 2.2rem;border-radius:50px;
+  font-weight:600;font-size:.95rem;border:none;cursor:pointer;
+  transition:background .25s,transform .25s,box-shadow .25s;
+  box-shadow:0 8px 28px rgba(37,99,235,.4);letter-spacing:.01em;
 }
-.h-btns {
-  display: flex; align-items: center; justify-content: center;
-  gap: 1rem; flex-wrap: wrap;
-  margin-bottom: 3.5rem;
-  opacity: 0; transform: translateY(20px);
+.btn-prim:hover{background:var(--acc2);transform:translateY(-3px);box-shadow:0 14px 36px rgba(37,99,235,.5)}
+.btn-sec{
+  background:transparent;color:var(--white);padding:.88rem 2.2rem;border-radius:50px;
+  font-weight:500;font-size:.95rem;border:1px solid var(--border);cursor:pointer;
+  transition:border-color .25s,background .25s,transform .25s;letter-spacing:.01em;
 }
-.btn-prim {
-  background: var(--acc);
-  color: #fff;
-  padding: .85rem 2rem;
-  border-radius: 50px;
-  font-weight: 600; font-size: .95rem;
-  border: none; cursor: pointer;
-  transition: background .25s, transform .2s, box-shadow .25s;
-  box-shadow: 0 8px 24px rgba(37,99,235,.35);
-  letter-spacing: .01em;
+.btn-sec:hover{border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.07);transform:translateY(-3px)}
+.h-stats{
+  display:flex;align-items:center;justify-content:center;
+  gap:clamp(1.5rem,4vw,3.5rem);flex-wrap:wrap;opacity:0;transform:translateY(24px);
 }
-.btn-prim:hover { background: var(--acc2); transform: translateY(-3px); box-shadow: 0 12px 32px rgba(37,99,235,.45); }
-.btn-sec {
-  background: transparent;
-  color: var(--white);
-  padding: .85rem 2rem;
-  border-radius: 50px;
-  font-weight: 500; font-size: .95rem;
-  border: 1px solid var(--border);
-  cursor: pointer;
-  transition: border-color .25s, background .25s, transform .2s;
-  letter-spacing: .01em;
+.h-stat{text-align:center}
+.h-stat-num{font-family:'DM Serif Display',serif;font-size:clamp(2rem,3.5vw,2.8rem);line-height:1;color:var(--white)}
+.h-stat-num span{color:var(--acc)}
+.h-stat-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:.3rem;font-weight:500}
+.h-stat-div{width:1px;height:40px;background:var(--border)}
+.scroll-hint{
+  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  color:var(--muted);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;
 }
-.btn-sec:hover { border-color: rgba(255,255,255,.35); background: rgba(255,255,255,.06); transform: translateY(-3px); }
-.h-stats {
-  display: flex; align-items: center; justify-content: center;
-  gap: clamp(1.5rem, 4vw, 3.5rem);
-  flex-wrap: wrap;
-  opacity: 0; transform: translateY(20px);
-}
-.h-stat { text-align: center; }
-.h-stat-num {
-  font-family: 'DM Serif Display', serif;
-  font-size: clamp(2rem, 3.5vw, 2.8rem);
-  line-height: 1;
-  color: var(--white);
-}
-.h-stat-num span { color: var(--acc); }
-.h-stat-label {
-  font-size: .78rem;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  margin-top: .3rem;
-  font-weight: 500;
-}
-.h-stat-div {
-  width: 1px; height: 40px;
-  background: var(--border);
-}
-.scroll-hint {
-  position: absolute; bottom: 2rem; left: 50%;
-  transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  color: var(--muted);
-  font-size: .75rem; letter-spacing: .1em; text-transform: uppercase;
-  animation: bounce-hint 2s ease-in-out infinite;
-}
-.scroll-hint-line {
-  width: 1px; height: 40px;
-  background: linear-gradient(to bottom, var(--border), transparent);
-}
-@keyframes bounce-hint {
-  0%,100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(6px); }
-}
+.scroll-line{width:1px;height:44px;background:linear-gradient(to bottom,rgba(37,99,235,.6),transparent);animation:sline 2s ease-in-out infinite}
+@keyframes sline{0%,100%{transform:scaleY(1);opacity:.7}50%{transform:scaleY(.6);opacity:.3}}
 
 /* ── TRUST BAR ── */
-.trust-bar {
-  padding: 1.5rem 5vw;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  gap: clamp(1.5rem, 4vw, 4rem);
-  flex-wrap: wrap;
+.trust-bar{
+  padding:1.5rem 5vw;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;gap:clamp(1.5rem,4vw,4rem);flex-wrap:wrap;
 }
-.trust-item {
-  display: flex; align-items: center; gap: .6rem;
-  font-size: .82rem; font-weight: 500;
-  color: var(--muted);
-  white-space: nowrap;
-}
-.trust-icon { font-size: 1.1rem; }
+.trust-item{display:flex;align-items:center;gap:.6rem;font-size:.82rem;font-weight:500;color:var(--muted);white-space:nowrap}
+.trust-icon{font-size:1.1rem}
 
-/* ── SECTION SHARED ── */
-.section-intro {
-  padding: 100px 5vw 40px;
-  text-align: center;
-  max-width: 700px; margin: 0 auto;
+/* ── LEISTUNGEN INTRO ── */
+.section-intro{padding:100px 5vw 0;text-align:center;max-width:720px;margin:0 auto}
+.s-tag{
+  display:inline-flex;align-items:center;gap:6px;font-size:.75rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:.1em;color:#93C5FD;
+  background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.2);
+  padding:.3rem .75rem;border-radius:50px;margin-bottom:1.25rem;
 }
-.s-tag {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: .75rem; font-weight: 600;
-  text-transform: uppercase; letter-spacing: .1em;
-  color: #93C5FD;
-  background: rgba(37,99,235,.1);
-  border: 1px solid rgba(37,99,235,.2);
-  padding: .3rem .75rem;
-  border-radius: 50px;
-  margin-bottom: 1.25rem;
-}
-.s-h2 {
-  font-family: 'DM Serif Display', serif;
-  font-size: var(--fs-h2);
-  line-height: 1.1;
-  margin-bottom: 1rem;
-  letter-spacing: -.01em;
-}
-.s-h2 em { font-style: italic; color: var(--acc); }
-.s-sub {
-  color: var(--muted);
-  font-size: 1rem;
-  line-height: 1.7;
-  font-weight: 300;
-}
+.s-h2{font-family:'DM Serif Display',serif;font-size:var(--fs-h2);line-height:1.1;margin-bottom:1rem;letter-spacing:-.01em}
+.s-h2 em{font-style:italic;color:var(--acc)}
+.s-sub{color:var(--muted);font-size:1rem;line-height:1.7;font-weight:300}
 
 /* ── SERVICE SCENES ── */
-.scene {
-  position: relative;
-  min-height: 100vh;
-  display: flex; align-items: center;
-  overflow: hidden;
-  padding: 80px 5vw;
-}
-.scene-dark { background: var(--navy); }
-.scene-light { background: var(--navy2); }
+.scene{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;padding:80px 5vw}
+.scene-dark{background:var(--navy)}
+.scene-light{background:var(--navy2)}
+.scene-inner{width:100%;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(2.5rem,5vw,5rem);align-items:center}
+.scene-inner.rev{direction:rtl}
+.scene-inner.rev>*{direction:ltr}
 
-.scene-inner {
-  width: 100%; max-width: 1200px; margin: 0 auto;
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: clamp(2rem, 5vw, 5rem);
-  align-items: center;
+/* text block */
+.sctag{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#93C5FD;background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.2);padding:.3rem .75rem;border-radius:50px;margin-bottom:1.25rem}
+.sc-h{font-family:'DM Serif Display',serif;font-size:var(--fs-h3);line-height:1.12;margin-bottom:1rem;letter-spacing:-.01em}
+.sc-p{color:var(--muted);font-size:.95rem;line-height:1.78;font-weight:300;margin-bottom:1.5rem}
+.sc-feats{list-style:none;display:flex;flex-direction:column;gap:.7rem;margin-bottom:2rem}
+.sc-feats li{display:flex;align-items:center;gap:.75rem;font-size:.88rem;color:rgba(255,255,255,.78)}
+.sc-feats li::before{
+  content:'';flex-shrink:0;width:20px;height:20px;border-radius:50%;
+  background:rgba(37,99,235,.2);border:1px solid rgba(37,99,235,.4);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='8' viewBox='0 0 10 8'%3E%3Cpath d='M1 4l2.5 2.5L9 1' stroke='%232563EB' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:center;
 }
-.scene-inner.rev { direction: rtl; }
-.scene-inner.rev > * { direction: ltr; }
+.sc-link{display:inline-flex;align-items:center;gap:.5rem;color:#93C5FD;font-size:.9rem;font-weight:600;letter-spacing:.02em;transition:gap .2s;cursor:pointer}
+.sc-link:hover{gap:.9rem}
 
-.scene-txt {}
-.sctag {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: .75rem; font-weight: 600;
-  text-transform: uppercase; letter-spacing: .1em;
-  color: #93C5FD;
-  background: rgba(37,99,235,.1);
-  border: 1px solid rgba(37,99,235,.2);
-  padding: .3rem .75rem;
-  border-radius: 50px;
-  margin-bottom: 1.25rem;
-}
-.sc-h {
-  font-family: 'DM Serif Display', serif;
-  font-size: var(--fs-h3);
-  line-height: 1.15;
-  margin-bottom: 1rem;
-  letter-spacing: -.01em;
-}
-.sc-p {
-  color: var(--muted);
-  font-size: .95rem;
-  line-height: 1.75;
-  font-weight: 300;
-  margin-bottom: 1.5rem;
-}
-.sc-feats {
-  list-style: none;
-  display: flex; flex-direction: column; gap: .6rem;
-  margin-bottom: 2rem;
-}
-.sc-feats li {
-  display: flex; align-items: center; gap: .7rem;
-  font-size: .88rem;
-  color: rgba(255,255,255,.75);
-}
-.sc-feats li::before {
-  content: '';
-  flex-shrink: 0;
-  width: 18px; height: 18px;
-  border-radius: 50%;
-  background: rgba(37,99,235,.2);
-  border: 1px solid rgba(37,99,235,.4);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='8' viewBox='0 0 10 8'%3E%3Cpath d='M1 4l2.5 2.5L9 1' stroke='%232563EB' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: center;
-}
-.sc-link {
-  display: inline-flex; align-items: center; gap: .5rem;
-  color: #93C5FD;
-  font-size: .88rem; font-weight: 600;
-  letter-spacing: .02em;
-  transition: gap .2s;
-  cursor: pointer;
-}
-.sc-link:hover { gap: .85rem; }
-.sc-link-arr { font-size: 1.1rem; }
-
-/* ── SCENE VISUALS ── */
-.scene-vis {
-  position: relative;
-  border-radius: var(--r2);
-  overflow: hidden;
-  aspect-ratio: 4/3;
-  box-shadow: var(--shadow);
+/* ── SCENE PHOTO VISUALS ── */
+.scene-vis{
+  position:relative;border-radius:var(--r2);overflow:hidden;
+  aspect-ratio:4/3;box-shadow:var(--shadow);
+  /* subtle border for premium glass feel */
+  outline:1px solid rgba(255,255,255,.08);
 }
 
-/* SC1 – Renovierung: before/after wall reveal */
-.v1-wrap { position: relative; width: 100%; height: 100%; }
-.v1-bef {
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, #5a4a3a 0%, #7a6555 30%, #8a7060 50%, #6b5a4b 70%, #4a3a2b 100%);
+/* shared photo layer styles */
+.ph-layer{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+  transition:none;
 }
-.v1-bef::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image:
-    repeating-linear-gradient(0deg, rgba(0,0,0,.08) 0px, rgba(0,0,0,.08) 2px, transparent 2px, transparent 30px),
-    repeating-linear-gradient(90deg, rgba(0,0,0,.05) 0px, rgba(0,0,0,.05) 1px, transparent 1px, transparent 60px);
-}
-.v1-bef-label {
-  position: absolute; bottom: 16px; left: 16px;
-  background: rgba(0,0,0,.55); backdrop-filter: blur(8px);
-  color: rgba(255,255,255,.7); font-size: .72rem; font-weight: 600;
-  letter-spacing: .08em; text-transform: uppercase;
-  padding: .3rem .7rem; border-radius: 20px;
-}
-.v1-aft {
-  position: absolute; inset: 0;
-  clip-path: inset(0 100% 0 0);
-  background: linear-gradient(135deg, #f0ede8 0%, #e8e2d8 30%, #f5f0ea 60%, #ede8e0 100%);
-}
-.v1-aft::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image:
-    repeating-linear-gradient(0deg, rgba(200,180,150,.15) 0px, rgba(200,180,150,.15) 1px, transparent 1px, transparent 20px),
-    repeating-linear-gradient(90deg, rgba(200,180,150,.1) 0px, rgba(200,180,150,.1) 1px, transparent 1px, transparent 40px);
-}
-.v1-aft-label {
-  position: absolute; bottom: 16px; right: 16px;
-  background: rgba(0,0,0,.45); backdrop-filter: blur(8px);
-  color: rgba(255,255,255,.8); font-size: .72rem; font-weight: 600;
-  letter-spacing: .08em; text-transform: uppercase;
-  padding: .3rem .7rem; border-radius: 20px;
-}
-.v1-line {
-  position: absolute; top: 0; bottom: 0;
-  width: 2px;
-  background: rgba(255,255,255,.9);
-  left: 0%;
-  z-index: 5;
-  transition: none;
-}
-.v1-ico {
-  position: absolute; top: 50%;
-  transform: translate(-50%,-50%);
-  left: 0%;
-  z-index: 6;
-  width: 36px; height: 36px;
-  background: #fff;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1rem;
-  box-shadow: 0 4px 16px rgba(0,0,0,.3);
+.ph-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(160deg,rgba(7,20,42,.35) 0%,transparent 60%);
+  z-index:1;pointer-events:none;
 }
 
-/* SC2 – Außenanlagen: hedge trimming */
-.v2-wrap {
-  position: relative; width: 100%; height: 100%;
-  background: linear-gradient(180deg, #87CEEB 0%, #B8E4F9 40%, #7ab648 40%, #5a9a28 100%);
-  overflow: hidden;
+/* before/after divider kit */
+.ba-divider{
+  position:absolute;top:0;bottom:0;width:3px;
+  background:rgba(255,255,255,.92);
+  box-shadow:0 0 12px rgba(255,255,255,.4);
+  z-index:5;left:0%;transition:none;
 }
-.v2-sky { position: absolute; top: 0; left: 0; right: 0; height: 42%; background: linear-gradient(180deg, #87CEEB, #B8E4F9); }
-.v2-sun {
-  position: absolute; top: 14%; left: 68%;
-  width: 60px; height: 60px;
-  background: radial-gradient(circle, #FFE566 40%, rgba(255,229,102,.2) 100%);
-  border-radius: 50%;
-  box-shadow: 0 0 40px rgba(255,220,0,.5);
+.ba-handle{
+  position:absolute;top:50%;left:0%;
+  transform:translate(-50%,-50%);z-index:6;
+  width:42px;height:42px;border-radius:50%;
+  background:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:1rem;box-shadow:0 4px 20px rgba(0,0,0,.35);
+  font-weight:700;color:#1D4ED8;letter-spacing:-.05em;
+  transition:none;
 }
-.v2-hedge-bg {
-  position: absolute; bottom: 0; left: 0; right: 0; height: 62%;
-  background: linear-gradient(180deg, #4a8a20 0%, #3a7018 100%);
+.ba-label{
+  position:absolute;z-index:4;bottom:14px;
+  font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:.3rem .75rem;border-radius:20px;backdrop-filter:blur(8px);
 }
-.v2-hedge {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  height: 62%;
-  background: linear-gradient(180deg, #5aaa28 0%, #3a7018 100%);
-  clip-path: polygon(
-    0% 100%, 0% 30%,
-    4% 5%, 8% 22%, 12% 3%, 16% 18%, 20% 0%, 24% 15%,
-    28% 4%, 32% 20%, 36% 2%, 40% 16%, 44% 5%, 48% 18%,
-    52% 1%, 56% 14%, 60% 6%, 64% 20%, 68% 3%, 72% 17%,
-    76% 5%, 80% 22%, 84% 8%, 88% 18%, 92% 2%, 96% 16%,
-    100% 8%, 100% 100%
-  );
-}
-.v2-hedge-trim {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  height: 62%;
-  background: linear-gradient(180deg, #6abb34 0%, #4a8a20 100%);
-  clip-path: polygon(
-    0% 100%, 0% 25%,
-    100% 25%, 100% 100%
-  );
-  clip-path: inset(0 100% 0 0);
-}
-.v2-ground { position: absolute; bottom: 0; left: 0; right: 0; height: 12%; background: linear-gradient(180deg, #8B5E3C, #6b4828); }
+.ba-label.left{left:14px;background:rgba(0,0,0,.55);color:rgba(255,255,255,.7)}
+.ba-label.right{right:14px;background:rgba(37,99,235,.85);color:#fff}
 
-/* SC3 – Reinigung: dirty wipe to clean */
-.v3-wrap {
-  position: relative; width: 100%; height: 100%;
-  overflow: hidden;
+/* ── SC1 – Renovierung ── */
+/* Before: rundown room */
+#sc1 .ph-before{
+  background-image:url('https://images.unsplash.com/photo-1558979158-65a1eaa08691?auto=format&fit=crop&w=900&q=82');
+  background-color:#5a4535;
 }
-.v3-dirty {
-  position: absolute; inset: 0;
-  background: #2a2a2a;
-}
-.v3-dirty::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 20% 8% at 15% 20%, rgba(100,80,40,.6) 0%, transparent 100%),
-    radial-gradient(ellipse 30% 12% at 55% 45%, rgba(80,60,30,.5) 0%, transparent 100%),
-    radial-gradient(ellipse 25% 10% at 80% 70%, rgba(90,70,35,.55) 0%, transparent 100%),
-    radial-gradient(ellipse 18% 6% at 35% 80%, rgba(70,50,25,.4) 0%, transparent 100%),
-    radial-gradient(ellipse 22% 9% at 70% 15%, rgba(95,75,40,.5) 0%, transparent 100%);
-  background-color: #1a1a1a;
-}
-.v3-dirty-label {
-  position: absolute; top: 16px; left: 16px;
-  background: rgba(0,0,0,.6); backdrop-filter: blur(8px);
-  color: rgba(255,255,255,.6); font-size: .72rem; font-weight: 600;
-  letter-spacing: .08em; text-transform: uppercase;
-  padding: .3rem .7rem; border-radius: 20px;
-}
-.v3-clean {
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-  clip-path: inset(0 100% 0 0);
-}
-.v3-clean::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,.7) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.7) 1px, transparent 1px);
-  background-size: 30px 30px;
-}
-.v3-clean-label {
-  position: absolute; bottom: 16px; right: 16px;
-  background: rgba(37,99,235,.8); backdrop-filter: blur(8px);
-  color: #fff; font-size: .72rem; font-weight: 600;
-  letter-spacing: .08em; text-transform: uppercase;
-  padding: .3rem .7rem; border-radius: 20px;
-}
-.v3-mop {
-  position: absolute; top: 50%; right: -50px;
-  transform: translateY(-50%) rotate(20deg);
-  z-index: 6;
-  font-size: 3rem;
-  filter: drop-shadow(0 4px 16px rgba(0,0,0,.4));
+/* After: modern renovated room */
+#sc1 .ph-after{
+  background-image:url('https://images.unsplash.com/photo-1484154133784-9a8537e4b3df?auto=format&fit=crop&w=900&q=82');
+  background-color:#d8d0c5;
+  clip-path:inset(0 100% 0 0);
 }
 
-/* SC4 – Malerarbeiten: paint rolls down */
-.v4-wrap {
-  position: relative; width: 100%; height: 100%;
-  overflow: hidden;
+/* ── SC2 – Außenanlagen ── */
+#sc2 .ph-main{
+  background-image:url('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=900&q=82');
+  background-color:#4a7a28;
+  transform:scale(1.12);transform-origin:center center;
 }
-.v4-base {
-  position: absolute; inset: 0;
-  background: #d0c8bc;
-  background-image:
-    repeating-linear-gradient(0deg, rgba(0,0,0,.04) 0px, rgba(0,0,0,.04) 1px, transparent 1px, transparent 24px),
-    repeating-linear-gradient(90deg, rgba(0,0,0,.03) 0px, rgba(0,0,0,.03) 1px, transparent 1px, transparent 48px);
+#sc2 .ph-dark-cover{
+  position:absolute;inset:0;z-index:2;
+  background:rgba(7,20,42,.72);
+  transition:none;
 }
-.v4-paint {
-  position: absolute; inset: 0;
-  background: linear-gradient(160deg, #1E3A6E 0%, #2563EB 40%, #1D4ED8 70%, #1a3a8f 100%);
-  clip-path: inset(100% 0 0 0);
-}
-.v4-roller {
-  position: absolute; top: -80px; left: 50%;
-  transform: translateX(-50%);
-  z-index: 6;
-  width: 70px;
-  display: flex; flex-direction: column; align-items: center;
-}
-.v4-roller-handle {
-  width: 3px; height: 60px;
-  background: linear-gradient(180deg, #aaa, #777);
-  border-radius: 2px;
-}
-.v4-roller-body {
-  width: 58px; height: 22px;
-  background: linear-gradient(180deg, #2563EB, #1D4ED8);
-  border-radius: 4px;
-  box-shadow: 0 4px 12px rgba(37,99,235,.5), inset 0 2px 4px rgba(255,255,255,.2);
-  position: relative;
-  overflow: hidden;
-}
-.v4-roller-body::after {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 8px;
-  background: linear-gradient(180deg, rgba(255,255,255,.3), transparent);
+.sc2-badge{
+  position:absolute;bottom:20px;left:20px;z-index:5;
+  background:rgba(37,99,235,.85);backdrop-filter:blur(8px);
+  color:#fff;padding:.45rem 1rem;border-radius:20px;
+  font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
 }
 
-/* SC5 – Bodenbeläge: old to new floor */
-.v5-wrap {
-  position: relative; width: 100%; height: 100%;
-  overflow: hidden;
+/* ── SC3 – Reinigung ── */
+#sc3 .ph-before{
+  background-image:url('https://images.unsplash.com/photo-1521656693074-0ef32e80a5d5?auto=format&fit=crop&w=900&q=82');
+  background-color:#2a2520;
+  filter:saturate(.3) brightness(.7);
 }
-.v5-old {
-  position: absolute; inset: 0;
-  background: #8B6914;
-  background-image:
-    repeating-linear-gradient(0deg, transparent 0px, transparent 39px, rgba(0,0,0,.2) 39px, rgba(0,0,0,.2) 40px),
-    repeating-linear-gradient(90deg, transparent 0px, transparent 79px, rgba(0,0,0,.15) 79px, rgba(0,0,0,.15) 80px);
-}
-.v5-old::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    repeating-linear-gradient(0deg, rgba(0,0,0,.08) 0px, rgba(0,0,0,.08) 1px, transparent 1px, transparent 40px),
-    radial-gradient(ellipse 40% 20% at 25% 60%, rgba(0,0,0,.12) 0%, transparent 100%);
-}
-.v5-new {
-  position: absolute; inset: 0;
-  background: #F5E6D0;
-  background-image:
-    repeating-linear-gradient(0deg, transparent 0px, transparent 49px, rgba(180,140,90,.25) 49px, rgba(180,140,90,.25) 50px),
-    repeating-linear-gradient(90deg, transparent 0px, transparent 24px, rgba(180,140,90,.15) 24px, rgba(180,140,90,.15) 25px);
-  clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
-}
-.v5-new::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,.15) 0%, transparent 50%);
-}
-.v5-old-label {
-  position: absolute; bottom: 16px; left: 16px;
-  background: rgba(0,0,0,.55); backdrop-filter: blur(8px);
-  color: rgba(255,255,255,.7); font-size: .72rem; font-weight: 600;
-  letter-spacing: .08em; text-transform: uppercase;
-  padding: .3rem .7rem; border-radius: 20px;
-}
-.v5-new-label {
-  position: absolute; bottom: 16px; right: 16px;
-  background: rgba(37,99,235,.8); backdrop-filter: blur(8px);
-  color: #fff; font-size: .72rem; font-weight: 600;
-  letter-spacing: .08em; text-transform: uppercase;
-  padding: .3rem .7rem; border-radius: 20px;
+#sc3 .ph-after{
+  background-image:url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=82');
+  background-color:#e8f0f8;
+  clip-path:inset(0 100% 0 0);
 }
 
-/* SC6 – Winterdienst: snow path reveal */
-.v6-wrap {
-  position: relative; width: 100%; height: 100%;
-  overflow: hidden;
-  background: linear-gradient(180deg, #0a1628 0%, #162040 100%);
+/* ── SC4 – Malerarbeiten ── */
+#sc4 .ph-main{
+  background-image:url('https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=900&q=82');
+  background-color:#c4beb6;
 }
-#v6snowflakes { position: absolute; inset: 0; pointer-events: none; }
-.v6-pavement {
-  position: absolute; bottom: 0; left: 0; right: 0; height: 55%;
-  background: linear-gradient(180deg, #4a5568 0%, #2d3748 100%);
+#sc4 .ph-paint-layer{
+  position:absolute;inset:0;z-index:2;
+  background:linear-gradient(180deg,#1D4ED8 0%,#2563EB 50%,#1E3A6E 100%);
+  clip-path:inset(100% 0 0 0);
+  opacity:.88;
 }
-.v6-snow-cover {
-  position: absolute; bottom: 0; left: 0; right: 0; height: 55%;
-  background: linear-gradient(180deg, #f0f4f8 0%, #e2e8f0 60%, #cbd5e0 100%);
+/* roller element */
+.v4-roller{
+  position:absolute;top:-90px;left:50%;transform:translateX(-50%);z-index:6;
+  display:flex;flex-direction:column;align-items:center;gap:0;
 }
-.v6-snow-cover::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 8px;
-  background: radial-gradient(ellipse 100% 100% at 50% 0%, #fff 0%, transparent 100%);
+.v4-stick{width:3px;height:70px;background:linear-gradient(180deg,#bbb,#888);border-radius:2px}
+.v4-body{
+  width:62px;height:24px;
+  background:linear-gradient(180deg,#3b82f6,#1D4ED8);
+  border-radius:5px;box-shadow:0 4px 14px rgba(37,99,235,.6),inset 0 2px 5px rgba(255,255,255,.25);
+  position:relative;overflow:hidden;
 }
-.v6-path {
-  position: absolute; bottom: 0; left: 25%; right: 25%;
-  height: 55%;
-  background: linear-gradient(180deg, #5a6a7e 0%, #3a4a5e 100%);
-  clip-path: inset(100% 0 0 0);
+.v4-body::after{content:'';position:absolute;top:0;left:0;right:0;height:10px;background:linear-gradient(180deg,rgba(255,255,255,.35),transparent)}
+.v4-drip{
+  position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);
+  width:10px;height:16px;
+  background:#2563EB;
+  border-radius:0 0 50% 50%;
+  box-shadow:0 4px 8px rgba(37,99,235,.4);
 }
-.v6-path::before {
-  content: '';
-  position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
-  width: 3px; height: 100%;
-  background: repeating-linear-gradient(180deg, rgba(255,255,255,.3) 0px, rgba(255,255,255,.3) 15px, transparent 15px, transparent 30px);
+
+/* ── SC5 – Bodenbeläge ── */
+#sc5 .ph-before{
+  background-image:url('https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?auto=format&fit=crop&w=900&q=82');
+  background-color:#7a5c2e;
+  filter:saturate(.6) brightness(.75);
 }
+#sc5 .ph-after{
+  background-image:url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=900&q=82');
+  background-color:#f0e8d8;
+  clip-path:polygon(100% 0,100% 0,100% 100%,100% 100%);
+}
+
+/* ── SC6 – Winterdienst ── */
+#sc6 .ph-main{
+  background-image:url('https://images.unsplash.com/photo-1477601263568-180e2c6d046e?auto=format&fit=crop&w=900&q=82');
+  background-color:#1a2535;
+}
+#sc6 .ph-cleared{
+  position:absolute;
+  top:50%;left:20%;right:20%;bottom:0;
+  background:linear-gradient(180deg,#4a5568,#2d3748);
+  clip-path:inset(100% 0 0 0);
+  z-index:2;
+}
+#v6snowflakes{position:absolute;inset:0;pointer-events:none;z-index:3}
 
 /* ── ABOUT ── */
-#about {
-  padding: 100px 5vw;
-  background: var(--navy);
+#about{padding:100px 5vw;background:var(--navy)}
+.about-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(3rem,6vw,6rem);align-items:center}
+.about-vis{
+  position:relative;border-radius:var(--r2);overflow:hidden;
+  aspect-ratio:1;box-shadow:var(--shadow);
 }
-.about-inner {
-  max-width: 1200px; margin: 0 auto;
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: clamp(3rem, 6vw, 6rem);
-  align-items: center;
+.about-photo{
+  width:100%;height:100%;
+  background-image:url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=82');
+  background-size:cover;background-position:center;background-color:#1a2535;
 }
-.about-vis {
-  position: relative;
-  border-radius: var(--r2);
-  overflow: hidden;
-  aspect-ratio: 1;
+.about-photo-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(160deg,rgba(7,20,42,.7) 0%,rgba(7,20,42,.2) 100%);
 }
-.about-vis-bg {
-  width: 100%; height: 100%;
-  background: linear-gradient(135deg, #0D2045 0%, #163060 50%, #0D2045 100%);
-  display: flex; align-items: center; justify-content: center;
+.about-photo-num{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  text-align:center;
 }
-.about-vis-inner {
-  text-align: center;
+.about-big{font-family:'DM Serif Display',serif;font-size:clamp(5rem,10vw,8rem);line-height:1;color:#fff;text-shadow:0 4px 32px rgba(7,20,42,.8)}
+.about-big-sub{font-size:.85rem;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.7);font-weight:600;margin-top:.5rem}
+.about-cards{position:absolute;bottom:1.5rem;left:1.5rem;right:1.5rem;display:flex;gap:.75rem;flex-wrap:wrap}
+.about-card{
+  background:rgba(7,20,42,.75);backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.15);border-radius:14px;
+  padding:.7rem 1rem;display:flex;align-items:center;gap:.7rem;flex:1;min-width:140px;
 }
-.about-big-num {
-  font-family: 'DM Serif Display', serif;
-  font-size: clamp(5rem, 10vw, 9rem);
-  line-height: 1;
-  background: linear-gradient(135deg, #fff, rgba(37,99,235,.7));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.about-big-label {
-  font-size: .85rem; text-transform: uppercase;
-  letter-spacing: .12em; color: var(--muted);
-  font-weight: 600; margin-top: .5rem;
-}
-.about-cards {
-  position: absolute; bottom: -1rem; right: -1rem;
-  display: flex; flex-direction: column; gap: .75rem;
-}
-.about-card {
-  background: rgba(37,99,235,.15);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(37,99,235,.25);
-  border-radius: 14px;
-  padding: .75rem 1rem;
-  display: flex; align-items: center; gap: .75rem;
-  min-width: 170px;
-}
-.about-card-ico { font-size: 1.5rem; }
-.about-card-txt { }
-.about-card-num { font-weight: 700; font-size: 1.05rem; }
-.about-card-sub { font-size: .72rem; color: var(--muted); }
-.about-txt { }
-.about-txt .s-tag { margin-bottom: 1.25rem; }
-.about-txt .s-h2 { margin-bottom: 1rem; }
-.about-txt p {
-  color: var(--muted); font-size: .95rem; line-height: 1.75;
-  font-weight: 300; margin-bottom: 1.5rem;
-}
-.about-list {
-  list-style: none;
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: .75rem 1.5rem;
-  margin-bottom: 2rem;
-}
-.about-list li {
-  display: flex; align-items: center; gap: .5rem;
-  font-size: .88rem;
-  color: rgba(255,255,255,.8);
-}
-.about-list li::before {
-  content: '✓';
-  color: var(--acc);
-  font-weight: 700; font-size: .8rem;
-}
+.about-card-ico{font-size:1.4rem}
+.about-card-num{font-weight:700;font-size:1rem;color:#fff}
+.about-card-sub{font-size:.7rem;color:var(--muted)}
+.about-txt .s-tag{margin-bottom:1.25rem}
+.about-txt p{color:var(--muted);font-size:.95rem;line-height:1.78;font-weight:300;margin-bottom:1.5rem}
+.about-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.7rem 1.5rem;margin-bottom:2rem}
+.about-list li{display:flex;align-items:center;gap:.5rem;font-size:.88rem;color:rgba(255,255,255,.8)}
+.about-list li::before{content:'✓';color:var(--acc);font-weight:700;font-size:.85rem}
 
 /* ── PROZESS ── */
-#prozess {
-  padding: 100px 5vw;
-  background: var(--navy2);
-}
-.prozess-inner {
-  max-width: 900px; margin: 0 auto;
-}
-.prozess-steps {
-  display: flex; flex-direction: column;
-  gap: 0;
-  margin-top: 3.5rem;
-  position: relative;
-}
-.prozess-steps::before {
-  content: '';
-  position: absolute; left: 27px; top: 0; bottom: 0;
-  width: 2px;
-  background: linear-gradient(180deg, var(--acc) 0%, rgba(37,99,235,.1) 100%);
-}
-.pstep {
-  display: flex; gap: 2rem;
-  padding-bottom: 3rem;
-  position: relative;
-}
-.pstep:last-child { padding-bottom: 0; }
-.pstep-num {
-  flex-shrink: 0;
-  width: 56px; height: 56px;
-  border-radius: 50%;
-  background: var(--acc);
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'DM Serif Display', serif;
-  font-size: 1.3rem;
-  font-weight: 700;
-  box-shadow: 0 0 0 6px var(--navy2), 0 0 0 8px rgba(37,99,235,.2);
-  position: relative; z-index: 1;
-}
-.pstep-body { padding-top: .75rem; }
-.pstep-title {
-  font-weight: 600; font-size: 1.05rem;
-  margin-bottom: .4rem;
-}
-.pstep-desc {
-  color: var(--muted); font-size: .9rem;
-  line-height: 1.65; font-weight: 300;
-}
+#prozess{padding:100px 5vw;background:var(--navy2)}
+.prozess-inner{max-width:900px;margin:0 auto}
+.prozess-steps{display:flex;flex-direction:column;margin-top:3.5rem;position:relative}
+.prozess-steps::before{content:'';position:absolute;left:27px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--acc) 0%,rgba(37,99,235,.1) 100%)}
+.pstep{display:flex;gap:2rem;padding-bottom:3rem;position:relative}
+.pstep:last-child{padding-bottom:0}
+.pstep-num{flex-shrink:0;width:56px;height:56px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:1.3rem;font-weight:700;box-shadow:0 0 0 6px var(--navy2),0 0 0 8px rgba(37,99,235,.2);position:relative;z-index:1}
+.pstep-body{padding-top:.75rem}
+.pstep-title{font-weight:600;font-size:1.05rem;margin-bottom:.4rem}
+.pstep-desc{color:var(--muted);font-size:.9rem;line-height:1.68;font-weight:300}
 
 /* ── FAQ ── */
-#faq {
-  padding: 100px 5vw;
-  background: var(--navy);
-}
-.faq-inner {
-  max-width: 780px; margin: 0 auto;
-}
-.faq-list {
-  margin-top: 3rem;
-  display: flex; flex-direction: column; gap: 0;
-  border-top: 1px solid var(--border);
-}
-.faq-item {
-  border-bottom: 1px solid var(--border);
-  overflow: hidden;
-}
-.faq-q {
-  width: 100%; text-align: left;
-  background: none; border: none; color: var(--white);
-  padding: 1.4rem 0;
-  display: flex; align-items: center; justify-content: space-between;
-  cursor: pointer;
-  font-size: .95rem; font-weight: 500;
-  font-family: 'DM Sans', sans-serif;
-  gap: 1rem;
-}
-.faq-ico {
-  flex-shrink: 0;
-  width: 24px; height: 24px;
-  border-radius: 50%;
-  background: rgba(37,99,235,.15);
-  border: 1px solid rgba(37,99,235,.3);
-  display: flex; align-items: center; justify-content: center;
-  font-size: .75rem;
-  transition: transform .3s, background .3s;
-}
-.faq-item.open .faq-ico { transform: rotate(45deg); background: var(--acc); }
-.faq-a {
-  color: var(--muted); font-size: .9rem; line-height: 1.7; font-weight: 300;
-  max-height: 0; overflow: hidden;
-  transition: max-height .4s ease, padding .4s ease;
-  padding-bottom: 0;
-}
-.faq-item.open .faq-a { max-height: 300px; padding-bottom: 1.4rem; }
+#faq{padding:100px 5vw;background:var(--navy)}
+.faq-inner{max-width:780px;margin:0 auto}
+.faq-list{margin-top:3rem;display:flex;flex-direction:column;border-top:1px solid var(--border)}
+.faq-item{border-bottom:1px solid var(--border);overflow:hidden}
+.faq-q{width:100%;text-align:left;background:none;border:none;color:var(--white);padding:1.4rem 0;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-size:.95rem;font-weight:500;font-family:'DM Sans',sans-serif;gap:1rem}
+.faq-ico{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:rgba(37,99,235,.15);border:1px solid rgba(37,99,235,.3);display:flex;align-items:center;justify-content:center;font-size:.75rem;transition:transform .3s,background .3s}
+.faq-item.open .faq-ico{transform:rotate(45deg);background:var(--acc)}
+.faq-a{color:var(--muted);font-size:.9rem;line-height:1.72;font-weight:300;max-height:0;overflow:hidden;transition:max-height .4s ease,padding .4s ease;padding-bottom:0}
+.faq-item.open .faq-a{max-height:300px;padding-bottom:1.4rem}
 
-/* ── CONTACT FORM ── */
-#kontakt {
-  padding: 100px 5vw;
-  background: var(--navy2);
+/* ── CONTACT ── */
+#kontakt{padding:100px 5vw;background:var(--navy2)}
+.kontakt-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(3rem,6vw,6rem);align-items:start}
+.kontakt-info p{color:var(--muted);font-size:.95rem;line-height:1.78;font-weight:300;margin-bottom:2rem}
+.k-items{display:flex;flex-direction:column;gap:1.25rem}
+.k-item{display:flex;align-items:flex-start;gap:1rem}
+.k-ico{flex-shrink:0;width:44px;height:44px;border-radius:12px;background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.k-label{font-size:.73rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600;margin-bottom:.15rem}
+.k-val{font-size:.95rem;font-weight:500}
+.k-val a{color:var(--white);transition:color .2s}
+.k-val a:hover{color:#93C5FD}
+.form-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:clamp(1.5rem,3vw,2.5rem)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;font-size:.76rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.4rem}
+.form-group input,.form-group select,.form-group textarea{
+  width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:10px;
+  color:var(--white);font-size:.92rem;font-family:'DM Sans',sans-serif;padding:.75rem 1rem;
+  outline:none;transition:border-color .25s,background .25s;-webkit-appearance:none;appearance:none;
 }
-.kontakt-inner {
-  max-width: 1100px; margin: 0 auto;
-  display: grid; grid-template-columns: 1fr 1.1fr;
-  gap: clamp(3rem, 6vw, 6rem);
-  align-items: start;
-}
-.kontakt-info .s-h2 { margin-bottom: 1.25rem; }
-.kontakt-info p {
-  color: var(--muted); font-size: .95rem; line-height: 1.75;
-  font-weight: 300; margin-bottom: 2rem;
-}
-.k-items { display: flex; flex-direction: column; gap: 1.25rem; }
-.k-item {
-  display: flex; align-items: flex-start; gap: 1rem;
-}
-.k-ico {
-  flex-shrink: 0;
-  width: 44px; height: 44px;
-  border-radius: 12px;
-  background: rgba(37,99,235,.12);
-  border: 1px solid rgba(37,99,235,.2);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.2rem;
-}
-.k-label { font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 600; margin-bottom: .15rem; }
-.k-val { font-size: .95rem; font-weight: 500; }
-.k-val a { color: var(--white); transition: color .2s; }
-.k-val a:hover { color: #93C5FD; }
-
-.form-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--r2);
-  padding: clamp(1.5rem, 3vw, 2.5rem);
-}
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-.form-group { margin-bottom: 1rem; }
-.form-group label {
-  display: block;
-  font-size: .78rem; font-weight: 600; text-transform: uppercase;
-  letter-spacing: .07em; color: var(--muted);
-  margin-bottom: .4rem;
-}
-.form-group input,
-.form-group select,
-.form-group textarea {
-  width: 100%;
-  background: rgba(255,255,255,.05);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  color: var(--white);
-  font-size: .92rem; font-family: 'DM Sans', sans-serif;
-  padding: .75rem 1rem;
-  outline: none;
-  transition: border-color .25s, background .25s;
-  -webkit-appearance: none; appearance: none;
-}
-.form-group select option { background: #0D2045; color: #fff; }
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  border-color: var(--acc);
-  background: rgba(37,99,235,.08);
-}
-.form-group input::placeholder,
-.form-group textarea::placeholder { color: rgba(255,255,255,.25); }
-.form-group textarea { resize: vertical; min-height: 100px; }
-#form-msg {
-  padding: .75rem 1rem;
-  border-radius: 10px;
-  font-size: .88rem;
-  margin-bottom: 1rem;
-  display: none;
-}
-#form-msg.ok { background: rgba(34,197,94,.15); border: 1px solid rgba(34,197,94,.3); color: #86efac; display: block; }
-#form-msg.err { background: rgba(239,68,68,.12); border: 1px solid rgba(239,68,68,.25); color: #fca5a5; display: block; }
-.btn-submit {
-  width: 100%;
-  background: var(--acc);
-  color: #fff;
-  border: none; border-radius: 50px;
-  padding: 1rem;
-  font-size: .95rem; font-weight: 600;
-  font-family: 'DM Sans', sans-serif;
-  cursor: pointer;
-  transition: background .25s, transform .2s, box-shadow .25s;
-  box-shadow: 0 8px 24px rgba(37,99,235,.3);
-  letter-spacing: .01em;
-}
-.btn-submit:hover:not(:disabled) { background: var(--acc2); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(37,99,235,.4); }
-.btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+.form-group select option{background:#0D2045;color:#fff}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--acc);background:rgba(37,99,235,.08)}
+.form-group input::placeholder,.form-group textarea::placeholder{color:rgba(255,255,255,.22)}
+.form-group textarea{resize:vertical;min-height:100px}
+#form-msg{padding:.75rem 1rem;border-radius:10px;font-size:.88rem;margin-bottom:1rem;display:none}
+#form-msg.ok{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#86efac;display:block}
+#form-msg.err{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#fca5a5;display:block}
+.btn-submit{width:100%;background:var(--acc);color:#fff;border:none;border-radius:50px;padding:1rem;font-size:.95rem;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:background .25s,transform .2s,box-shadow .25s;box-shadow:0 8px 24px rgba(37,99,235,.3);letter-spacing:.01em}
+.btn-submit:hover:not(:disabled){background:var(--acc2);transform:translateY(-2px);box-shadow:0 12px 32px rgba(37,99,235,.4)}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed;transform:none}
 
 /* ── FOOTER ── */
-footer {
-  padding: 3rem 5vw 2rem;
-  border-top: 1px solid var(--border);
-  background: var(--navy);
-}
-.footer-inner {
-  max-width: 1200px; margin: 0 auto;
-  display: grid; grid-template-columns: 1.5fr 1fr 1fr;
-  gap: 3rem; margin-bottom: 2.5rem;
-}
-.footer-brand p {
-  color: var(--muted); font-size: .88rem; line-height: 1.7;
-  font-weight: 300; margin-top: .75rem; margin-bottom: 1.25rem;
-  max-width: 280px;
-}
-.footer-social { display: flex; gap: .75rem; }
-.f-social {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: var(--card); border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  font-size: .9rem;
-  transition: background .2s, border-color .2s, transform .2s;
-  cursor: pointer;
-}
-.f-social:hover { background: rgba(37,99,235,.2); border-color: rgba(37,99,235,.4); transform: translateY(-2px); }
-.footer-col h4 {
-  font-size: .8rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .1em; color: var(--white);
-  margin-bottom: 1rem;
-}
-.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .55rem; }
-.footer-col ul li a {
-  font-size: .88rem; color: var(--muted);
-  transition: color .2s;
-}
-.footer-col ul li a:hover { color: var(--white); }
-.footer-bottom {
-  border-top: 1px solid var(--border);
-  padding-top: 1.5rem;
-  display: flex; align-items: center; justify-content: space-between;
-  flex-wrap: wrap; gap: 1rem;
-}
-.footer-bottom p { font-size: .8rem; color: var(--muted); }
-.footer-bottom-links { display: flex; gap: 1.5rem; }
-.footer-bottom-links a { font-size: .8rem; color: var(--muted); transition: color .2s; }
-.footer-bottom-links a:hover { color: var(--white); }
+footer{padding:3rem 5vw 2rem;border-top:1px solid var(--border);background:var(--navy)}
+.footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem;margin-bottom:2.5rem}
+.footer-brand p{color:var(--muted);font-size:.88rem;line-height:1.72;font-weight:300;margin-top:.75rem;margin-bottom:1.25rem;max-width:280px}
+.footer-social{display:flex;gap:.75rem}
+.f-social{width:36px;height:36px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s;cursor:pointer;text-decoration:none}
+.f-social:hover{background:rgba(37,99,235,.2);border-color:rgba(37,99,235,.4);transform:translateY(-2px)}
+.footer-col h4{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--white);margin-bottom:1rem}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.55rem}
+.footer-col ul li a{font-size:.88rem;color:var(--muted);transition:color .2s}
+.footer-col ul li a:hover{color:var(--white)}
+.footer-bottom{border-top:1px solid var(--border);padding-top:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.footer-bottom p{font-size:.8rem;color:var(--muted)}
+.footer-bottom-links{display:flex;gap:1.5rem}
+.footer-bottom-links a{font-size:.8rem;color:var(--muted);transition:color .2s}
+.footer-bottom-links a:hover{color:var(--white)}
 
-/* ── FLOATING WA BUTTON ── */
-#wa-float {
-  position: fixed; bottom: 2rem; right: 2rem;
-  z-index: 900;
-  width: 58px; height: 58px;
-  border-radius: 50%;
-  background: #25D366;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 8px 24px rgba(37,211,102,.4);
-  cursor: pointer;
-  transition: transform .25s, box-shadow .25s;
-  border: none;
-  text-decoration: none;
+/* ── FLOATING WA ── */
+#wa-float{
+  position:fixed;bottom:2rem;right:2rem;z-index:900;
+  width:58px;height:58px;border-radius:50%;background:#25D366;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 28px rgba(37,211,102,.45);cursor:pointer;
+  transition:transform .25s,box-shadow .25s;border:none;text-decoration:none;
 }
-#wa-float:hover { transform: scale(1.1); box-shadow: 0 12px 32px rgba(37,211,102,.5); }
-#wa-float svg { width: 28px; height: 28px; fill: #fff; }
-.wa-pulse {
-  position: absolute; inset: 0;
-  border-radius: 50%;
-  background: rgba(37,211,102,.4);
-  animation: wa-pulse 2.5s ease-out infinite;
-}
-@keyframes wa-pulse {
-  0% { transform: scale(1); opacity:.7; }
-  100% { transform: scale(2); opacity:0; }
-}
+#wa-float:hover{transform:scale(1.1);box-shadow:0 14px 36px rgba(37,211,102,.55)}
+#wa-float svg{width:28px;height:28px;fill:#fff}
+.wa-pulse{position:absolute;inset:0;border-radius:50%;background:rgba(37,211,102,.4);animation:wap 2.5s ease-out infinite}
+@keyframes wap{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.1);opacity:0}}
 
 /* ── RESPONSIVE ── */
-@media (max-width: 900px) {
-  .scene-inner { grid-template-columns: 1fr; }
-  .scene-inner.rev { direction: ltr; }
-  .scene-vis { aspect-ratio: 16/9; }
-  .about-inner { grid-template-columns: 1fr; }
-  .about-cards { position: relative; bottom: auto; right: auto; flex-direction: row; flex-wrap: wrap; }
-  .kontakt-inner { grid-template-columns: 1fr; }
-  .footer-inner { grid-template-columns: 1fr 1fr; }
+@media(max-width:900px){
+  .scene-inner{grid-template-columns:1fr}
+  .scene-inner.rev{direction:ltr}
+  .scene-vis{aspect-ratio:16/9}
+  .about-inner{grid-template-columns:1fr}
+  .kontakt-inner{grid-template-columns:1fr}
+  .footer-inner{grid-template-columns:1fr 1fr}
 }
-@media (max-width: 768px) {
-  .nav-links { display: none; }
-  .nav-burger { display: flex; }
-  .form-row { grid-template-columns: 1fr; }
-  .about-list { grid-template-columns: 1fr; }
+@media(max-width:768px){
+  .nav-links{display:none}
+  .nav-burger{display:flex}
+  .form-row{grid-template-columns:1fr}
+  .about-list{grid-template-columns:1fr}
 }
-@media (max-width: 500px) {
-  .footer-inner { grid-template-columns: 1fr; }
-  .h-stats { gap: 1rem; }
-  .h-stat-div { display: none; }
-  .trust-bar { gap: 1rem; }
+@media(max-width:500px){
+  .footer-inner{grid-template-columns:1fr}
+  .h-stat-div{display:none}
+  .h-stats{gap:1rem}
 }
 </style>
 </head>
 <body>
 
 <!-- FLOATING WA -->
-<a id="wa-float" href="https://wa.me/4915225224444?text=Hallo%2C%20ich%20interessiere%20mich%20f%C3%BCr%20Ihre%20Dienstleistungen." target="_blank" rel="noopener" aria-label="WhatsApp kontaktieren">
+<a id="wa-float" href="https://wa.me/4915225224444?text=Hallo%2C%20ich%20interessiere%20mich%20f%C3%BCr%20Ihre%20Dienstleistungen." target="_blank" rel="noopener" aria-label="WhatsApp">
   <span class="wa-pulse"></span>
-  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-  </svg>
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#hero" class="nav-logo">
-    <span class="nav-logo-dot"></span>
-    Alem Facility <span>&nbsp;Berlin</span>
-  </a>
+  <a href="#hero" class="nav-logo"><span class="nav-dot"></span>Alem Facility<span>&nbsp;Berlin</span></a>
   <ul class="nav-links">
     <li><a href="#leistungen">Leistungen</a></li>
     <li><a href="#about">Über uns</a></li>
@@ -1085,9 +486,7 @@ footer {
     <li><a href="#faq">FAQ</a></li>
     <li><a href="#kontakt" class="nav-cta">Angebot anfragen</a></li>
   </ul>
-  <button class="nav-burger" id="burger" aria-label="Menü">
-    <span></span><span></span><span></span>
-  </button>
+  <button class="nav-burger" id="burger" aria-label="Menü"><span></span><span></span><span></span></button>
 </nav>
 <nav class="mobile-nav" id="mobile-nav">
   <a href="#leistungen" onclick="closeMobile()">Leistungen</a>
@@ -1106,56 +505,41 @@ footer {
   <div class="hero-content">
     <div class="h-badge"><span class="h-badge-dot"></span>Berlin · Facility Management</div>
     <h1 class="h-h1">Wir pflegen,<br><em>was anderen wichtig ist.</em></h1>
-    <p class="h-sub">Premium Facility-Service für Privat und Gewerbe in Berlin. Renovierung, Reinigung, Winterdienst &amp; mehr – aus einer Hand, zu Festpreisen.</p>
+    <p class="h-sub">Premium Facility-Service für Privat und Gewerbe in Berlin. Renovierung, Reinigung, Winterdienst & mehr – aus einer Hand, zu Festpreisen.</p>
     <div class="h-btns">
       <button class="btn-prim" onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">Kostenloses Angebot</button>
       <button class="btn-sec" onclick="document.getElementById('leistungen').scrollIntoView({behavior:'smooth'})">Leistungen entdecken</button>
     </div>
     <div class="h-stats">
-      <div class="h-stat">
-        <div class="h-stat-num">8<span>+</span></div>
-        <div class="h-stat-label">Jahre Erfahrung</div>
-      </div>
+      <div class="h-stat"><div class="h-stat-num" id="cnt1">0<span>+</span></div><div class="h-stat-label">Jahre Erfahrung</div></div>
       <div class="h-stat-div"></div>
-      <div class="h-stat">
-        <div class="h-stat-num">500<span>+</span></div>
-        <div class="h-stat-label">Projekte</div>
-      </div>
+      <div class="h-stat"><div class="h-stat-num" id="cnt2">0<span>+</span></div><div class="h-stat-label">Projekte</div></div>
       <div class="h-stat-div"></div>
-      <div class="h-stat">
-        <div class="h-stat-num">24<span>h</span></div>
-        <div class="h-stat-label">Reaktionszeit</div>
-      </div>
+      <div class="h-stat"><div class="h-stat-num" id="cnt3">24<span>h</span></div><div class="h-stat-label">Reaktionszeit</div></div>
       <div class="h-stat-div"></div>
-      <div class="h-stat">
-        <div class="h-stat-num">100<span>%</span></div>
-        <div class="h-stat-label">Festpreise</div>
-      </div>
+      <div class="h-stat"><div class="h-stat-num" id="cnt4">100<span>%</span></div><div class="h-stat-label">Festpreise</div></div>
     </div>
   </div>
-  <div class="scroll-hint">
-    <div class="scroll-hint-line"></div>
-    Scroll
-  </div>
+  <div class="scroll-hint"><div class="scroll-line"></div>Scroll</div>
 </section>
 
 <!-- TRUST BAR -->
 <div class="trust-bar">
-  <div class="trust-item"><span class="trust-icon">🛡️</span> Haftpflicht versichert</div>
-  <div class="trust-item"><span class="trust-icon">📋</span> Gewerblich angemeldet</div>
-  <div class="trust-item"><span class="trust-icon">⭐</span> Top bewertet</div>
-  <div class="trust-item"><span class="trust-icon">🇩🇪</span> Berlin & Umgebung</div>
-  <div class="trust-item"><span class="trust-icon">💬</span> Kostenlose Beratung</div>
+  <div class="trust-item"><span class="trust-icon">🛡️</span>Haftpflicht versichert</div>
+  <div class="trust-item"><span class="trust-icon">📋</span>Gewerblich angemeldet</div>
+  <div class="trust-item"><span class="trust-icon">⭐</span>Top bewertet</div>
+  <div class="trust-item"><span class="trust-icon">🇩🇪</span>Berlin & Umgebung</div>
+  <div class="trust-item"><span class="trust-icon">💬</span>Kostenlose Beratung</div>
 </div>
 
 <!-- LEISTUNGEN INTRO -->
-<div id="leistungen" class="section-intro">
+<div id="leistungen" class="section-intro" style="padding-bottom:40px">
   <div class="s-tag">Unsere Leistungen</div>
   <h2 class="s-h2">Alles aus <em>einer Hand</em></h2>
-  <p class="s-sub">Sechs Kernleistungen – professionell, zuverlässig, zum Festpreis. Scrollen Sie durch und erleben Sie jedes Handwerk in Aktion.</p>
+  <p class="s-sub">Sechs Kernleistungen – professionell, zuverlässig, zum Festpreis. Scrollen Sie durch und erleben Sie jedes Handwerk.</p>
 </div>
 
-<!-- SC1: RENOVIERUNG / TROCKENBAU -->
+<!-- SC1: RENOVIERUNG -->
 <section class="scene scene-dark" id="sc1">
   <div class="scene-inner">
     <div class="scene-txt" id="sc1txt">
@@ -1163,24 +547,21 @@ footer {
       <h3 class="sc-h">Renovierung &amp;<br>Trockenbau</h3>
       <p class="sc-p">Von der Sanierung alter Wände bis zum modernen Trockenbau – wir verwandeln Räume in neue Lebensräume. Präzise, sauber, termingerecht.</p>
       <ul class="sc-feats">
-        <li>Trockenbauwände &amp; Abgehängte Decken</li>
+        <li>Trockenbauwände &amp; abgehängte Decken</li>
         <li>Wand- &amp; Bodensanierung</li>
         <li>Komplettübernahme &amp; Festpreise</li>
         <li>Schnelle Ausführung ohne Lärm</li>
       </ul>
-      <span class="sc-link" onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">Anfragen <span class="sc-link-arr">→</span></span>
+      <span class="sc-link" onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">Anfragen <span>→</span></span>
     </div>
     <div class="scene-vis" id="sc1vis">
-      <div class="v1-wrap">
-        <div class="v1-bef">
-          <div class="v1-bef-label">Vorher</div>
-        </div>
-        <div class="v1-aft" id="v1aft">
-          <div class="v1-aft-label">Nachher</div>
-        </div>
-        <div class="v1-line" id="v1line"></div>
-        <div class="v1-ico" id="v1ico">⇄</div>
-      </div>
+      <div class="ph-layer ph-before"></div>
+      <div class="ph-layer ph-after" id="sc1after"></div>
+      <div class="ph-overlay"></div>
+      <div class="ba-divider" id="sc1div"></div>
+      <div class="ba-handle" id="sc1hdl">⇄</div>
+      <div class="ba-label left">Vorher</div>
+      <div class="ba-label right">Nachher</div>
     </div>
   </div>
 </section>
@@ -1198,17 +579,12 @@ footer {
         <li>Pflasterflächen &amp; Wege</li>
         <li>Saisonal oder als Dauerauftrag</li>
       </ul>
-      <span class="sc-link" onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">Anfragen <span class="sc-link-arr">→</span></span>
+      <span class="sc-link" onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">Anfragen <span>→</span></span>
     </div>
     <div class="scene-vis" id="sc2vis">
-      <div class="v2-wrap">
-        <div class="v2-sky"></div>
-        <div class="v2-sun"></div>
-        <div class="v2-hedge-bg"></div>
-        <div class="v2-hedge"></div>
-        <div class="v2-hedge-trim" id="v2trim"></div>
-        <div class="v2-ground"></div>
-      </div>
+      <div class="ph-layer ph-main" id="sc2main"></div>
+      <div class="ph-dark-cover" id="sc2dark"></div>
+      <div class="sc2-badge" id="sc2badge" style="opacity:0">✂ Frisch gepflegt</div>
     </div>
   </div>
 </section>
@@ -1219,25 +595,23 @@ footer {
     <div class="scene-txt" id="sc3txt">
       <div class="sctag">03 · Reinigung</div>
       <h3 class="sc-h">Gebäude- &amp;<br>Unterhaltsreinigung</h3>
-      <p class="sc-p">Strahlende Sauberkeit von der Tiefenreinigung bis zur täglichen Unterhaltsreinigung. Wir setzen auf professionelle Mittel und bewährte Methoden.</p>
+      <p class="sc-p">Strahlende Sauberkeit von der Tiefenreinigung bis zur täglichen Unterhaltsreinigung. Professionelle Mittel, bewährte Methoden, glänzendes Ergebnis.</p>
       <ul class="sc-feats">
         <li>Büro- &amp; Gewerbereinigung</li>
         <li>Treppenhaus &amp; Gemeinschaftsflächen</li>
         <li>Tiefenreinigung &amp; Grundreinigung</li>
         <li>Flexible Termine &amp; Rahmenverträge</li>
       </ul>
-      <span class="sc-link" onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">Anfragen <span class="sc-link-arr">→</span></span>
+      <span class="sc-link" onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">Anfragen <span>→</span></span>
     </div>
     <div class="scene-vis" id="sc3vis">
-      <div class="v3-wrap">
-        <div class="v3-dirty">
-          <div class="v3-dirty-label">Vorher</div>
-        </div>
-        <div class="v3-clean" id="v3clean">
-          <div class="v3-clean-label">Nachher</div>
-        </div>
-        <div class="v3-mop" id="v3mop">🧹</div>
-      </div>
+      <div class="ph-layer ph-before"></div>
+      <div class="ph-layer ph-after" id="sc3after"></div>
+      <div class="ph-overlay"></div>
+      <div class="ba-divider" id="sc3div"></div>
+      <div class="ba-handle" id="sc3hdl">🧹</div>
+      <div class="ba-label left">Vorher</div>
+      <div class="ba-label right">Nachher</div>
     </div>
   </div>
 </section>
@@ -1255,16 +629,15 @@ footer {
         <li>Fassadenrenovierung</li>
         <li>Schutzversiegelungen &amp; Lacke</li>
       </ul>
-      <span class="sc-link" onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">Anfragen <span class="sc-link-arr">→</span></span>
+      <span class="sc-link" onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">Anfragen <span>→</span></span>
     </div>
     <div class="scene-vis" id="sc4vis">
-      <div class="v4-wrap" id="v4">
-        <div class="v4-base"></div>
-        <div class="v4-paint" id="v4paint"></div>
-        <div class="v4-roller" id="v4roller">
-          <div class="v4-roller-handle"></div>
-          <div class="v4-roller-body"></div>
-        </div>
+      <div class="ph-layer ph-main" id="v4wrap"></div>
+      <div class="ph-paint-layer" id="v4paint"></div>
+      <div class="ph-overlay" style="z-index:3"></div>
+      <div class="v4-roller" id="v4roller">
+        <div class="v4-stick"></div>
+        <div class="v4-body"><div class="v4-drip"></div></div>
       </div>
     </div>
   </div>
@@ -1283,17 +656,14 @@ footer {
         <li>Unterbodenausgleich inklusive</li>
         <li>Saubere Übergänge &amp; Sockelleisten</li>
       </ul>
-      <span class="sc-link" onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">Anfragen <span class="sc-link-arr">→</span></span>
+      <span class="sc-link" onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">Anfragen <span>→</span></span>
     </div>
     <div class="scene-vis" id="sc5vis">
-      <div class="v5-wrap">
-        <div class="v5-old">
-          <div class="v5-old-label">Alter Belag</div>
-        </div>
-        <div class="v5-new" id="v5new">
-          <div class="v5-new-label">Neuer Belag</div>
-        </div>
-      </div>
+      <div class="ph-layer ph-before"></div>
+      <div class="ph-layer ph-after" id="sc5after"></div>
+      <div class="ph-overlay"></div>
+      <div class="ba-label left">Alter Belag</div>
+      <div class="ba-label right">Neuer Belag</div>
     </div>
   </div>
 </section>
@@ -1304,22 +674,20 @@ footer {
     <div class="scene-txt" id="sc6txt">
       <div class="sctag">06 · Winterdienst</div>
       <h3 class="sc-h">Winterdienst &amp;<br>Streudienst</h3>
-      <p class="sc-p">Sicher durch den Winter – wir räumen Schnee und streuen Gehwege, bevor Ihre Mieter und Kunden morgens das Haus verlassen. Zuverlässig, früh, versichert.</p>
+      <p class="sc-p">Sicher durch den Winter – wir räumen Schnee und streuen Gehwege, bevor Ihre Mieter morgens das Haus verlassen. Zuverlässig, früh, versichert.</p>
       <ul class="sc-feats">
         <li>Schneeräumung &amp; Salzstreuung</li>
         <li>Gehwege, Parkflächen &amp; Einfahrten</li>
         <li>Bereitschaft ab 4:00 Uhr morgens</li>
         <li>Saison- &amp; Rahmenverträge</li>
       </ul>
-      <span class="sc-link" onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">Anfragen <span class="sc-link-arr">→</span></span>
+      <span class="sc-link" onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">Anfragen <span>→</span></span>
     </div>
     <div class="scene-vis" id="sc6vis">
-      <div class="v6-wrap">
-        <canvas id="v6snowflakes"></canvas>
-        <div class="v6-pavement"></div>
-        <div class="v6-snow-cover"></div>
-        <div class="v6-path" id="v6path"></div>
-      </div>
+      <div class="ph-layer ph-main"></div>
+      <div class="ph-cleared" id="sc6cleared"></div>
+      <canvas id="v6snowflakes"></canvas>
+      <div class="ph-overlay" style="z-index:4"></div>
     </div>
   </div>
 </section>
@@ -1328,41 +696,26 @@ footer {
 <section id="about">
   <div class="about-inner">
     <div class="about-vis">
-      <div class="about-vis-bg">
-        <div class="about-vis-inner">
-          <div class="about-big-num">8+</div>
-          <div class="about-big-label">Jahre in Berlin</div>
-        </div>
+      <div class="about-photo"></div>
+      <div class="about-photo-overlay"></div>
+      <div class="about-photo-num">
+        <div class="about-big">8+</div>
+        <div class="about-big-sub">Jahre in Berlin</div>
       </div>
       <div class="about-cards">
-        <div class="about-card">
-          <div class="about-card-ico">⭐</div>
-          <div class="about-card-txt">
-            <div class="about-card-num">4.9 / 5.0</div>
-            <div class="about-card-sub">Kundenbewertung</div>
-          </div>
-        </div>
-        <div class="about-card">
-          <div class="about-card-ico">🏗️</div>
-          <div class="about-card-txt">
-            <div class="about-card-num">500+ Projekte</div>
-            <div class="about-card-sub">erfolgreich abgeschlossen</div>
-          </div>
-        </div>
+        <div class="about-card"><div class="about-card-ico">⭐</div><div><div class="about-card-num">4.9 / 5.0</div><div class="about-card-sub">Kundenbewertung</div></div></div>
+        <div class="about-card"><div class="about-card-ico">🏗️</div><div><div class="about-card-num">500+ Projekte</div><div class="about-card-sub">erfolgreich</div></div></div>
       </div>
     </div>
     <div class="about-txt">
       <div class="s-tag">Über Alem Facility</div>
       <h2 class="s-h2">Berliner Handwerk mit <em>Leidenschaft</em></h2>
       <p>Seit über 8 Jahren sind wir der zuverlässige Partner für Facility-Management in Berlin. Was als kleines Familienunternehmen begann, ist heute ein eingespieltes Team aus Fachkräften – mit einem gemeinsamen Anspruch: perfekte Arbeit, die bleibt.</p>
-      <p>Wir arbeiten ausschließlich mit geprüften Materialien und modernen Methoden. Transparente Preise, pünktliche Ausführung und ein sauberes Ergebnis sind für uns keine Extras – sondern Standard.</p>
+      <p>Transparente Preise, pünktliche Ausführung und ein sauberes Ergebnis sind für uns keine Extras – sondern Standard.</p>
       <ul class="about-list">
-        <li>Festpreisgarantie</li>
-        <li>Haftpflicht versichert</li>
-        <li>Fachkundiges Team</li>
-        <li>24h Notfallservice</li>
-        <li>Kostenlose Besichtigung</li>
-        <li>Direktkontakt zum Chef</li>
+        <li>Festpreisgarantie</li><li>Haftpflicht versichert</li>
+        <li>Fachkundiges Team</li><li>24h Notfallservice</li>
+        <li>Kostenlose Besichtigung</li><li>Direktkontakt zum Chef</li>
       </ul>
       <button class="btn-prim" onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">Jetzt Angebot anfragen</button>
     </div>
@@ -1372,39 +725,15 @@ footer {
 <!-- PROZESS -->
 <section id="prozess">
   <div class="prozess-inner">
-    <div class="section-intro" style="padding:0 0 0; max-width:100%; text-align:left;">
+    <div style="padding:0 0 0;max-width:100%;text-align:left">
       <div class="s-tag">So läuft es ab</div>
       <h2 class="s-h2">In 4 Schritten zum <em>perfekten Ergebnis</em></h2>
     </div>
     <div class="prozess-steps">
-      <div class="pstep">
-        <div class="pstep-num">1</div>
-        <div class="pstep-body">
-          <div class="pstep-title">Kostenlose Anfrage & Beratung</div>
-          <div class="pstep-desc">Schreiben Sie uns per WhatsApp, Formular oder Telefon. Wir melden uns innerhalb von 24 Stunden mit einer ersten Einschätzung und vereinbaren einen Termin.</div>
-        </div>
-      </div>
-      <div class="pstep">
-        <div class="pstep-num">2</div>
-        <div class="pstep-body">
-          <div class="pstep-title">Besichtigung & Festpreisangebot</div>
-          <div class="pstep-desc">Wir kommen kostenlos zu Ihnen und schauen uns alles an. Anschließend erhalten Sie ein klares Festpreisangebot – ohne versteckte Kosten.</div>
-        </div>
-      </div>
-      <div class="pstep">
-        <div class="pstep-num">3</div>
-        <div class="pstep-body">
-          <div class="pstep-title">Ausführung durch unser Fachteam</div>
-          <div class="pstep-desc">Zum vereinbarten Termin erscheint unser Team pünktlich, vollausgerüstet und arbeitet sauber und strukturiert – mit minimalem Aufwand für Sie.</div>
-        </div>
-      </div>
-      <div class="pstep">
-        <div class="pstep-num">4</div>
-        <div class="pstep-body">
-          <div class="pstep-title">Abnahme & Übergabe</div>
-          <div class="pstep-desc">Gemeinsam nehmen wir das Ergebnis ab. Erst wenn Sie zufrieden sind, ist der Auftrag erledigt. Zahlung erst nach erfolgreicher Abnahme.</div>
-        </div>
-      </div>
+      <div class="pstep"><div class="pstep-num">1</div><div class="pstep-body"><div class="pstep-title">Kostenlose Anfrage & Beratung</div><div class="pstep-desc">Schreiben Sie uns per WhatsApp, Formular oder Telefon. Wir melden uns innerhalb von 24 Stunden und vereinbaren einen Termin.</div></div></div>
+      <div class="pstep"><div class="pstep-num">2</div><div class="pstep-body"><div class="pstep-title">Besichtigung & Festpreisangebot</div><div class="pstep-desc">Wir kommen kostenlos zu Ihnen. Anschließend erhalten Sie ein klares Festpreisangebot – ohne versteckte Kosten.</div></div></div>
+      <div class="pstep"><div class="pstep-num">3</div><div class="pstep-body"><div class="pstep-title">Ausführung durch unser Fachteam</div><div class="pstep-desc">Pünktlich, vollausgerüstet und strukturiert – mit minimalem Aufwand für Sie.</div></div></div>
+      <div class="pstep"><div class="pstep-num">4</div><div class="pstep-body"><div class="pstep-title">Abnahme & Übergabe</div><div class="pstep-desc">Erst wenn Sie zufrieden sind, ist der Auftrag erledigt. Zahlung erst nach erfolgreicher Abnahme.</div></div></div>
     </div>
   </div>
 </section>
@@ -1412,46 +741,16 @@ footer {
 <!-- FAQ -->
 <section id="faq">
   <div class="faq-inner">
-    <div class="section-intro" style="padding:0 0 0; max-width:100%; text-align:left;">
+    <div style="padding:0;max-width:100%;text-align:left">
       <div class="s-tag">Häufige Fragen</div>
       <h2 class="s-h2">Alles Wichtige auf <em>einen Blick</em></h2>
     </div>
     <div class="faq-list">
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          Wie schnell kann ich ein Angebot bekommen?
-          <span class="faq-ico">+</span>
-        </button>
-        <div class="faq-a">Nach Ihrer Anfrage melden wir uns innerhalb von 24 Stunden. Bei dringenden Fällen auch sofort per WhatsApp. Die Besichtigung und das Festpreisangebot sind komplett kostenlos.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          Arbeiten Sie auch am Wochenende oder an Feiertagen?
-          <span class="faq-ico">+</span>
-        </button>
-        <div class="faq-a">Ja, insbesondere beim Winterdienst stehen wir ganzjährig auch am Wochenende und an Feiertagen bereit. Für andere Leistungen stimmen wir die Termine flexibel mit Ihnen ab.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          Sind Ihre Preise wirklich Festpreise?
-          <span class="faq-ico">+</span>
-        </button>
-        <div class="faq-a">Absolut. Wir kalkulieren sorgfältig vor Ort und geben Ihnen einen verbindlichen Festpreis. Zusatzkosten entstehen nur dann, wenn Sie selbst den Auftrag erweitern – und auch das besprechen wir vorab.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          In welchen Berliner Bezirken sind Sie tätig?
-          <span class="faq-ico">+</span>
-        </button>
-        <div class="faq-a">Wir sind berlinweit tätig und auch im direkten Berliner Umland einsetzbar. Schwerpunkte sind die Bezirke Mitte, Charlottenburg, Neukölln, Tempelhof, Steglitz und Lichtenberg – aber sprechen Sie uns an.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          Was passiert, wenn ich mit dem Ergebnis nicht zufrieden bin?
-          <span class="faq-ico">+</span>
-        </button>
-        <div class="faq-a">Ihre Zufriedenheit ist unser Maßstab. Sollte etwas nicht Ihren Erwartungen entsprechen, kommen wir kostenfrei nach und korrigieren das – ohne Diskussion. Zahlung erst nach Ihrer Abnahme.</div>
-      </div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Wie schnell kann ich ein Angebot bekommen?<span class="faq-ico">+</span></button><div class="faq-a">Nach Ihrer Anfrage melden wir uns innerhalb von 24 Stunden. Bei dringenden Fällen auch sofort per WhatsApp. Besichtigung und Angebot sind komplett kostenlos.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Arbeiten Sie auch am Wochenende oder an Feiertagen?<span class="faq-ico">+</span></button><div class="faq-a">Ja, insbesondere beim Winterdienst stehen wir ganzjährig bereit. Für andere Leistungen stimmen wir die Termine flexibel mit Ihnen ab.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Sind Ihre Preise wirklich Festpreise?<span class="faq-ico">+</span></button><div class="faq-a">Absolut. Wir kalkulieren sorgfältig vor Ort. Zusatzkosten entstehen nur, wenn Sie den Auftrag erweitern – und das besprechen wir vorab.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">In welchen Berliner Bezirken sind Sie tätig?<span class="faq-ico">+</span></button><div class="faq-a">Wir sind berlinweit tätig. Schwerpunkte: Mitte, Charlottenburg, Neukölln, Tempelhof, Steglitz, Lichtenberg – aber sprechen Sie uns gerne an.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Was passiert, wenn ich nicht zufrieden bin?<span class="faq-ico">+</span></button><div class="faq-a">Wir kommen kostenfrei nach und korrigieren alles – ohne Diskussion. Zahlung erst nach Ihrer Abnahme.</div></div>
     </div>
   </div>
 </section>
@@ -1462,59 +761,23 @@ footer {
     <div class="kontakt-info">
       <div class="s-tag">Kontakt</div>
       <h2 class="s-h2">Bereit für Ihr <em>Projekt?</em></h2>
-      <p>Füllen Sie das Formular aus oder schreiben Sie uns direkt per WhatsApp. Wir antworten schnell und unkompliziert – kostenlos und unverbindlich.</p>
+      <p>Füllen Sie das Formular aus oder schreiben Sie direkt per WhatsApp. Kostenlos und unverbindlich.</p>
       <div class="k-items">
-        <div class="k-item">
-          <div class="k-ico">📞</div>
-          <div>
-            <div class="k-label">Telefon / WhatsApp</div>
-            <div class="k-val"><a href="tel:+4915225224444">+49 152 2522 4444</a></div>
-          </div>
-        </div>
-        <div class="k-item">
-          <div class="k-ico">✉️</div>
-          <div>
-            <div class="k-label">E-Mail</div>
-            <div class="k-val"><a href="mailto:info@alem-facility.de">info@alem-facility.de</a></div>
-          </div>
-        </div>
-        <div class="k-item">
-          <div class="k-ico">📍</div>
-          <div>
-            <div class="k-label">Einsatzgebiet</div>
-            <div class="k-val">Berlin &amp; Umgebung</div>
-          </div>
-        </div>
-        <div class="k-item">
-          <div class="k-ico">🕐</div>
-          <div>
-            <div class="k-label">Erreichbarkeit</div>
-            <div class="k-val">Mo–Sa 7:00–20:00 Uhr</div>
-          </div>
-        </div>
+        <div class="k-item"><div class="k-ico">📞</div><div><div class="k-label">Telefon / WhatsApp</div><div class="k-val"><a href="tel:+4915225224444">+49 152 2522 4444</a></div></div></div>
+        <div class="k-item"><div class="k-ico">✉️</div><div><div class="k-label">E-Mail</div><div class="k-val"><a href="mailto:info@alem-facility.de">info@alem-facility.de</a></div></div></div>
+        <div class="k-item"><div class="k-ico">📍</div><div><div class="k-label">Einsatzgebiet</div><div class="k-val">Berlin &amp; Umgebung</div></div></div>
+        <div class="k-item"><div class="k-ico">🕐</div><div><div class="k-label">Erreichbarkeit</div><div class="k-val">Mo–Sa 7:00–20:00 Uhr</div></div></div>
       </div>
     </div>
     <div class="form-card">
       <div id="form-msg"></div>
       <div class="form-row">
-        <div class="form-group">
-          <label>Vorname</label>
-          <input type="text" id="f-vorname" placeholder="Max">
-        </div>
-        <div class="form-group">
-          <label>Nachname</label>
-          <input type="text" id="f-nachname" placeholder="Mustermann">
-        </div>
+        <div class="form-group"><label>Vorname</label><input type="text" id="f-vorname" placeholder="Max"></div>
+        <div class="form-group"><label>Nachname</label><input type="text" id="f-nachname" placeholder="Mustermann"></div>
       </div>
       <div class="form-row">
-        <div class="form-group">
-          <label>Telefon</label>
-          <input type="tel" id="f-tel" placeholder="+49 ...">
-        </div>
-        <div class="form-group">
-          <label>E-Mail</label>
-          <input type="email" id="f-email" placeholder="max@beispiel.de">
-        </div>
+        <div class="form-group"><label>Telefon</label><input type="tel" id="f-tel" placeholder="+49 ..."></div>
+        <div class="form-group"><label>E-Mail</label><input type="email" id="f-email" placeholder="max@beispiel.de"></div>
       </div>
       <div class="form-group">
         <label>Leistung</label>
@@ -1529,14 +792,8 @@ footer {
           <option>Mehrere Leistungen</option>
         </select>
       </div>
-      <div class="form-group">
-        <label>Adresse / Objekt</label>
-        <input type="text" id="f-adresse" placeholder="Straße, PLZ, Ort">
-      </div>
-      <div class="form-group">
-        <label>Ihre Nachricht</label>
-        <textarea id="f-nachricht" placeholder="Beschreiben Sie kurz Ihr Anliegen…"></textarea>
-      </div>
+      <div class="form-group"><label>Adresse / Objekt</label><input type="text" id="f-adresse" placeholder="Straße, PLZ, Ort"></div>
+      <div class="form-group"><label>Nachricht</label><textarea id="f-nachricht" placeholder="Beschreiben Sie kurz Ihr Anliegen…"></textarea></div>
       <button class="btn-submit" id="btn-submit" onclick="submitForm()">Angebot anfragen →</button>
     </div>
   </div>
@@ -1546,12 +803,12 @@ footer {
 <footer>
   <div class="footer-inner">
     <div class="footer-brand">
-      <div class="nav-logo"><span class="nav-logo-dot"></span>Alem Facility <span style="color:var(--acc)">&nbsp;Berlin</span></div>
+      <div class="nav-logo"><span class="nav-dot"></span>Alem Facility<span style="color:var(--acc)">&nbsp;Berlin</span></div>
       <p>Ihr zuverlässiger Facility-Partner in Berlin. Renovierung, Reinigung, Winterdienst & mehr – professionell und zum Festpreis.</p>
       <div class="footer-social">
-        <a class="f-social" href="https://wa.me/4915225224444" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
-        <a class="f-social" href="mailto:info@alem-facility.de" aria-label="E-Mail">✉️</a>
-        <a class="f-social" href="tel:+4915225224444" aria-label="Anrufen">📞</a>
+        <a class="f-social" href="https://wa.me/4915225224444" target="_blank" rel="noopener">💬</a>
+        <a class="f-social" href="mailto:info@alem-facility.de">✉️</a>
+        <a class="f-social" href="tel:+4915225224444">📞</a>
       </div>
     </div>
     <div class="footer-col">
@@ -1579,177 +836,196 @@ footer {
   </div>
   <div class="footer-bottom">
     <p>© 2026 Alem Facility & Ausbau Service. Alle Rechte vorbehalten.</p>
-    <div class="footer-bottom-links">
-      <a href="#">Impressum</a>
-      <a href="#">Datenschutz</a>
-      <a href="#">AGB</a>
-    </div>
+    <div class="footer-bottom-links"><a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">AGB</a></div>
   </div>
 </footer>
 
-<!-- GSAP -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
-/* ── STARS ── */
+gsap.registerPlugin(ScrollTrigger);
+
+/* ── STARS CANVAS ── */
 (function(){
-  const c = document.getElementById('stars');
-  if(!c) return;
-  const ctx = c.getContext('2d');
-  function resize(){ c.width = window.innerWidth; c.height = window.innerHeight; }
-  resize();
-  window.addEventListener('resize', resize);
-  const stars = Array.from({length:140}, ()=>({
-    x: Math.random(), y: Math.random(),
-    r: Math.random()*.9+.2,
-    o: Math.random()*.6+.2,
-    s: Math.random()*1.5+.5
+  const c = document.getElementById('stars'), ctx = c.getContext('2d');
+  function sz(){ c.width = innerWidth; c.height = innerHeight; }
+  sz(); addEventListener('resize', sz);
+  const S = Array.from({length:160}, ()=>({
+    x:Math.random(), y:Math.random(),
+    r:Math.random()*.85+.15,
+    o:Math.random()*.6+.2,
+    spd:Math.random()*1.5+.4
   }));
   let t=0;
-  function draw(){
+  (function draw(){
     ctx.clearRect(0,0,c.width,c.height);
-    stars.forEach(s=>{
+    S.forEach(s=>{
       ctx.beginPath();
       ctx.arc(s.x*c.width, s.y*c.height, s.r, 0, Math.PI*2);
-      ctx.fillStyle = `rgba(255,255,255,${s.o*(.7+.3*Math.sin(t*s.s))})`;
+      ctx.fillStyle=`rgba(255,255,255,${s.o*(.65+.35*Math.sin(t*s.spd))})`;
       ctx.fill();
     });
-    t += .015;
-    requestAnimationFrame(draw);
-  }
-  draw();
+    t+=.012; requestAnimationFrame(draw);
+  })();
 })();
 
-/* ── V6 SNOWFLAKES ── */
+/* ── SNOWFLAKES CANVAS (SC6) ── */
 (function(){
   const c = document.getElementById('v6snowflakes');
   if(!c) return;
-  const ctx = c.getContext('2d');
-  const wrap = c.parentElement;
-  function resize(){
-    c.width = wrap.offsetWidth || 400;
-    c.height = wrap.offsetHeight || 300;
-  }
-  resize();
-  window.addEventListener('resize', resize);
-  const flakes = Array.from({length:60}, ()=>({
-    x: Math.random(),
-    y: Math.random(),
-    r: Math.random()*2.5+.5,
-    sp: Math.random()*.4+.1,
-    sw: Math.random()*.3-.15,
-    o: Math.random()*.5+.3
+  const ctx = c.getContext('2d'), wrap = c.parentElement;
+  function sz(){ c.width = wrap.offsetWidth||400; c.height = wrap.offsetHeight||300; }
+  sz(); addEventListener('resize', sz);
+  const F = Array.from({length:80}, ()=>({
+    x:Math.random(), y:Math.random(),
+    r:Math.random()*2.8+.4,
+    vy:Math.random()*.5+.15,
+    vx:(Math.random()-.5)*.2,
+    o:Math.random()*.55+.3
   }));
-  function drawFlakes(){
+  (function draw(){
     ctx.clearRect(0,0,c.width,c.height);
-    flakes.forEach(f=>{
+    F.forEach(f=>{
       ctx.beginPath();
       ctx.arc(f.x*c.width, f.y*c.height, f.r, 0, Math.PI*2);
-      ctx.fillStyle = `rgba(255,255,255,${f.o})`;
+      ctx.fillStyle=`rgba(255,255,255,${f.o})`;
       ctx.fill();
-      f.y += f.sp/100;
-      f.x += f.sw/100;
-      if(f.y > 1){ f.y=0; f.x=Math.random(); }
-      if(f.x < 0) f.x=1;
-      if(f.x > 1) f.x=0;
+      f.y+=f.vy/100; f.x+=f.vx/100;
+      if(f.y>1){f.y=0;f.x=Math.random();}
+      if(f.x<0)f.x=1; if(f.x>1)f.x=0;
     });
-    requestAnimationFrame(drawFlakes);
-  }
-  drawFlakes();
+    requestAnimationFrame(draw);
+  })();
 })();
 
-/* ── NAV SCROLL ── */
-window.addEventListener('scroll', ()=>{
-  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
-});
-
-/* ── MOBILE NAV ── */
-document.getElementById('burger').addEventListener('click', ()=>{
-  document.getElementById('mobile-nav').classList.toggle('open');
-});
+/* ── NAV ── */
+addEventListener('scroll', ()=>{ document.getElementById('nav').classList.toggle('scrolled', scrollY>40); });
+document.getElementById('burger').addEventListener('click', ()=>{ document.getElementById('mobile-nav').classList.toggle('open'); });
 function closeMobile(){ document.getElementById('mobile-nav').classList.remove('open'); }
 
-/* ── FAQ ACCORDION ── */
+/* ── FAQ ── */
 function toggleFaq(btn){
-  const item = btn.parentElement;
-  const isOpen = item.classList.contains('open');
+  const item = btn.parentElement, wasOpen = item.classList.contains('open');
   document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
-  if(!isOpen) item.classList.add('open');
+  if(!wasOpen) item.classList.add('open');
 }
 
-/* ── GSAP ── */
-gsap.registerPlugin(ScrollTrigger);
+/* ── HERO GSAP ENTRANCE ── */
+const htl = gsap.timeline({ defaults:{ ease:'power3.out' } });
+htl
+  .to('.h-badge',  { opacity:1, y:0, duration:.7,  delay:.4 })
+  .to('.h-h1',    { opacity:1, y:0, duration:1.0 }, '-=.3')
+  .to('.h-sub',   { opacity:1, y:0, duration:.75 }, '-=.55')
+  .to('.h-btns',  { opacity:1, y:0, duration:.7  }, '-=.5')
+  .to('.h-stats', { opacity:1, y:0, duration:.7  }, '-=.45');
 
-/* Hero entrance */
-const tl = gsap.timeline({ defaults: { ease:'power3.out' } });
-tl.to('.h-badge',  { opacity:1, y:0, duration:.7,  delay:.3 })
-  .to('.h-h1',    { opacity:1, y:0, duration:.95 }, '-=.35')
-  .to('.h-sub',   { opacity:1, y:0, duration:.75 }, '-=.5')
-  .to('.h-btns',  { opacity:1, y:0, duration:.7  }, '-=.45')
-  .to('.h-stats', { opacity:1, y:0, duration:.7  }, '-=.4');
+/* ── HERO PARALLAX (scroll-tied) ── */
+gsap.to('.hero-content', {
+  yPercent: 28, ease:'none',
+  scrollTrigger:{ trigger:'#hero', start:'top top', end:'bottom top', scrub:1.5 }
+});
+gsap.to('.hero-grid', {
+  yPercent: 15, ease:'none',
+  scrollTrigger:{ trigger:'#hero', start:'top top', end:'bottom top', scrub:2 }
+});
 
-/* Scene helper: IntersectionObserver fires GSAP once */
-function animateScene(triggerId, animFn, txtId){
-  let fired = false;
-  const obs = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting && !fired){
-        fired = true;
-        animFn();
-        if(txtId){
-          const sel = '#'+txtId+' .sctag, #'+txtId+' .sc-h, #'+txtId+' .sc-p, #'+txtId+' .sc-feats li, #'+txtId+' .sc-link';
-          gsap.fromTo(sel,
-            { opacity:0, y:28 },
-            { opacity:1, y:0, duration:.8, stagger:.08, ease:'power3.out', delay:.25 }
-          );
-        }
-      }
-    });
-  }, { threshold:0.28 });
-  const el = document.getElementById(triggerId);
-  if(el) obs.observe(el);
-}
-
-/* SC1: Renovierung – before/after wall reveal */
-animateScene('sc1vis', function(){
-  gsap.to('#v1aft',  { clipPath:'inset(0 15% 0 0)', duration:1.8, ease:'power2.inOut' });
-  gsap.to('#v1line', { left:'85%', duration:1.8, ease:'power2.inOut' });
-  gsap.to('#v1ico',  { left:'85%', duration:1.8, ease:'power2.inOut' });
-}, 'sc1txt');
-
-/* SC2: Außenanlagen – hedge trim reveal */
-animateScene('sc2vis', function(){
-  gsap.to('#v2trim', { clipPath:'inset(0 0% 0 0)', duration:1.6, ease:'power2.inOut' });
-}, 'sc2txt');
-
-/* SC3: Reinigung – dirty wipe to clean + mop */
-animateScene('sc3vis', function(){
-  gsap.to('#v3clean', { clipPath:'inset(0 0% 0 0)', duration:1.8, ease:'power1.inOut' });
-  gsap.fromTo('#v3mop',
-    { right:'-50px', opacity:0 },
-    { right:'16px', opacity:1, duration:1.8, ease:'power2.out' }
-  );
-}, 'sc3txt');
-
-/* SC4: Malerarbeiten – roller rolls down, paint follows */
-animateScene('sc4vis', function(){
-  const visH = (document.getElementById('v4') || {}).offsetHeight || 500;
-  gsap.to('#v4paint',  { clipPath:'inset(0% 0 0 0)', duration:1.9, ease:'power1.inOut' });
-  gsap.to('#v4roller', { y: visH * 0.78, duration:1.9, ease:'power1.inOut' });
-}, 'sc4txt');
-
-/* SC5: Bodenbeläge – diagonal polygon sweep */
-animateScene('sc5vis', function(){
-  gsap.to('#v5new', {
-    clipPath:'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-    duration:1.8, ease:'power2.inOut'
+/* ── ANIMATED COUNTERS ── */
+function runCounter(id, end, suffix, duration){
+  const el = document.getElementById(id);
+  if(!el) return;
+  gsap.fromTo({n:0},{n:end},{
+    duration: duration||1.8, ease:'power2.out',
+    onUpdate: function(){ el.innerHTML = Math.round(this.targets()[0].n) + '<span>'+suffix+'</span>'; }
   });
-}, 'sc5txt');
+}
+ScrollTrigger.create({
+  trigger:'.h-stats', start:'top 85%', once:true,
+  onEnter(){ runCounter('cnt1',8,'+'); runCounter('cnt2',500,'+',2.2); }
+});
 
-/* SC6: Winterdienst – path clears from top */
-animateScene('sc6vis', function(){
-  gsap.to('#v6path', { clipPath:'inset(0% 0 0 0)', duration:2.0, ease:'power2.inOut' });
-}, 'sc6txt');
+/* ── SCENE TEXT REVEAL helper ── */
+function revealTxt(id){
+  const sel = '#'+id+' .sctag, #'+id+' .sc-h, #'+id+' .sc-p, #'+id+' .sc-feats li, #'+id+' .sc-link';
+  gsap.fromTo(sel,
+    { opacity:0, y:32, clipPath:'inset(0 0 100% 0)' },
+    { opacity:1, y:0, clipPath:'inset(0 0 0% 0)', duration:.85, stagger:.09, ease:'power3.out', delay:.2 }
+  );
+}
+
+/* ── SCENE OBSERVER helper ── */
+function onEnter(id, fn){
+  let done=false;
+  const obs = new IntersectionObserver(ee=>ee.forEach(e=>{ if(e.isIntersecting&&!done){done=true;fn();obs.disconnect();} }),{threshold:.25});
+  const el=document.getElementById(id); if(el) obs.observe(el);
+}
+
+/* ── SC1: RENOVIERUNG – smooth left reveal ── */
+onEnter('sc1vis', ()=>{
+  revealTxt('sc1txt');
+  gsap.to('#sc1after', { clipPath:'inset(0 15% 0 0)', duration:2.0, ease:'power2.inOut' });
+  gsap.to('#sc1div',   { left:'85%', duration:2.0, ease:'power2.inOut' });
+  gsap.to('#sc1hdl',   { left:'85%', duration:2.0, ease:'power2.inOut' });
+});
+
+/* ── SC2: AUßENANLAGEN – darkness lifts, photo brightens ── */
+onEnter('sc2vis', ()=>{
+  revealTxt('sc2txt');
+  /* first zoom the photo in */
+  gsap.fromTo('#sc2main',
+    { scale:1.12 },
+    { scale:1.0, duration:2.0, ease:'power2.out' }
+  );
+  /* then lift the dark overlay */
+  gsap.to('#sc2dark', { opacity:0, duration:1.8, ease:'power2.inOut', delay:.3 });
+  gsap.to('#sc2badge',{ opacity:1, y:0, duration:.6, ease:'back.out(1.5)', delay:1.8 });
+});
+
+/* ── SC3: REINIGUNG – wipe left ── */
+onEnter('sc3vis', ()=>{
+  revealTxt('sc3txt');
+  gsap.to('#sc3after', { clipPath:'inset(0 0% 0 0)', duration:2.0, ease:'power2.inOut' });
+  gsap.to('#sc3div',   { left:'100%', duration:2.0, ease:'power2.inOut' });
+  gsap.to('#sc3hdl',   { left:'105%', duration:2.0, ease:'power2.inOut' });
+});
+
+/* ── SC4: MALERARBEITEN – roller descends, paint follows ── */
+onEnter('sc4vis', ()=>{
+  revealTxt('sc4txt');
+  const h = (document.getElementById('sc4vis')||{}).offsetHeight || 500;
+  gsap.fromTo('#v4roller', { y:-90 }, { y: h*.78, duration:2.0, ease:'power1.inOut' });
+  gsap.to('#v4paint', { clipPath:'inset(0% 0 0 0)', duration:2.0, ease:'power1.inOut' });
+});
+
+/* ── SC5: BODENBELäGE – diagonal polygon sweep ── */
+onEnter('sc5vis', ()=>{
+  revealTxt('sc5txt');
+  gsap.to('#sc5after', {
+    clipPath:'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+    duration:2.0, ease:'power2.inOut'
+  });
+});
+
+/* ── SC6: WINTERDIENST – path reveals through snow ── */
+onEnter('sc6vis', ()=>{
+  revealTxt('sc6txt');
+  gsap.to('#sc6cleared', { clipPath:'inset(0% 0 0 0)', duration:2.2, ease:'power2.inOut' });
+});
+
+/* ── PROZESS step reveal ── */
+gsap.fromTo('.pstep',
+  { opacity:0, x:-24 },
+  { opacity:1, x:0, duration:.75, stagger:.18, ease:'power3.out',
+    scrollTrigger:{ trigger:'.prozess-steps', start:'top 80%', once:true }
+  }
+);
+
+/* ── ABOUT reveal ── */
+gsap.fromTo('.about-vis, .about-txt',
+  { opacity:0, y:40 },
+  { opacity:1, y:0, duration:1.0, stagger:.2, ease:'power3.out',
+    scrollTrigger:{ trigger:'#about', start:'top 75%', once:true }
+  }
+);
 
 /* ── FORM SUBMISSION ── */
 async function submitForm(){
@@ -1763,48 +1039,32 @@ async function submitForm(){
   const adresse   = document.getElementById('f-adresse').value.trim();
   const nachricht = document.getElementById('f-nachricht').value.trim();
 
-  msg.className = '';
-  msg.style.display = 'none';
-  msg.textContent = '';
+  msg.className=''; msg.style.display='none'; msg.textContent='';
 
-  if(!vorname || !nachname || !tel || !email || !leistung){
-    msg.className = 'err';
-    msg.textContent = 'Bitte füllen Sie alle Pflichtfelder aus.';
-    return;
+  if(!vorname||!nachname||!tel||!email||!leistung){
+    msg.className='err'; msg.textContent='Bitte füllen Sie alle Pflichtfelder aus.'; return;
   }
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-    msg.className = 'err';
-    msg.textContent = 'Bitte geben Sie eine gültige E-Mail-Adresse ein.';
-    return;
+    msg.className='err'; msg.textContent='Bitte geben Sie eine gültige E-Mail-Adresse ein.'; return;
   }
-
-  btn.disabled = true;
-  btn.textContent = 'Wird gesendet…';
-
-  try {
-    const r = await fetch('https://alem-facility.de/mail.php', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({vorname, nachname, tel, email, leistung, adresse, nachricht})
+  btn.disabled=true; btn.textContent='Wird gesendet…';
+  try{
+    const r = await fetch('https://alem-facility.de/mail.php',{
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({vorname,nachname,tel,email,leistung,adresse,nachricht})
     });
     if(r.ok){
-      msg.className = 'ok';
-      msg.textContent = '✓ Ihre Anfrage wurde erfolgreich gesendet! Wir melden uns innerhalb von 24 Stunden.';
-      ['f-vorname','f-nachname','f-tel','f-email','f-leistung','f-adresse','f-nachricht'].forEach(id=>{
-        const el = document.getElementById(id);
-        if(el) el.value = '';
-      });
-      const waText = encodeURIComponent('Hallo, ich habe gerade eine Anfrage über Ihre Website gesendet (' + leistung + '). Können Sie sich kurz melden?');
-      setTimeout(()=>window.open('https://wa.me/4915225224444?text='+waText,'_blank'), 1800);
-    } else {
-      throw new Error('Server error');
-    }
-  } catch(err){
-    msg.className = 'err';
-    msg.textContent = 'Fehler beim Senden. Bitte versuchen Sie es erneut oder schreiben Sie uns direkt per WhatsApp.';
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'Angebot anfragen →';
+      msg.className='ok';
+      msg.textContent='✓ Anfrage gesendet! Wir melden uns innerhalb von 24 Stunden.';
+      ['f-vorname','f-nachname','f-tel','f-email','f-leistung','f-adresse','f-nachricht'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+      const wt=encodeURIComponent('Hallo, ich habe gerade eine Anfrage über Ihre Website gesendet ('+leistung+'). Können Sie sich kurz melden?');
+      setTimeout(()=>window.open('https://wa.me/4915225224444?text='+wt,'_blank'),1800);
+    } else { throw new Error(); }
+  } catch{
+    msg.className='err';
+    msg.textContent='Fehler beim Senden. Bitte schreiben Sie uns direkt per WhatsApp.';
+  } finally{
+    btn.disabled=false; btn.textContent='Angebot anfragen →';
   }
 }
 </script>
