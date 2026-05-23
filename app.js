@@ -387,12 +387,42 @@ function saExportPDF(nr,d,gesamt,gueltig,sigData,addStempel,sigPos,stempelPos,st
 let _pdfCallbackFn=null;
 function mPDFAbschluss(cb){
   _pdfCallbackFn=cb;
+  window._stempelLogo=null;
   const firmaN=(settings.firma||'Firma').substring(0,14);
-  oM(`${modalHeader('Unterschrift & Stempel')}<div style="padding:0 4px"><div style="margin-bottom:12px"><div style="font-size:12px;font-weight:700;color:var(--text-sec);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Unterschrift zeichnen</div><div style="position:relative"><canvas id="sig-canvas" width="500" height="120" style="width:100%;border:1.5px solid var(--border);border-radius:10px;background:#fff;touch-action:none;display:block;cursor:crosshair"></canvas><div id="sig-hint" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;color:#d1d5db;font-size:13px;font-weight:500">Hier unterschreiben</div></div><button type="button" onclick="clearSigPad()" style="margin-top:6px;padding:6px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;color:var(--text-sec)">Löschen</button></div><div style="margin-bottom:12px;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:12px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="sig-stempel" onchange="toggleStempelOverlay(this.checked)" style="width:18px;height:18px;cursor:pointer"><span style="font-size:14px;font-weight:500">Firmenstempel hinzufügen</span></label><div id="stempel-felder" style="display:none;margin-top:10px;flex-direction:column;gap:7px"><input id="st-z1" value="${settings.firma||''}" placeholder="Zeile 1 – Firmenname" oninput="updateStempelPreview()" style="padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-weight:600;background:var(--surface);color:var(--text);width:100%;box-sizing:border-box"><input id="st-z2" value="${settings.adresse||''}" placeholder="Zeile 2 – Adresse" oninput="updateStempelPreview()" style="padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;background:var(--surface);color:var(--text);width:100%;box-sizing:border-box"><input id="st-z3" value="${settings.telefon||''}" placeholder="Zeile 3 – Telefon / Zusatz" oninput="updateStempelPreview()" style="padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;background:var(--surface);color:var(--text);width:100%;box-sizing:border-box"></div></div><div style="font-size:12px;font-weight:700;color:var(--text-sec);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Position auf PDF festlegen</div><div id="pdf-placement" style="position:relative;width:100%;aspect-ratio:210/297;background:#fff;border:1.5px solid var(--border);border-radius:6px;overflow:hidden;touch-action:none"><div style="position:absolute;inset:0;background:linear-gradient(rgba(229,231,235,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(229,231,235,0.3) 1px,transparent 1px);background-size:20% 20%;pointer-events:none"></div><div id="ov-sig" style="position:absolute;left:5%;top:70%;width:40%;cursor:move;user-select:none;display:none;box-sizing:border-box;touch-action:none"><div style="border:2px dashed var(--p);border-radius:4px;padding:2px;position:relative;width:100%"><img id="ov-sig-img" src="" style="width:100%;display:block;opacity:0.9"><div id="rh-sig" style="position:absolute;bottom:-7px;right:-7px;width:14px;height:14px;background:var(--p);border-radius:50%;cursor:se-resize;border:2px solid #fff;touch-action:none"></div></div></div><div id="ov-stamp" style="position:absolute;left:55%;top:68%;width:34%;cursor:move;user-select:none;display:none;box-sizing:border-box;touch-action:none"><div style="border:2px dashed #dc2626;border-radius:3px;position:relative;width:100%;aspect-ratio:2.5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:2px"><div id="st-prev-z1" style="font-size:6px;font-weight:700;color:#dc2626;text-align:center;line-height:1.1;width:90%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${firmaN}</div><div style="width:85%;height:1px;background:#dc2626;opacity:0.6"></div><div id="st-prev-z2" style="font-size:5px;color:#dc2626;text-align:center;line-height:1.1;opacity:0.8">${(settings.adresse||'').substring(0,22)}</div><div id="rh-stamp" style="position:absolute;bottom:-7px;right:-7px;width:14px;height:14px;background:#dc2626;border-radius:50%;cursor:se-resize;border:2px solid #fff;touch-action:none"></div></div></div></div><div style="font-size:11px;color:var(--text-ter);margin:4px 0 14px">Elemente verschieben &amp; skalieren durch Ziehen am Eckpunkt</div><div class="ma" style="gap:10px"><button class="bc" onclick="confirmPDFAbschluss(false)">Ohne Extras</button><button class="bs" onclick="confirmPDFAbschluss(true)">PDF erstellen</button></div></div>`);
+  const _row=(v,ph,sz)=>'<div class="st-row" style="display:flex;align-items:center;gap:6px"><input class="st-txt" value="'+v+'" placeholder="'+ph+'" oninput="updateStempelPreview()" style="flex:1;padding:7px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;background:var(--surface);color:var(--text);min-width:0"><select class="st-sz" onchange="updateStempelPreview()" style="padding:6px 3px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;background:var(--surface);color:var(--text);width:58px">'+[5,6,7,8,9,10].map(s=>'<option value="'+s+'"'+(s===sz?' selected':'')+'>'+s+'pt</option>').join('')+'</select><button onclick="removeStempelZeile(this)" style="width:28px;height:28px;background:none;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:16px;color:var(--text-sec);flex-shrink:0;line-height:1">×</button></div>';
+  const initRows=_row(settings.firma||'','Firmenname',7)+_row(settings.adresse||'','Adresse',6)+_row(settings.telefon||'','Tel. / Zusatz',6);
+  oM(`${modalHeader('Unterschrift & Stempel')}<div style="padding:0 4px"><div style="margin-bottom:12px"><div style="font-size:12px;font-weight:700;color:var(--text-sec);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Unterschrift zeichnen</div><div style="position:relative"><canvas id="sig-canvas" width="500" height="120" style="width:100%;border:1.5px solid var(--border);border-radius:10px;background:#fff;touch-action:none;display:block;cursor:crosshair"></canvas><div id="sig-hint" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;color:#d1d5db;font-size:13px;font-weight:500">Hier unterschreiben</div></div><button type="button" onclick="clearSigPad()" style="margin-top:6px;padding:6px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;color:var(--text-sec)">Löschen</button></div><div style="margin-bottom:12px;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:12px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="sig-stempel" onchange="toggleStempelOverlay(this.checked)" style="width:18px;height:18px;cursor:pointer"><span style="font-size:14px;font-weight:500">Firmenstempel hinzufügen</span></label><div id="stempel-felder" style="display:none;margin-top:10px"><div style="margin-bottom:10px"><div style="font-size:11px;font-weight:600;color:var(--text-sec);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">Logo (optional)</div><div style="display:flex;align-items:center;gap:8px"><div id="logo-prev" style="width:48px;height:48px;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--bg);flex-shrink:0"><span style="font-size:22px">🏢</span></div><label style="flex:1;display:block;padding:9px 12px;background:var(--bg);border:1.5px dashed var(--border);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;color:var(--text-sec);text-align:center">Logo hochladen<input type="file" accept="image/*" onchange="loadStempelLogo(this)" style="display:none"></label><button onclick="clearStempelLogo()" style="padding:9px 10px;background:none;border:1.5px solid var(--border);border-radius:8px;font-size:14px;cursor:pointer;color:var(--text-sec)">×</button></div></div><div style="font-size:11px;font-weight:600;color:var(--text-sec);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">Textzeilen</div><div id="stempel-zeilen" style="display:flex;flex-direction:column;gap:6px;margin-bottom:8px">${initRows}</div><button type="button" onclick="addStempelZeile()" style="width:100%;padding:7px;background:var(--bg);border:1.5px dashed var(--border);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;color:var(--text-sec)">+ Zeile hinzufügen</button></div></div><div style="font-size:12px;font-weight:700;color:var(--text-sec);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Position auf PDF festlegen</div><div id="pdf-placement" style="position:relative;width:100%;aspect-ratio:210/297;background:#fff;border:1.5px solid var(--border);border-radius:6px;overflow:hidden;touch-action:none"><div style="position:absolute;inset:0;background:linear-gradient(rgba(229,231,235,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(229,231,235,0.3) 1px,transparent 1px);background-size:20% 20%;pointer-events:none"></div><div id="ov-sig" style="position:absolute;left:5%;top:70%;width:40%;cursor:move;user-select:none;display:none;box-sizing:border-box;touch-action:none"><div style="border:2px dashed var(--p);border-radius:4px;padding:2px;position:relative;width:100%"><img id="ov-sig-img" src="" style="width:100%;display:block;opacity:0.9"><div id="rh-sig" style="position:absolute;bottom:-7px;right:-7px;width:14px;height:14px;background:var(--p);border-radius:50%;cursor:se-resize;border:2px solid #fff;touch-action:none"></div></div></div><div id="ov-stamp" style="position:absolute;left:55%;top:68%;width:34%;cursor:move;user-select:none;display:none;box-sizing:border-box;touch-action:none"><div style="border:2px dashed #dc2626;border-radius:3px;position:relative;width:100%;aspect-ratio:2.5;overflow:hidden"><div id="ov-stamp-content" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:2px;height:100%;box-sizing:border-box"><div style="font-size:4px;font-weight:700;color:#dc2626;text-align:center;line-height:1.2;width:90%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${firmaN}</div><div style="width:85%;height:0.5px;background:#dc2626;opacity:0.6"></div><div style="font-size:3px;color:#dc2626;text-align:center;line-height:1.2;opacity:0.8">${(settings.adresse||'').substring(0,22)}</div></div><div id="rh-stamp" style="position:absolute;bottom:-7px;right:-7px;width:14px;height:14px;background:#dc2626;border-radius:50%;cursor:se-resize;border:2px solid #fff;touch-action:none"></div></div></div></div><div style="font-size:11px;color:var(--text-ter);margin:4px 0 14px">Elemente verschieben &amp; skalieren durch Ziehen am Eckpunkt</div><div class="ma" style="gap:10px"><button class="bc" onclick="confirmPDFAbschluss(false)">Ohne Extras</button><button class="bs" onclick="confirmPDFAbschluss(true)">PDF erstellen</button></div></div>`);
   setTimeout(()=>{initSigPad();setupPlacementDrag();},80);
 }
-function toggleStempelOverlay(show){const ov=document.getElementById('ov-stamp');if(ov)ov.style.display=show?'':'none';const sf=document.getElementById('stempel-felder');if(sf)sf.style.display=show?'flex':'none';}
-function updateStempelPreview(){const z1=(document.getElementById('st-z1')?.value||'').substring(0,16);const z2=(document.getElementById('st-z2')?.value||'').substring(0,22);const p1=document.getElementById('st-prev-z1'),p2=document.getElementById('st-prev-z2');if(p1)p1.textContent=z1;if(p2)p2.textContent=z2;}
+function toggleStempelOverlay(show){const ov=document.getElementById('ov-stamp');if(ov)ov.style.display=show?'':'none';const sf=document.getElementById('stempel-felder');if(sf)sf.style.display=show?'block':'none';}
+function updateStempelPreview(){
+  const ct=document.getElementById('ov-stamp-content');if(!ct)return;
+  const lines=Array.from(document.querySelectorAll('#stempel-zeilen .st-row')).map(r=>({text:r.querySelector('.st-txt')?.value||'',size:parseFloat(r.querySelector('.st-sz')?.value)||6})).filter(l=>l.text.trim());
+  const logo=window._stempelLogo||null;
+  if(logo&&lines.length){
+    ct.innerHTML='<div style="display:flex;align-items:center;gap:2px;width:100%;padding:1px 2px;box-sizing:border-box"><img src="'+logo+'" style="width:26%;aspect-ratio:1;object-fit:contain;flex-shrink:0"><div style="font-size:'+(lines[0].size*0.55).toFixed(1)+'px;font-weight:700;color:#1a1a1a;line-height:1.2;flex:1;overflow:hidden">'+lines[0].text+'</div></div><div style="width:88%;height:0.5px;background:#dc2626;opacity:0.7"></div>'+lines.slice(1).map(l=>'<div style="font-size:'+(l.size*0.55).toFixed(1)+'px;color:#1a1a1a;text-align:center;line-height:1.2;width:90%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+l.text+'</div>').join('');
+  }else{
+    ct.innerHTML=lines.map((l,i)=>'<div style="font-size:'+(l.size*0.55).toFixed(1)+'px;font-weight:'+(i===0?700:400)+';color:#dc2626;text-align:center;line-height:1.2;width:90%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+l.text+'</div>'+(i===0&&lines.length>1?'<div style="width:85%;height:0.5px;background:#dc2626;opacity:0.5"></div>':'')).join('');
+  }
+}
+function loadStempelLogo(input){
+  const file=input.files?.[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{window._stempelLogo=e.target.result;const p=document.getElementById('logo-prev');if(p)p.innerHTML='<img src="'+e.target.result+'" style="width:100%;height:100%;object-fit:contain">';updateStempelPreview();};
+  reader.readAsDataURL(file);
+}
+function clearStempelLogo(){
+  window._stempelLogo=null;
+  const p=document.getElementById('logo-prev');if(p)p.innerHTML='<span style="font-size:22px">🏢</span>';
+  updateStempelPreview();
+}
+function addStempelZeile(){
+  const c=document.getElementById('stempel-zeilen');if(!c)return;
+  const n=document.createElement('div');n.className='st-row';n.style.cssText='display:flex;align-items:center;gap:6px';
+  n.innerHTML='<input class="st-txt" placeholder="Neue Zeile…" oninput="updateStempelPreview()" style="flex:1;padding:7px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;background:var(--surface);color:var(--text);min-width:0"><select class="st-sz" onchange="updateStempelPreview()" style="padding:6px 3px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;background:var(--surface);color:var(--text);width:58px"><option value="5">5pt</option><option value="6" selected>6pt</option><option value="7">7pt</option><option value="8">8pt</option><option value="9">9pt</option><option value="10">10pt</option></select><button onclick="removeStempelZeile(this)" style="width:28px;height:28px;background:none;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:16px;color:var(--text-sec);flex-shrink:0;line-height:1">×</button>';
+  c.appendChild(n);n.querySelector('.st-txt').focus();
+}
+function removeStempelZeile(btn){btn.closest('.st-row')?.remove();updateStempelPreview();}
 function updateSigPreview(){
   const c=document.getElementById('sig-canvas'),img=document.getElementById('ov-sig-img'),ov=document.getElementById('ov-sig');
   if(!c||!img||!ov)return;
@@ -451,23 +481,43 @@ function confirmPDFAbschluss(withExtras){
   if(withExtras){
     const c=document.getElementById('sig-canvas');
     if(c){const d=c.getContext('2d').getImageData(0,0,c.width,c.height).data;if(d.some((v,i)=>i%4===3&&v>0)){sigData=c.toDataURL('image/png');sigPos=getPlacementCoords('ov-sig');}}
-    if(addStempel){stempelPos=getPlacementCoords('ov-stamp');stempelText={z1:document.getElementById('st-z1')?.value||settings.firma||'',z2:document.getElementById('st-z2')?.value||settings.adresse||'',z3:document.getElementById('st-z3')?.value||settings.telefon||''};}
+    if(addStempel){stempelPos=getPlacementCoords('ov-stamp');const _lines=Array.from(document.querySelectorAll('#stempel-zeilen .st-row')).map(r=>({text:r.querySelector('.st-txt')?.value||'',size:parseFloat(r.querySelector('.st-sz')?.value)||6})).filter(l=>l.text.trim());stempelText={lines:_lines,logo:window._stempelLogo||null};}
   }
   cM();
   if(_pdfCallbackFn){_pdfCallbackFn(sigData,addStempel,sigPos,stempelPos,stempelText);}_pdfCallbackFn=null;
 }
-function drawPDFStempel(doc,x,y,w,h,txt){
-  const firma=((txt?.z1)||settings.firma||'Firma').toUpperCase().substring(0,30);
-  const adresse=((txt?.z2)||settings.adresse||'').substring(0,35);
-  const tel=(txt?.z3)||settings.telefon||'';
+function drawPDFStempel(doc,x,y,w,h,data){
+  let lines=[],logo=null;
+  if(data?.lines){lines=data.lines;logo=data.logo||null;}
+  else if(!data){lines=[{text:(settings.firma||'Firma').toUpperCase(),size:7},{text:settings.adresse||'',size:6},{text:settings.telefon||'',size:6}].filter(l=>l.text);}
+  const validLines=lines.filter(l=>l.text?.trim());
   const ink=[37,99,235];const mx=x+w/2;
   doc.setDrawColor(...ink);doc.setLineWidth(1.2);doc.rect(x,y,w,h,'S');
   doc.setLineWidth(0.4);doc.rect(x+2,y+2,w-4,h-4,'S');
-  doc.setTextColor(...ink);doc.setFont('helvetica','bold');doc.setFontSize(7);
-  const fw=doc.getTextWidth(firma);doc.text(firma,mx-fw/2,y+h*0.28);
-  doc.setLineWidth(0.3);doc.line(x+4,y+h*0.42,x+w-4,y+h*0.42);
-  if(adresse){doc.setFont('helvetica','normal');doc.setFontSize(6);const aw=doc.getTextWidth(adresse);doc.text(adresse,mx-aw/2,y+h*0.58);}
-  if(tel){doc.setFontSize(6);const tw=doc.getTextWidth(tel);doc.text(tel,mx-tw/2,y+h*0.78);}
+  doc.setTextColor(17,24,39);
+  if(logo&&validLines.length){
+    // Logo left + company name right, separator, remaining lines below
+    const topH=h*0.48;
+    const lsz=Math.min(topH-4,w*0.26);
+    const lx=x+4,ly=y+4+(topH-4-lsz)/2;
+    try{doc.addImage(logo,'PNG',lx,ly,lsz,lsz);}catch(e){try{doc.addImage(logo,'JPEG',lx,ly,lsz,lsz);}catch(e2){}}
+    const nx=lx+lsz+3,nw=w-lsz-14;
+    const l0=validLines[0];
+    doc.setFont('helvetica','bold');doc.setFontSize(l0.size||7);
+    const nameWrapped=doc.splitTextToSize(l0.text,nw);
+    nameWrapped.forEach((nl,ni)=>{doc.text(nl,nx,y+6+ni*((l0.size||7)*0.42));});
+    doc.setDrawColor(...ink);doc.setLineWidth(0.3);doc.line(x+4,y+topH,x+w-4,y+topH);
+    const rest=validLines.slice(1);
+    if(rest.length){const botH=h-topH-4;const sp=botH/rest.length;rest.forEach((l,i)=>{doc.setFont('helvetica','normal');doc.setFontSize(l.size||6);const tw=doc.getTextWidth(l.text);doc.text(l.text,mx-tw/2,y+topH+sp*(i+0.65));});}
+  }else{
+    doc.setTextColor(...ink);
+    const pad=4,innerH=h-pad*2,sp=innerH/Math.max(validLines.length,1);
+    validLines.forEach((line,i)=>{
+      doc.setFont('helvetica',i===0?'bold':'normal');doc.setFontSize(line.size||6);
+      const tw=doc.getTextWidth(line.text);doc.text(line.text,mx-tw/2,y+pad+sp*(i+0.65));
+      if(i===0&&validLines.length>1){doc.setDrawColor(...ink);doc.setLineWidth(0.3);doc.line(x+4,y+pad+sp,x+w-4,y+pad+sp);}
+    });
+  }
   doc.setLineWidth(0.200025);doc.setTextColor(17,24,39);
 }
 // ─── WIDGET SYSTEM ──────────────────────────────────────────────
