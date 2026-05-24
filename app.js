@@ -334,8 +334,8 @@ function saExportPDF(nr,d,gesamt,gueltig,sigData,addStempel,sigPos,stempelPos,st
   let y=46;doc.setDrawColor(...lgr);doc.setLineWidth(0.3);doc.line(L,y,R,y);y+=9;
   // ── EMPFÄNGER ──
   doc.setFontSize(6.5);doc.setFont('helvetica','bold');doc.setTextColor(...gra);doc.text('AUFTRAGGEBER',L,y);
-  y+=5;doc.setFontSize(12);doc.setFont('helvetica','bold');doc.setTextColor(...dk);doc.text(d.kundeName,L,y);
-  y+=10;doc.setDrawColor(...lgr);doc.setLineWidth(0.2);doc.line(L,y,R,y);y+=8;
+  y+=5;doc.setFontSize(12);doc.setFont('helvetica','bold');doc.setTextColor(...dk);(d.kundeName||'-').split(/\r?\n/).filter(l=>l.trim()).forEach(l=>{doc.text(l,L,y);y+=5.5;});
+  y+=4;doc.setDrawColor(...lgr);doc.setLineWidth(0.2);doc.line(L,y,R,y);y+=8;
   // ── BETREFF ──
   doc.setFontSize(9.5);doc.setFont('helvetica','bold');doc.setTextColor(...dk);
   doc.text('Betreff: '+(d.gewerkeAktiv?.join(', ')||'Angebot'),L,y);y+=8;
@@ -646,8 +646,8 @@ async function exportAngPDF(aid){const{data:a}=await sb.from('angebote').select(
   doc.text('Nr. '+(a.nummer||'-'),R,hY+16,'right');doc.text('Datum: '+fmtDatum(a.datum),R,hY+23,'right');
   let y=46;doc.setDrawColor(...lgr);doc.setLineWidth(0.3);doc.line(L,y,R,y);y+=9;
   doc.setFontSize(6.5);doc.setFont('helvetica','bold');doc.setTextColor(...gra);doc.text('AUFTRAGGEBER',L,y);
-  y+=5;doc.setFontSize(12);doc.setFont('helvetica','bold');doc.setTextColor(...dk);doc.text(a.kunde||'-',L,y);
-  y+=10;doc.setDrawColor(...lgr);doc.setLineWidth(0.2);doc.line(L,y,R,y);y+=8;
+  y+=5;doc.setFontSize(12);doc.setFont('helvetica','bold');doc.setTextColor(...dk);(a.kunde||'-').split(/\r?\n/).filter(l=>l.trim()).forEach(l=>{doc.text(l,L,y);y+=5.5;});
+  y+=4;doc.setDrawColor(...lgr);doc.setLineWidth(0.2);doc.line(L,y,R,y);y+=8;
   doc.setFontSize(9.5);doc.setFont('helvetica','bold');doc.setTextColor(...dk);doc.text('Betreff: '+(a.titel||'Angebot'),L,y);y+=8;
   if(settings.pdfIntro?.trim()){doc.setFontSize(8.5);doc.setFont('helvetica','normal');doc.setTextColor(...gra);doc.splitTextToSize(settings.pdfIntro,W).forEach(l=>{doc.text(l,L,y);y+=5;});y+=2;}
   doc.setFontSize(8);doc.setFont('helvetica','bold');doc.setTextColor(...dk);
@@ -746,8 +746,8 @@ function exportRechPDF(id,nr,datum,kunde,betrag,status){
   let y=46;doc.setDrawColor(...lgr);doc.setLineWidth(0.3);doc.line(L,y,R,y);y+=9;
   // ── EMPFÄNGER ──
   doc.setFontSize(6.5);doc.setFont('helvetica','bold');doc.setTextColor(...gra);doc.text('RECHNUNGSEMPFÄNGER',L,y);
-  y+=5;doc.setFontSize(12);doc.setFont('helvetica','bold');doc.setTextColor(...dk);doc.text(kunde||'-',L,y);
-  y+=10;doc.setDrawColor(...lgr);doc.setLineWidth(0.2);doc.line(L,y,R,y);y+=8;
+  y+=5;doc.setFontSize(12);doc.setFont('helvetica','bold');doc.setTextColor(...dk);(kunde||'-').split(/\r?\n/).filter(l=>l.trim()).forEach(l=>{doc.text(l,L,y);y+=5.5;});
+  y+=4;doc.setDrawColor(...lgr);doc.setLineWidth(0.2);doc.line(L,y,R,y);y+=8;
   if(settings.pdfIntro?.trim()){doc.setFontSize(8.5);doc.setFont('helvetica','normal');doc.setTextColor(...gra);doc.splitTextToSize(settings.pdfIntro,W).forEach(l=>{doc.text(l,L,y);y+=5;});y+=2;}
   // ── TABELLE ──
   doc.setFontSize(8);doc.setFont('helvetica','bold');doc.setTextColor(...dk);
