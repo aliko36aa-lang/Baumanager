@@ -295,3 +295,35 @@ create table if not exists maengel(
 );
 alter table maengel enable row level security;
 do $$ begin if not exists(select 1 from pg_policies where tablename='maengel' and policyname='maengel_own')then create policy "maengel_own" on maengel for all using(auth.uid()=user_id)with check(auth.uid()=user_id);end if;end $$;
+
+-- Baustellen-Fotodokumentation
+create table if not exists projekt_fotos (
+  id uuid default gen_random_uuid() primary key,
+  projekt_id uuid,
+  foto text,
+  gps text,
+  datum date,
+  kommentar text,
+  mitarbeiter text,
+  user_id uuid references auth.users(id),
+  created_at timestamptz default now()
+);
+alter table projekt_fotos enable row level security;
+do $$ begin if not exists(select 1 from pg_policies where tablename='projekt_fotos' and policyname='fotos_own')then create policy "fotos_own" on projekt_fotos for all using(auth.uid()=user_id)with check(auth.uid()=user_id);end if;end $$;
+
+-- Geräteverwaltung
+create table if not exists geraete (
+  id uuid default gen_random_uuid() primary key,
+  name text not null,
+  typ text,
+  seriennummer text,
+  status text default 'verfuegbar',
+  zugewiesen_an text,
+  projekt_id uuid,
+  standort text,
+  naechste_wartung date,
+  user_id uuid references auth.users(id),
+  created_at timestamptz default now()
+);
+alter table geraete enable row level security;
+do $$ begin if not exists(select 1 from pg_policies where tablename='geraete' and policyname='geraete_own')then create policy "geraete_own" on geraete for all using(auth.uid()=user_id)with check(auth.uid()=user_id);end if;end $$;
