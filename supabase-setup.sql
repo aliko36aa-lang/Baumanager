@@ -265,3 +265,15 @@ create policy "schnellangebot_own" on schnellangebot_leistungen for all using (a
 -- ============================================================
 -- FERTIG – Alle Tabellen sind eingerichtet
 -- ============================================================
+
+-- ============================================================
+-- MIGRATION (Juni 2026): PDF-Einstellungen + Kundenverknüpfung
+-- Idempotent – kann mehrfach ausgeführt werden
+-- ============================================================
+alter table einstellungen add column if not exists logo text;
+alter table einstellungen add column if not exists logo_ar numeric;
+alter table einstellungen add column if not exists pdf_accent text;
+alter table einstellungen add column if not exists pdf_intro text;
+alter table einstellungen add column if not exists pdf_fuss text;
+alter table angebote add column if not exists kunden_id uuid;
+alter table rechnungen add column if not exists kunden_id uuid;
