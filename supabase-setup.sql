@@ -277,3 +277,21 @@ alter table einstellungen add column if not exists pdf_intro text;
 alter table einstellungen add column if not exists pdf_fuss text;
 alter table angebote add column if not exists kunden_id uuid;
 alter table rechnungen add column if not exists kunden_id uuid;
+alter table stunden add column if not exists gps_start text;
+alter table stunden add column if not exists gps_stopp text;
+
+-- Mängelmanagement
+create table if not exists maengel(
+  id uuid default gen_random_uuid() primary key,
+  projekt_id uuid,
+  titel text,
+  beschreibung text,
+  status text default 'offen',
+  frist date,
+  foto text,
+  behoben_am date,
+  user_id uuid references auth.users(id),
+  created_at timestamptz default now()
+);
+alter table maengel enable row level security;
+do $$ begin if not exists(select 1 from pg_policies where tablename='maengel' and policyname='maengel_own')then create policy "maengel_own" on maengel for all using(auth.uid()=user_id)with check(auth.uid()=user_id);end if;end $$;
