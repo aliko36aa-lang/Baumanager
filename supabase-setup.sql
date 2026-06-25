@@ -327,3 +327,20 @@ create table if not exists geraete (
 );
 alter table geraete enable row level security;
 do $$ begin if not exists(select 1 from pg_policies where tablename='geraete' and policyname='geraete_own')then create policy "geraete_own" on geraete for all using(auth.uid()=user_id)with check(auth.uid()=user_id);end if;end $$;
+
+-- ============================================================
+-- MIGRATION (Juni 2026): Professionelle Rechnungen (DIN 5008)
+-- Idempotent – kann mehrfach ausgeführt werden
+-- ============================================================
+alter table rechnungen add column if not exists positionen jsonb;
+alter table rechnungen add column if not exists betreff text;
+alter table rechnungen add column if not exists leistung_von date;
+alter table rechnungen add column if not exists leistung_bis date;
+alter table rechnungen add column if not exists zahlungsziel_tage integer default 14;
+alter table rechnungen add column if not exists notiz text;
+alter table rechnungen add column if not exists steuersatz numeric default 19.0;
+alter table rechnungen add column if not exists kunde_name text;
+alter table rechnungen add column if not exists kunde_strasse text;
+alter table rechnungen add column if not exists kunde_plz_ort text;
+alter table kunden add column if not exists strasse text;
+alter table kunden add column if not exists plz_ort text;
